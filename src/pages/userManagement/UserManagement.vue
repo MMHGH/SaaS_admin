@@ -132,11 +132,49 @@
         currentFilterType: 0, // 0：筛选， 1：全局筛选
       }
     },
+    computed: {
+      status(){
+        return this.filterForm.status
+      },
+      phone(){
+        return this.filterForm.phone
+      },
+      beginDate(){
+        return this.filterForm.beginDate
+      },
+      endDate(){
+        return this.filterForm.endDate
+      },
+      organName(){
+        return this.filterForm.organName
+      }
+    },
     watch: {
       currentLevelId(newVal, oldVal){
         if(!newVal) return
         this.$urlTool.setQueryStringArgs({currentLevelId: this.currentLevelId})
-      }
+      },
+      status(newVal, oldVal){
+
+        if(!newVal) return
+        this.$urlTool.setQueryStringArgs({status: newVal})
+      },
+      phone(newVal, oldVal){
+        if(!newVal) return
+        this.$urlTool.setQueryStringArgs({phone: newVal})
+      },
+      beginDate(newVal, oldVal){
+        if(!newVal) return
+        this.$urlTool.setQueryStringArgs({beginDate: newVal})
+      },
+      endDate(newVal, oldVal){
+        if(!newVal) return
+        this.$urlTool.setQueryStringArgs({endDate: newVal})
+      },
+      organName(newVal, oldVal){
+        if(!newVal) return
+        this.$urlTool.setQueryStringArgs({organName: newVal})
+      },
     },
     methods:{
       // 获取类别列表
@@ -163,32 +201,50 @@
               category.children.push({levelId: item.id, label: item.sysUserLevelName})
             })
             this.$nextTick(()=>{
-              this.$refs['tree'].setCurrentKey(this.currentLevelId)
-              let node = this.$refs['tree'].getNode(this.currentLevelId)
-              this.currentCategoryId = node && node.parent.data.categoryId
-              this.getUserList(this.currentLevelId)
-//              this.initGetUserListLength++
-//              if(this.initGetUserListLength === this.treeData[0].children.length){
-//                if(this.$route.query.userLevelId)
-//                {
+
+
+
+
+              this.initGetUserListLength++
+              if(this.initGetUserListLength === this.treeData[0].children.length){
+                if(this.$route.query.currentLevelId)
+                {
+
+
+                  this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
+                  let node = this.$refs['tree'].getNode(this.currentLevelId)
+                  this.currentCategoryId = node && node.parent.data.categoryId
+                  this.getUserList(this.currentLevelId)
+
+
 //                  this.$refs['tree'].setCurrentKey(this.$route.query.userLevelId)
 //                  let data = this.$refs['tree'].getCurrentNode()
 //                  let node = this.$refs['tree'].getNode(data)
 //                  this.getUserListByLevel(data, node)
-//                }
-//                else
-//                {
-//                  for(let i=0; i<this.treeData[0].children.length; i++){
-//                    if(this.treeData[0].children[i].children.length>0){
-//                      let data = this.treeData[0].children[i].children[0]
-//                      let node = this.$refs['tree'].getNode(data)
+                }
+                else
+                {
+                  for(let i=0; i<this.treeData[0].children.length; i++){
+                    if(this.treeData[0].children[i].children.length>0){
+                      let data = this.treeData[0].children[i].children[0]
+                      let node = this.$refs['tree'].getNode(data)
 //                      this.getUserListByLevel(data, node)
 //                      this.$refs['tree'].setCurrentKey(node.data.levelId)
-//                      break
-//                    }
-//                  }
-//                }
-//              }
+
+                      this.getUserList()
+                      this.currentLevelId = node.data.levelId
+//                      let node = this.$refs['tree'].getNode(this.currentLevelId)
+                      this.currentCategoryId = node && node.parent.data.categoryId
+
+                      break
+                    }
+                  }
+                }
+              }
+
+
+
+
             })
           }
         })
@@ -211,11 +267,11 @@
           url: this.$api.userManagement.getUserList,
           params: {
             userLevelId: id || null,
-            status: status || null,
-            phone: phone || null,
-            beginDate: beginDate || null,
-            endDate: endDate || null,
-            organName: organName || null,
+            status: status || this.filterForm.status || null,
+            phone: phone || this.filterForm.phone || null,
+            beginDate: beginDate || this.filterForm.beginDate || null,
+            endDate: endDate || this.filterForm.endDate || null,
+            organName: organName || this.filterForm.organName || null,
             pageNum: this.currentPageNumber,
             pageSize: this.currentPageSize,
           },
@@ -338,6 +394,11 @@
     },
     mounted(){
       this.currentLevelId = this.$route.query.currentLevelId || null
+      this.$route.query.status && (this.filterForm.status = this.$route.query.status)
+      this.$route.query.phone && (this.filterForm.phone = this.$route.query.phone)
+      this.$route.query.beginDate && (this.filterForm.beginDate = new Date(this.$route.query.beginDate))
+      this.$route.query.endDate && (this.filterForm.endDate = new Date(this.$route.query.endDate))
+      this.$route.query.organName && (this.filterForm.organName = this.$route.query.organName)
       this.getCategoryList()
     }
   }
