@@ -39,8 +39,16 @@
           <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">元</p>
         </el-form-item>
         <el-form-item label="虚拟物品价值" prop="value" v-show="isValue">
-          <el-input v-model.number="form.value"></el-input>
-          <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">分</p>
+          <!--<el-input v-model.number="form.value"></el-input>-->
+          <!--<p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">分</p>-->
+          <el-select v-model="form.value" placeholder="请选择虚拟物品价值">
+            <el-option
+              v-for="item in virtualValues"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <!-- <el-form-item label="礼客币" prop="coin">
           <el-input v-model="form.coin"></el-input>
@@ -217,7 +225,14 @@ import { Message,MessageBox } from 'element-ui'
           description: [
             { required: true, message: '请输入使用须知', trigger: 'blur' }
           ]
-        }
+        },
+        virtualValues:[
+          {value:1, label:'1元'},{value:2, label:'2元'},{value:3, label:'3元'},{value:4, label:'4元'},
+          {value:5, label:'5元'},{value:6, label:'6元'},{value:7, label:'7元'},{value:8, label:'8元'},
+          {value:9, label:'9元'},{value:10, label:'10元'},{value:20, label:'20元'},{value:30, label:'30元'},
+          {value:50, label:'50元'},{value:100, label:'100元'},{value:200, label:'200元'},{value:300, label:'300元'},
+          {value:500, label:'500元'}
+        ]
       }
     },
     methods: {
