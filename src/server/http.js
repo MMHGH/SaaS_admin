@@ -7,6 +7,9 @@ import service from '../config/service'
 import { Message } from 'element-ui';
 import api from '../config/api'
 
+// 请求队列
+let apiLock = {};
+
 // axios 配置
 axios.defaults.timeout = service.TIMEOUT
 axios.defaults.withCredentials = service.WITH_CREDENTIALS
@@ -17,6 +20,13 @@ axios.defaults.headers.post['Content-Type'] = service.CONTENT_TYPE
 // 添加请求拦截器
 axios.interceptors.request.use(
   config => {
+    // 设置请求锁
+    // console.log(apiLock, config);
+    let apiLockIndex = config.url.replace(config.baseURL, '');
+    apiLockIndex = config.url.replace('@root', '/api');
+    if (apiLock[apiLockIndex] && apiLock[apiLockIndex] == true && config.canBatch !== true) return Promise.reject('end');
+    apiLock[apiLockIndex] = true;
+
     // 请求发送前
     // 启动loading
     if(router.history.current.name === 'Login'){
@@ -48,6 +58,13 @@ axios.interceptors.request.use(
 // 添加响应拦截器
 axios.interceptors.response.use(
   response => {
+
+    // 恢复请求锁
+    let _config = response.config;
+    // console.log(apiLock, _config);
+    let apiLockIndex = _config.url.replace(_config.baseURL, '');
+    apiLock[apiLockIndex] = false;
+
     // 响应数据前
     // 关闭loading
     loadingInstance.close()
@@ -63,6 +80,14 @@ axios.interceptors.response.use(
     return response
   },
   error => {
+
+    // 恢复请求锁
+    if (error === 'end') return;
+    let config = error.config || error;
+    // console.log(apiLock, config);
+    let apiLockIndex = config.url.replace(config.baseURL, '');
+    apiLock[apiLockIndex] = false;
+
     // 响应错误前
     // 关闭loading
     loadingInstance.close()
