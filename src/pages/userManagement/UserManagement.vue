@@ -128,7 +128,6 @@
         },
         filterFormRules: {},
         tableData: [],
-        initGetUserListLength: 0,
         currentFilterType: 0, // 0：筛选， 1：全局筛选
       }
     },
@@ -201,50 +200,28 @@
               category.children.push({levelId: item.id, label: item.sysUserLevelName})
             })
             this.$nextTick(()=>{
+              if(this.$route.query.currentLevelId)
+              {
+                this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
+                let node = this.$refs['tree'].getNode(this.currentLevelId)
+                this.currentCategoryId = node && node.parent.data.categoryId
+                this.getUserList(this.currentLevelId)
+              }
+              else
+              {
+                for(let i=0; i<this.treeData[0].children.length; i++){
+                  if(this.treeData[0].children[i].children.length>0){
+                    let data = this.treeData[0].children[i].children[0]
+                    let node = this.$refs['tree'].getNode(data)
 
+                    this.getUserList()
+                    this.currentLevelId = node.data.levelId
+                    this.currentCategoryId = node && node.parent.data.categoryId
 
-
-
-              this.initGetUserListLength++
-              if(this.initGetUserListLength === this.treeData[0].children.length){
-                if(this.$route.query.currentLevelId)
-                {
-
-
-                  this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
-                  let node = this.$refs['tree'].getNode(this.currentLevelId)
-                  this.currentCategoryId = node && node.parent.data.categoryId
-                  this.getUserList(this.currentLevelId)
-
-
-//                  this.$refs['tree'].setCurrentKey(this.$route.query.userLevelId)
-//                  let data = this.$refs['tree'].getCurrentNode()
-//                  let node = this.$refs['tree'].getNode(data)
-//                  this.getUserListByLevel(data, node)
-                }
-                else
-                {
-                  for(let i=0; i<this.treeData[0].children.length; i++){
-                    if(this.treeData[0].children[i].children.length>0){
-                      let data = this.treeData[0].children[i].children[0]
-                      let node = this.$refs['tree'].getNode(data)
-//                      this.getUserListByLevel(data, node)
-//                      this.$refs['tree'].setCurrentKey(node.data.levelId)
-
-                      this.getUserList()
-                      this.currentLevelId = node.data.levelId
-//                      let node = this.$refs['tree'].getNode(this.currentLevelId)
-                      this.currentCategoryId = node && node.parent.data.categoryId
-
-                      break
-                    }
+                    break
                   }
                 }
               }
-
-
-
-
             })
           }
         })

@@ -200,12 +200,13 @@
               successHook: () => { this.formDisabled = true },
               successMessage: '已成功添加类别',
               successCloseHook: () => {
-                this.$router.push({
-                  name: 'UserManagement',
-                  query:{
-                    userLevelId: this.form.levelId,
-                  }
-                })
+                // this.$router.push({
+                //   name: 'UserManagement',
+                //   query:{
+                //     userLevelId: this.form.levelId,
+                //   }
+                // })
+                this.back()
               },
               errorCloseHook: () => {},
             })

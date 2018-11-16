@@ -9,13 +9,11 @@
     <div class="main">
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-tree ref="tree" node-key="levelId" :data="treeData" accordion
-                   :highlight-current="true" @node-click="getUserListByLevel"></el-tree>
+          <el-tree ref="tree" node-key="levelId" :data="treeData" accordion :highlight-current="true" @node-click="getUserListByLevel"></el-tree>
         </el-col>
         <el-col :span="20">
 
-          <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right"
-                   label-width="100px" label-suffix="：" :rules="filterFormRules">
+          <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right" label-width="100px" label-suffix="：" :rules="filterFormRules">
             <el-row>
               <el-col :span="24">
                 <el-form-item label="手机号码" prop="phone">
@@ -27,7 +25,6 @@
                 <el-form-item label="结束时间" prop="endDate">
                   <el-date-picker v-model="filterForm.endDate" placeholder="选择结束时间"></el-date-picker>
                 </el-form-item>
-
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="filterForm.status">
                     <el-option label="全部" value=""></el-option>
@@ -65,6 +62,7 @@
                 {{scope.row.status === 'Y' ? '启用' : '禁用'}}
               </template>
             </el-table-column>
+            <el-table-column align="center" prop="accountNum" label="已创建账户数量"></el-table-column>
             <el-table-column align="center" property="expireTime" label="剩余时间" min-width="120">
               <template slot-scope="scope">
                 {{scope.row.expireTime ? $timestamp.getExpireTimeByTimestamp(scope.row.expireTime) : '未设置'}}
