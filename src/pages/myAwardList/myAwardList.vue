@@ -174,7 +174,6 @@
             vm.pageNum = data.pageNum;
             vm.pageSize = data.pageSize;
           }
-          console.log( data )
         }).catch(function(error){
           console.error(error)
         });
