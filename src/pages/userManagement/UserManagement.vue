@@ -200,15 +200,13 @@
               category.children.push({levelId: item.id, label: item.sysUserLevelName})
             })
             this.$nextTick(()=>{
-              if(this.$route.query.currentLevelId)
-              {
+              if(this.$route.query.currentLevelId){
                 this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
                 let node = this.$refs['tree'].getNode(this.currentLevelId)
                 this.currentCategoryId = node && node.parent.data.categoryId
                 this.getUserList(this.currentLevelId)
               }
-              else
-              {
+              else{
                 for(let i=0; i<this.treeData[0].children.length; i++){
                   if(this.treeData[0].children[i].children.length>0){
                     let data = this.treeData[0].children[i].children[0]
