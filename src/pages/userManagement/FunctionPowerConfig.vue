@@ -97,8 +97,8 @@
     data() {
       let vm = this
       let validateUpdatedQuantity = (rule, value, callback) => {
-        validatePrivilege.privilegeCode(rule, value, callback, vm.currentRow.privilegeCode)
-        validatePrivilege.unitName(rule, value, callback, vm.currentRow.unitName)
+        validatePrivilege.privilegeCode(rule, value, callback, vm.currentRow && vm.currentRow.privilegeCode)
+        validatePrivilege.unitName(rule, value, callback, vm.currentRow && vm.currentRow.unitName)
         callback()
       }
       let validateUpdatedTime = (rule, value, callback) => {

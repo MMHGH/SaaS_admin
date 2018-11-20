@@ -51,7 +51,7 @@
               <template slot-scope="scope">
                 <el-button size="medium" type="text" @click="updatePriceConfig(scope.row.userLvPrivilegePriceId, scope.row.privilegeId, scope.row.privilegeName)">配置</el-button>
                 <el-button size="medium" type="text" @click="updatePriceConfigStatus(scope.row.userLvPrivilegePriceId, scope.row.status)">{{ formatSetStatusText(scope.row.status) }}</el-button>
-                <el-button v-if="currentPriceConfig === 1" size="medium" type="text" @click="deletePriceConfig(scope.row.userLvPrivilegePriceId)">删除</el-button>
+                <el-button v-if="currentPriceConfig === 1 && scope.row.userLvPrivilegePriceId" size="medium" type="text" @click="deletePriceConfig(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -308,11 +308,19 @@
         })
       },
       // 删除价格配置
-      deletePriceConfig(id){
+      deletePriceConfig(row){
+
+
+        debugger
+        console.log(row)
+        console.log(row.userLvPrivilegePriceId)
+
+
+
         this.$service.postWithConfirm({
           confirmText: '此操作将删除该价格配置, 是否继续？',
           url: this.$api.priceConfig.deletePriceConfig,
-          params: { id: id },
+          params: { id: row.userLvPrivilegePriceId },
           successHook: () => {
             // 刷新列表
             this.getPriceConfigList()
