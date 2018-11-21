@@ -309,14 +309,6 @@
       },
       // 删除价格配置
       deletePriceConfig(row){
-
-
-        debugger
-        console.log(row)
-        console.log(row.userLvPrivilegePriceId)
-
-
-
         this.$service.postWithConfirm({
           confirmText: '此操作将删除该价格配置, 是否继续？',
           url: this.$api.priceConfig.deletePriceConfig,
