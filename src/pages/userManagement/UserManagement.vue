@@ -93,7 +93,7 @@
                          :current-page="currentPageNumber" :page-size="currentPageSize"
                          :page-sizes="[5, 10, 20, 50, 100]" :total="currentTotal"
                          layout="prev, pager, next, total, sizes, jumper"
-                         @current-change="pageNumberChange" @prev-clicke="pageNumberChange"
+                         @current-change="pageNumberChange" @prev-click="pageNumberChange"
                          @next-click="pageNumberChange" @size-change="pageSizeChange"></el-pagination>
         </el-col>
       </el-row>
@@ -128,7 +128,7 @@
         },
         filterFormRules: {},
         tableData: [],
-        currentFilterType: 0, // 0：筛选， 1：全局筛选
+        currentFilterType: 1, // 0：筛选， 1：全局筛选
       }
     },
     computed: {
@@ -352,6 +352,7 @@
       },
       // 当前页码改变刷新列表
       pageNumberChange(pageNumber){
+        debugger
         this.currentPageNumber = pageNumber
         switch(this.currentFilterType){
           case 0: this.getUserList(this.currentLevelId); break;
