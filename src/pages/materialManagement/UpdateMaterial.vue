@@ -73,7 +73,6 @@
             list-type="picture-card"
             :show-file-list="true"
             :limit="1"
-            :disabled="!isEditInfo"
             :on-remove="thumbImgRemove"
             :file-list="thumbImglist"
             :before-upload="beforeAvatarUpload"
@@ -89,10 +88,9 @@
           <el-upload style="display: inline-block;"
             :action = 'imgApi'
             name="fileName"
-            list-type="picture-card" 
-            :show-file-list="true" 
+            list-type="picture-card"
+            :show-file-list="true"
             :limit="1"
-            :disabled="!isEditInfo"
             :on-remove="imgsRemove"
             :before-upload="beforeAvatarUpload2"
             :on-success="handleAvatarSuccess2"
@@ -146,7 +144,7 @@ import { Message,MessageBox } from 'element-ui'
             if (!regex.test(value)){
              return callback(new Error('最多包含8位正整数和两位小数格式'));
           }
-          
+
           callback()
         };
       var validatePrice2 = (rule, value, callback)=>{
@@ -167,7 +165,7 @@ import { Message,MessageBox } from 'element-ui'
           callback()
         };
         var validateUnit = (rule, value, callback)=>{
-         
+
           if( String(value).length > 20 ){
              return callback(new Error('输入过长，最多20个字符'));
           }
@@ -280,11 +278,11 @@ import { Message,MessageBox } from 'element-ui'
       handleAvatarSuccess(response, file, fileList) {
         this.thumbImgUrl = response.data;
       },
-     
+
       handleAvatarSuccess2(response, file, fileList) {
         this.imgs.splice(0,1,{
           sort: this.sortCount,
-          url: file.data
+          url: response.data
         })
         this.sortCount += 1;
          console.log( this.imgs )
@@ -418,7 +416,7 @@ import { Message,MessageBox } from 'element-ui'
               // vm.form.material = String(data.classId);
               vm.$set(vm.form,'material',String(data.classId));
               vm.form.status = data.status;
-             
+
               for(var i=0;i<data.imgs.length;i++){
                 vm.fileList.push({"name":data.imgs[i].sort+"","url":data.imgs[i].url});
               }
