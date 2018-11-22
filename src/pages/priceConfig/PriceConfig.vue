@@ -61,6 +61,7 @@
   </div>
 </template>
 <script>
+  import {co, thunkify} from '@/util/commonFn'
   export default {
     data(){
       return {
@@ -80,7 +81,6 @@
           label: '平台用户等级',
           children: []
         }],
-        initGetUserListLength: 0,
         levelData: null,
       }
     },
@@ -128,6 +128,29 @@
         }
         return text
       },
+      // 获取当前勾选类别和对应类别的价格配置列表
+      getCurrentPriceList(){
+        this.currentLevelId = Number(this.$route.query.userLevelId || this.$route.query.currentLevelId || null)
+        if(this.currentLevelId)
+        {
+          this.$refs['tree'].setCurrentKey(this.currentLevelId)
+          let data = this.$refs['tree'].getCurrentNode()
+          let node = this.$refs['tree'].getNode(data)
+          this.getCurrentLevelId(data, node)
+        }
+        else
+        {
+          for(let i=0; i<this.treeData[0].children.length; i++){
+            if(this.treeData[0].children[i].children.length>0){
+              let data = this.treeData[0].children[i].children[0]
+              let node = this.$refs['tree'].getNode(data)
+              this.getCurrentLevelId(data, node)
+              this.$refs['tree'].setCurrentKey(node.data.levelId)
+              break
+            }
+          }
+        }
+      },
       // 获取类别列表
       getCategoryList(){
         this.$service.post({
@@ -137,14 +160,24 @@
             data.forEach(item => {
               this.treeData[0].children.push({categoryId: item.dictValue, label: item.dictName, children: []})
             })
-            this.treeData[0].children.forEach(item => {
-              this.getLevelList(item)
+            let
+              vm = this,
+              thunk = thunkify(this.getLevelList)
+            co(function*(){
+              for(let i=0; i<vm.treeData[0].children.length; i++){
+                yield thunk(vm.treeData[0].children[i])
+              }
+              vm.getCurrentPriceList()
+              return yield Promise.resolve()
+            }).then(function(val){
+            }).catch(function(err){
+              console.log(err)
             })
           }
         })
       },
       // 获取等级列表
-      getLevelList(category){
+      getLevelList(category, callback){
         this.$service.post({
           url: this.$api.platformUserLevelDefinition.getLevelList,
           params: {userTypeId: category.categoryId},
@@ -153,69 +186,11 @@
               category.children.push({levelId: item.id, label: item.sysUserLevelName})
             })
             this.$nextTick(()=>{
-              this.initGetUserListLength++
-              if(this.initGetUserListLength === this.treeData[0].children.length){
-                this.currentLevelId = Number(this.$route.query.userLevelId || this.$route.query.currentLevelId || null)
-                if(this.currentLevelId)
-                {
-                  this.$refs['tree'].setCurrentKey(this.currentLevelId)
-                  let data = this.$refs['tree'].getCurrentNode()
-                  let node = this.$refs['tree'].getNode(data)
-                  this.getCurrentLevelId(data, node)
-                }
-                else
-                {
-                  for(let i=0; i<this.treeData[0].children.length; i++){
-                    if(this.treeData[0].children[i].children.length>0){
-                      let data = this.treeData[0].children[i].children[0]
-                      let node = this.$refs['tree'].getNode(data)
-                      this.getCurrentLevelId(data, node)
-                      this.$refs['tree'].setCurrentKey(node.data.levelId)
-                      break
-                    }
-                  }
-                }
-              }
+              callback(null)
             })
           }
         })
       },
-
-
-
-//      // 获取树列表
-//      getTreeData(node, resolve){
-//        if (node.level === 0) {
-//          return resolve([{label: '平台用户等级', leaf: false}])
-//        }
-//        if(node.level === 1){
-//          // 获取类别列表
-//          this.$service.post({
-//            url: this.$api.getCategoryList,
-//            successHook: (data) => {
-//              let children = []
-//              data.forEach(item => {
-//                children.push({categoryId: item.dictValue, label: item.dictName, leaf: false})
-//              })
-//              return resolve(children)
-//            }
-//          })
-//        }
-//        if(node.level > 1 && node.data.categoryId){
-//          // 获取等级列表
-//          this.$service.post({
-//            url: this.$api.platformUserLevelDefinition.getLevelList,
-//            params: { userTypeId: parseInt(node.data.categoryId) },
-//            successHook: (data) => {
-//              let children = []
-//              data.forEach(item => {
-//                children.push({levelId: item.id, label: item.sysUserLevelName, leaf: true})
-//              })
-//              return resolve(children)
-//            }
-//          })
-//        }
-//      },
 
       // 获取价格配置列表
       getPriceConfigList(){

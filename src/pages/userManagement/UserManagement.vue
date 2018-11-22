@@ -96,6 +96,7 @@
   </div>
 </template>
 <script>
+  import {co, thunkify} from '@/util/commonFn'
   export default {
     data(){
       return {
@@ -171,6 +172,28 @@
       },
     },
     methods:{
+      // 获取当前勾选类别和对应类别的用户列表
+      getCurrentUserList(){
+        if(this.currentLevelId){
+          this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
+          let node = this.$refs['tree'].getNode(this.currentLevelId)
+          this.currentCategoryId = node && node.parent.data.categoryId
+          this.getUserList(this.currentLevelId)
+        }
+        else{
+          for(let i=0; i<this.treeData[0].children.length; i++){
+            if(this.treeData[0].children[i].children.length>0){
+              let data = this.treeData[0].children[i].children[0]
+              let node = this.$refs['tree'].getNode(data)
+              this.currentLevelId = node.data.levelId
+              this.currentCategoryId = node && node.parent.data.categoryId
+              this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
+              this.getUserList(this.currentLevelId)
+              break
+            }
+          }
+        }
+      },
       // 获取类别列表
       getCategoryList(){
         this.$service.post({
@@ -179,14 +202,24 @@
             data.forEach(item => {
               this.treeData[0].children.push({categoryId: item.dictValue, label: item.dictName, children: []})
             })
-            this.treeData[0].children.forEach(item => {
-              this.getLevelList(item)
+            let
+              vm = this,
+              thunk = thunkify(this.getLevelList)
+            co(function*(){
+              for(let i=0; i<vm.treeData[0].children.length; i++){
+                yield thunk(vm.treeData[0].children[i])
+              }
+              vm.getCurrentUserList()
+              return yield Promise.resolve()
+            }).then(function(val){
+            }).catch(function(err){
+              console.log(err)
             })
           }
         })
       },
       // 获取等级列表
-      getLevelList(category){
+      getLevelList(category, callback){
         this.$service.post({
           url: this.$api.platformUserLevelDefinition.getLevelList,
           params: {userTypeId: category.categoryId},
@@ -195,26 +228,7 @@
               category.children.push({levelId: item.id, label: item.sysUserLevelName})
             })
             this.$nextTick(()=>{
-              if(this.$route.query.currentLevelId){
-                this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
-                let node = this.$refs['tree'].getNode(this.currentLevelId)
-                this.currentCategoryId = node && node.parent.data.categoryId
-                this.getUserList(this.currentLevelId)
-              }
-              else{
-                for(let i=0; i<this.treeData[0].children.length; i++){
-                  if(this.treeData[0].children[i].children.length>0){
-                    let data = this.treeData[0].children[i].children[0]
-                    let node = this.$refs['tree'].getNode(data)
-
-                    this.getUserList()
-                    this.currentLevelId = node.data.levelId
-                    this.currentCategoryId = node && node.parent.data.categoryId
-
-                    break
-                  }
-                }
-              }
+              callback(null)
             })
           }
         })
