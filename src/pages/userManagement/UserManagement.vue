@@ -9,12 +9,10 @@
     <div class="main">
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-tree ref="tree" node-key="levelId" :data="treeData" default-expand-all
-                   :highlight-current="true" @node-click="getUserListByLevel"></el-tree>
+          <el-tree ref="tree" node-key="levelId" :data="treeData" default-expand-all :highlight-current="true" @node-click="getUserListByLevel"></el-tree>
         </el-col>
         <el-col :span="20">
-          <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right"
-                   label-width="100px" label-suffix="：" :rules="filterFormRules">
+          <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right" label-width="100px" label-suffix="：" :rules="filterFormRules">
             <el-row>
               <el-col :span="24">
                 <el-form-item label="手机号码" prop="phone">
@@ -53,13 +51,10 @@
               </el-col>
             </el-row>
           </el-form>
-          <el-table empty-text="暂无数据" :data="tableData" size="medium"
-                    :header-cell-style="{backgroundColor: '#f2f2f2'}" :cell-style="tableCellStyle">
+          <el-table empty-text="暂无数据" :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}" :cell-style="tableCellStyle">
             <el-table-column align="center" prop="account" label="账号"></el-table-column>
             <el-table-column align="center" property="regTime" label="注册时间">
-              <template slot-scope="scope">
-                {{$timestamp.getDateByTimestamp(scope.row.regTime)}}
-              </template>
+              <template slot-scope="scope">{{$timestamp.getDateByTimestamp(scope.row.regTime)}}</template>
             </el-table-column>
             <el-table-column align="center" property="userLevelName" label="用户类型"></el-table-column>
             <el-table-column align="center" property="organName" label="企业名称" min-width="170"></el-table-column>
@@ -352,7 +347,6 @@
       },
       // 当前页码改变刷新列表
       pageNumberChange(pageNumber){
-        debugger
         this.currentPageNumber = pageNumber
         switch(this.currentFilterType){
           case 0: this.getUserList(this.currentLevelId); break;
