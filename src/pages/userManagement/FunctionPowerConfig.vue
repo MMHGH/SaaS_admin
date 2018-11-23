@@ -9,7 +9,6 @@
     <div class="main">
       <el-row :gutter="10">
         <el-col :span="23">
-          <!--<header style="margin-top: 10px;font-size: 16px;">{{this.currentCategory + ' - ' + this.currentLevel}}</header>-->
           <el-menu mode="horizontal" @select="getCurrentConfigType" :default-active="currentConfigType + ''">
             <el-menu-item index="1">平台权益</el-menu-item>
             <el-menu-item index="2">生码权益</el-menu-item>
@@ -23,7 +22,6 @@
           <el-button type="text" size="medium" @click="back" style="margin-top: 12px;">返回</el-button>
         </el-col>
       </el-row>
-
       <el-row style="margin-top: 20px;" v-if="currentConfigType===6">
         <el-col :span="24">
           资源名称：<el-input size="small" style="width: 150px;" v-model="filterName"></el-input>
@@ -50,36 +48,31 @@
             <el-table-column align="center" prop="validityTime" label="账号到期时间" v-if="currentConfigType===5">
               <template slot-scope="scope">{{scope.row.validityTime ? scope.row.validityTime.slice(0, 16) : ''}}</template>
             </el-table-column>
+
+
+
+
             <!--修改数量-->
             <el-table-column align="left" header-align="center" :label="updatedQuantityLabel" min-width="120">
               <template slot-scope="scope">
                 <el-form :ref="'form' + scope.row.privilegeId" :rules="tableRules" :model="scope.row.form" :id="scope.row.privilegeId">
                   <el-form-item prop="updatedQuantity" v-if="currentConfigType!==5">
-                    <el-input v-model="scope.row.form.updatedQuantity" size="small" style="width: 60%;" @focus="clearValidate($refs['form' + scope.row.privilegeId], scope.row)"></el-input>
+                    <el-input v-model="scope.row.form.updatedQuantity" size="small" style="width: 60%;" @focus="clearValidate(scope.row)"></el-input>
                     {{ scope.row.unitName }}
                   </el-form-item>
                   <el-form-item prop="updatedTime" v-if="currentConfigType===5">
-                    <el-date-picker v-model="updatedTimeData[scope.row.privilegeId]" type="datetime" size="small" style="width: 60%;" placeholder="选择日期时间"
-                                    @focus="clearValidate($refs['form' + scope.row.privilegeId], scope.row.unitName, scope.row.privilegeId)" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    <el-date-picker v-model="scope.row.form.updatedTime" type="datetime" size="small" style="width: 60%;" placeholder="选择日期时间" @focus="clearValidate(scope.row)" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                   </el-form-item>
                 </el-form>
               </template>
             </el-table-column>
-            <!--<el-table-column align="left" header-align="center" prop="description" :label="descriptionLabel" min-width="300"></el-table-column>-->
-            <!--<el-table-column align="center" prop="status" label="当前状态">-->
-              <!--<template slot-scope="scope">-->
-                <!--{{ formatShowStatusText(scope.row.status) }}-->
-              <!--</template>-->
-            <!--</el-table-column>-->
+
+
+
+
             <el-table-column align="center" label="设置">
               <template slot-scope="scope">
-                <!--<el-button size="medium" type="text"-->
-                           <!--@click="updateFunctionPowerConfigStatus(scope.row.privilegeId, scope.row.status)">-->
-                  <!--{{ formatSetStatusText(scope.row.status) }}-->
-                <!--</el-button>-->
-                <el-button :form="scope.row.privilegeId" native-type="submit" size="medium" type="text"
-                           @click.stop.prevent="updateFunctionPowerConfig(scope.row.privilegeId, scope.row.organPrivilegeId,
-                           (currentConfigType===5 ? updatedTimeData[scope.row.privilegeId] : scope.row.form.updatedQuantity), $refs['form' + scope.row.privilegeId])">保存</el-button>
+                <el-button :form="scope.row.privilegeId" native-type="submit" size="medium" type="text" @click="updateFunctionPowerConfig(scope.row)">保存</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -97,19 +90,22 @@
     data() {
       let vm = this
       let validateUpdatedQuantity = (rule, value, callback) => {
-        validatePrivilege.privilegeCode(rule, value, callback, vm.currentRow && vm.currentRow.privilegeCode)
-        validatePrivilege.unitName(rule, value, callback, vm.currentRow && vm.currentRow.unitName)
+        let
+          _privilegeCode = vm.currentRow && vm.currentRow.privilegeCode,
+          _unitName = vm.currentRow && vm.currentRow.unitName
+        validatePrivilege.privilegeCode(rule, value, callback, _privilegeCode)
+        validatePrivilege.unitName(rule, value, callback, _unitName)
         callback()
       }
       let validateUpdatedTime = (rule, value, callback) => {
-        let timestamp = new Date(vm.updatedTimeData[vm.currentPrivilegeId]).getTime() - new Date()
+        vm.$validator.notEmpty(callback, value, '请选择修改时间')
+        let timestamp = new Date(value).getTime() - new Date()
         if(timestamp <= 0){
-          callback(new Error('请输入正确的日期时间'))
+          callback(new Error('修改时间不能在当前时间之前'))
         }
         if(timestamp > 10*12*30*24*60*60*1000){
-          callback(new Error('请输入正确的日期时间'))
+          callback(new Error('修改时间不能超过当前时间超出10年'))
         }
-        vm.$validator.notEmpty(callback, vm.updatedTimeData[vm.currentPrivilegeId], '请输入内容')
         callback()
       }
       return {
@@ -122,24 +118,12 @@
         currentTotal: null,
         tableData: [],
         tableRules:{
-          updatedQuantity: [
-            // { required: true, message: '请输入内容', trigger: 'blur' },
-            // { type: 'number', message: '修改数量必须为数字值'},
-            { validator: validateUpdatedQuantity, trigger: 'blur' },
-
-          ],
-          updatedTime: [
-            { validator: validateUpdatedTime, trigger: 'blur' },
-          ]
+          updatedQuantity: [{ validator: validateUpdatedQuantity, trigger: 'change' },],
+          updatedTime: [{ validator: validateUpdatedTime, trigger: 'change' },]
         },
-        currentValidateRef: '',
         currentConfigType: 1,
-        updatedTimeData: [],
-        currentRow: '',
-        currentPrivilegeId: '',
-
         filterName:'',
-
+        currentRow: '',
       }
     },
     computed: {
@@ -178,39 +162,28 @@
           case 6: name = '可分配数量'; break;
         }
         return name
-      }
+      },
     },
     methods: {
-      // 格式化显示状态文本
-      formatShowStatusText(status){
-        let text = null
-        switch(status){
-          case 'Y': text = '启用'; break;
-          case 'N': text = '禁用'; break;
-          default: text = '未设置';
-        }
-        return text
-      },
-      // 格式化设置状态文本
-      formatSetStatusText(status){
-        let text = null
-        switch(status){
-          case 'Y': text = '禁用'; break;
-          case 'N': text = '启用'; break;
-          default: text = '';
-        }
-        return text
-      },
-      // 移除校验结果
-      clearValidate(ref, row, privilegeId){
-        if(this.currentValidateRef) this.currentValidateRef.clearValidate()
-        this.currentValidateRef = ref
-        this.currentRow = row
-        if(privilegeId){this.currentPrivilegeId = privilegeId}
-      },
       // 返回上一层
       back: function(){
         this.$router.go(-1)
+      },
+      // 获取当前权益类型
+      getCurrentConfigType(index){
+        this.currentPageNumber = 1
+        this.currentConfigType = parseInt(index)
+        this.getFunctionPowerConfigList()
+      },
+      // 当前页码改变刷新列表
+      pageNumberChange(pageNumber){
+        this.currentPageNumber = pageNumber
+        this.getFunctionPowerConfigList()
+      },
+      // 当前每页数量改变刷新列表
+      pageSizeChange(pageSize){
+        this.currentPageSize = pageSize
+        this.getFunctionPowerConfigList()
       },
       // 获取单个平台用户类别的功能权益配置列表
       getFunctionPowerConfigList(callback){
@@ -228,9 +201,7 @@
               this.currentTotal = data.total
               this.tableData = data.list
               this.tableData.forEach((item, index, array) => {
-                array[index].form = {
-                  updatedQuantity: item.inventory,
-                }
+                this.$set(array[index], 'form', {updatedQuantity: item.inventory})
                 array[index].privilegeId = array[index].id
               })
               this.$nextTick(callback)
@@ -252,57 +223,49 @@
               this.currentTotal = data.total
               this.tableData = data.list
               this.tableData.forEach((item, index, array) => {
-                array[index].form = { updatedQuantity: item.privilegeValue ? (item.unitName === '%' ? item.privilegeValue : parseInt(item.privilegeValue)) : 0 }
+                if(this.currentConfigType===5){
+                  this.$set(array[index], 'form', { updatedTime: ''})
+                }else{
+                  this.$set(array[index], 'form', { updatedQuantity: item.privilegeValue ? (item.unitName === '%' ? item.privilegeValue : parseInt(item.privilegeValue)) : 0 })
+                }
               })
               this.$nextTick(callback)
             }
           })
         }
       },
-      // // 修改单个平台用户类别的功能权益配置的状态
-      // updateFunctionPowerConfigStatus(id, status){
-      //   let statusText = this.formatSetStatusText(status)
-      //   let url = 'enablePowerConfig'
-      //   if(status === 'Y'){ url = 'disablePowerConfig' }
-      //   else if(status === 'N'){ url = 'enablePowerConfig' }
-      //   this.$service.postWithConfirm({
-      //     confirmText: '此操作将' + statusText + '该组织权益, 是否继续？',
-      //     url: this.$api.userManagement[url],
-      //     params: {
-      //       organId: this.currentOrganId,
-      //       privilegeId: id,
-      //     },
-      //     successHook: () => {this.getFunctionPowerConfigList()},
-      //     successMessage: '已成功' + statusText + '该功能权益',
-      //     // errorCloseHook: this.back
-      //   })
-      // },
+      // 移除校验结果
+      clearValidate(row){
+        let ref = this.$refs['form' + this.currentRow.privilegeId]
+        ref && ref.clearValidate()
+        this.currentRow = row
+      },
       // 修改单个平台用户类别的功能权益配置
-      updateFunctionPowerConfig(id, organPrivilegeId, updatedQuantity, ref){
-//        this.clearValidate(ref)
-        ref.validate((valid, object)=>{
+      updateFunctionPowerConfig(row){
+        this.clearValidate(row)
+        this.$refs['form' + this.currentRow.privilegeId].validate((valid, object)=>{
+          let updatedQuantity = this.currentConfigType===5 ? this.currentRow.form.updatedTime : parseFloat(this.currentRow.form.updatedQuantity)
           // 校验成功
           if(valid){
             if(this.currentConfigType === 6){
+              // 资源配置
               this.$service.postWithConfirm({
                 confirmText: '此操作将保存, 是否继续？',
                 url: this.$api.userManagement.shareOrganGoods,
                 params: {
-                  goodsId: id,
+                  goodsId: this.currentRow.privilegeId,
                   organId: this.currentOrganId,
-                  num: parseInt(updatedQuantity),
+                  num: updatedQuantity,
                 },
                 successHook: () => {
                   // 刷新列表
-                  this.getFunctionPowerConfigList(()=>{
-                    this.clearValidate()
-                  })
+                  this.getFunctionPowerConfigList()
                 },
                 successMessage: '已成功保存',
-                // errorCloseHook: this.back
               })
             }else{
-              let url = organPrivilegeId ? 'updatePowerConfig' : 'addPowerConfig'
+              // 平台权益、生码权益、模板权益、功能权益、账号时长
+              let url = this.currentRow.organPrivilegeId ? 'updatePowerConfig' : 'addPowerConfig'
               let type
               switch(this.currentConfigType){
                 case 1: type = 2; break;
@@ -314,7 +277,7 @@
               }
               let params = {
                 organId: this.currentOrganId,
-                privilegeId: id,
+                privilegeId: this.currentRow.privilegeId,
                 type: type,
               }
               switch(type){
@@ -327,51 +290,24 @@
                 params: params,
                 successHook: () => {
                   // 刷新列表
-                  this.getFunctionPowerConfigList(()=>{
-                    this.clearValidate()
-                  })
+                  this.getFunctionPowerConfigList()
                 },
                 successMessage: '已成功保存',
-                // errorCloseHook: this.back
               })
             }
           }
         })
       },
-      // 当前页码改变刷新列表
-      pageNumberChange(pageNumber){
-        this.currentPageNumber = pageNumber
-        this.getFunctionPowerConfigList()
-      },
-      // 当前每页数量改变刷新列表
-      pageSizeChange(pageSize){
-        this.currentPageSize = pageSize
-        this.getFunctionPowerConfigList()
-      },
-
-
-      // 获取当前权益类型
-      getCurrentConfigType(index){
-        this.currentPageNumber = 1
-        this.clearValidate()
-        this.currentConfigType = parseInt(index)
-        this.getFunctionPowerConfigList()
-      },
       // 筛选
       filter(){
         this.currentPageNumber = 1
         // 刷新列表
-        this.getFunctionPowerConfigList(()=>{
-          this.clearValidate()
-        })
-
-
+        this.getFunctionPowerConfigList()
       },
       // 清除筛选
       resetFilter(){
         this.filterName = ''
       },
-
     },
     created () {
       this.currentCategory = this.$route.params.category
@@ -382,7 +318,6 @@
     }
   }
 </script>
-<style></style>
 <style scoped>
   .wrapper{position: absolute;top: 0;left: 0;right: 0;bottom: 0;background: #f2f2f2;}
   .el-table{border: none;margin-top: 10px;text-align: center;}
