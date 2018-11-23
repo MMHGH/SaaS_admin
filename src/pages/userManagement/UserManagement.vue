@@ -63,7 +63,7 @@
                 {{scope.row.status === 'Y' ? '启用' : '禁用'}}
               </template>
             </el-table-column>
-            <el-table-column align="center" property="accountNum" label="已创建账户数量" min-width="120"></el-table-column>
+            <el-table-column align="center" property="accountNum" label="已创建账户数量" min-width="120" v-if="currentCategory === '代理商'"></el-table-column>
             <el-table-column align="center" property="expireTime" label="剩余时间" min-width="120">
               <template slot-scope="scope">
                 {{scope.row.expireTime ? $timestamp.getExpireTimeByTimestamp(scope.row.expireTime, 1) : '未设置'}}
