@@ -347,7 +347,7 @@
       },
       // 跳转到功能权益配置页面
       functionPowerConfig(category, level, userId, organId, row){
-        this.$router.push({name: 'UserManagementFunctionPowerConfig', params: {
+        this.$router.push({name: 'UserManagementFunctionPowerConfig', query: {
           category: category,
           level: level,
           userId: userId,

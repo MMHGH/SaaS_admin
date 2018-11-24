@@ -310,10 +310,10 @@
       },
     },
     created () {
-      this.currentCategory = this.$route.params.category
-      this.currentLevel = this.$route.params.level
-      this.currentUserId = this.$route.params.userId
-      this.currentOrganId = this.$route.params.organId
+      this.currentCategory = this.$route.query.category
+      this.currentLevel = this.$route.query.level
+      this.currentUserId = this.$route.query.userId
+      this.currentOrganId = this.$route.query.organId
       this.getFunctionPowerConfigList()
     }
   }
