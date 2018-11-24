@@ -106,6 +106,7 @@ import util from '@/util/commonFn.js'
     },
     methods:{
       handleSizeChange(val){
+        this.pageNum = 1
         this.pageSize = val;
         this.getData()
       },

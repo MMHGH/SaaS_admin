@@ -86,6 +86,7 @@
         this.$refs[formName].resetFields();
       },
       handleSizeChange(val){
+        this.pageNum = 1
         this.pageSize = val;
       },
       handleCurrentChange(val){

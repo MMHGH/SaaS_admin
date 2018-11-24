@@ -182,6 +182,7 @@
         this.getData();
       },
       handleSizeChange(val){
+        this.pageNum = 1
         this.pageSize = val;
         this.getData();
       },
