@@ -182,6 +182,7 @@
       },
       // 当前每页数量改变刷新列表
       pageSizeChange(pageSize){
+        this.currentPageNumber = 1
         this.currentPageSize = pageSize
         this.getOrganizationPowerConfigList()
       },

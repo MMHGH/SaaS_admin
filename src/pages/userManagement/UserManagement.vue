@@ -370,6 +370,7 @@
       },
       // 当前每页数量改变刷新列表
       pageSizeChange(pageSize){
+        this.currentPageNumber = 1
         this.currentPageSize = pageSize
         switch(this.currentFilterType){
           case 0: this.getUserList(this.currentLevelId); break;
