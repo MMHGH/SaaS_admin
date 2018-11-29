@@ -5,7 +5,7 @@ const validatePrivilege = {
     switch(code){
       case 'code.generate.general.stock': validator.limitNum(callback, value, 0, 1000000000, '有效数值为0~1000000000'); break;
       case 'organ.levelNum':validator.limitNum(callback, value, 0, 10, '有效数值为0~10'); break;
-      case 'code.generate.general.per_max_qty':validator.limitNum(callback, value, 0, 1000000, '有效数值为0~1000000'); break;
+      case 'code.generate.general.per_max_qty':validator.limitNum(callback, value, 0, 10000000, '有效数值为0~10000000'); break;
       case 'prizeNum':validator.limitNum(callback, value, 0, 100000, '有效数值为0~10'); break;
       case 'template.turntable':validator.limitNum(callback, value, 0, 10000, '有效数值为0~10000'); break;
       case 'like':validator.limitNum(callback, value, 0, 100000, '有效数值为0~100000'); break;
