@@ -72,6 +72,10 @@ import LabelMakingMessageDetail from '@/pages/labelMakingMessage/labelMakingMess
 import ResourceAllocationRecord from '@/pages/resourceAllocationRecord/ResourceAllocationRecord.vue'
 import ResourceAllocationRecordDetail from '@/pages/resourceAllocationRecord/ResourceAllocationRecordDetail.vue'
 
+// 严选商品管理
+import YxCommodityManage from '@/pages/yxCommodityManage/yxCommodityManage.vue'
+import YxOrderManage from '@/pages/yxCommodityManage/yxOrderManage.vue'
+
 Vue.use(Router)
 
 const routes = [
@@ -352,6 +356,18 @@ const routes = [
         component: ResourceAllocationRecordDetail,
         meta: {title: '资源分配记录'}
       },
+      {
+        path: '/yxCommodityManage',
+        name: 'yxCommodityManage',
+        component: YxCommodityManage,
+        meta: {title: '网易严选商品管理'}
+      },
+      {
+        path: '/yxOrderManage',
+        name: 'yxOrderManage',
+        component: YxOrderManage,
+        meta: {title: '网易严选订单'}
+      },
     ]
   },
   {
@@ -365,6 +381,8 @@ router.beforeEach((to, from, next) => {
   // 路由发生变化修改页面title
   if (to.meta.title) {
     document.title = to.meta.title
+  }else{
+    document.title = '云溯无限-超管平台'
   }
   next()
 })

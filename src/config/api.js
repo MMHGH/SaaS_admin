@@ -636,6 +636,13 @@ export default {
     supperManaListAgents: '@root/sysUser/listAgents',        //获取代理商列表
     supperManaListAgentUserByType: '@root/sysUser/listAgentUserByType',   //获取代理商列表下的用户
   },
+  // 网易严选
+  yxGoods: {
+    getGoodsList: '@root/yxGoods/getGoodsList',        //获取严选商品列表
+    getGoodsCategoryList: '@root/yxGoods/getGoodsCategoryList',        //查询所有类目信息
+    batchUpdateGoodsStatus: '@root/yxGoods/batchUpdateGoodsStatus',        // 批量上架、下架
+    updateGoodsPrice: '@root/yxGoods/updateGoodsPrice',        // 设置价格
+  },
 
 
   //上传图片地址

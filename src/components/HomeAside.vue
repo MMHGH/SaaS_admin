@@ -13,9 +13,12 @@
       </figcaption>
     </figure>
     <!-- 导航菜单 -->
+    <!--<el-menu id="mainMenu" ref="mainMenu" background-color="#484848" text-color="#e6e6e6" active-text-color="#e6e6e6"
+             :default-active="defaultMenuActive" @select="menuSelect"
+             :unique-opened="true" menu-trigger="click" :router="true">-->
     <el-menu id="mainMenu" ref="mainMenu" background-color="#484848" text-color="#e6e6e6" active-text-color="#e6e6e6"
              :default-active="defaultMenuActive" @select="menuSelect"
-             :unique-opened="true" menu-trigger="click" :router="true">
+             router :unique-opened="true" menu-trigger="click">
         <el-menu-item index="/userLevelDefinition"><span>自定义用户等级</span></el-menu-item>
         <el-menu-item index="/userManagement"><span>平台用户管理</span></el-menu-item>
         <el-menu-item index="/priceConfig"><span>价格配置</span></el-menu-item>
@@ -26,6 +29,14 @@
         <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
         <el-menu-item index="/resourceAllocationRecord"><span>资源分配记录</span></el-menu-item>
         <el-menu-item index="/myAwardList"><span>自建商品审核</span></el-menu-item>
+        <el-submenu class="m-submenu-popper" index="2">
+          <template slot="title" >
+            <!--<i class="icon" data-icon="4"></i>-->
+            <span>网易严选商品管理</span>
+          </template>
+          <el-menu-item index="/yxCommodityManage"><span>网易严选商品管理</span></el-menu-item>
+          <el-menu-item index="/yxOrderManage"><span>网易严选订单</span></el-menu-item>
+        </el-submenu>
     </el-menu>
   </aside>
 </template>
@@ -131,8 +142,9 @@ export default {
 .home-aside .el-menu .el-menu-item,
 .home-aside .el-menu .el-submenu__title{color: #fff!important;height: 40px;line-height: 40px;}
 .home-aside .el-menu .el-menu-item:hover,
-.home-aside .el-menu .el-menu-item.is-active,
+  /*.home-aside .el-menu .el-menu-item.is-active,*/
 .home-aside .el-menu .el-submenu__title:hover{background-color: #5a5a5a!important;}
+.home-aside .el-menu .el-menu-item.is-active{background-color: #5a5a5a!important;}
 .home-aside .el-menu>.el-menu-item span,
 .home-aside .el-menu .el-submenu .el-submenu__title span{display: block;/*padding-left: 30px;*/text-align: center;}
 .home-aside .el-menu .el-submenu .el-menu-item{min-width: 100%;background-color: #5a5a5a!important;}
@@ -142,8 +154,11 @@ export default {
 /* module */
 .home-aside .el-menu .el-submenu.m-submenu-popper:after{content: "";position: absolute;top: 0;left: 0;width: 140px;height: 100%;background: #484848;z-index: -1;}
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu{/*opacity: 0;*/display: block!important;z-index: -1!important;position: absolute;top: 0; left: 0;width: 140px;height: 100%!important;padding: 0;border-right: 1px solid #f2f2f2;background-color: rgba(255, 255, 255, 1)!important;}
-.home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu{/*transition: opacity .5s, left .5s;*/transition: left .5s;}
-.home-aside .el-menu .el-submenu.m-submenu-popper.is-opened .el-submenu__title+.el-menu{left: 140px;opacity: 1;}
+.home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu{/*transition: opacity .5s, left .5s;*/transition: left .75s;}
+
+/*.home-aside:hover .el-menu .el-submenu.is-opened .el-submenu__title+.el-menu{left: 140px;opacity: 1;}*/
+.home-aside .el-menu .el-submenu:hover .el-submenu__title+.el-menu{left: 140px;opacity: 1;}
+
 /*aside .el-menu:hover .el-submenu.m-submenu-popper.is-opened .el-submenu__title+.el-menu{left: 140px;opacity: 1;}*/
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item{transition: none;padding: 0!important;color: #606266!important;background-color: transparent!important;text-align: center;font-weight: 400;}
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item:first-child{margin-top: 129px;}

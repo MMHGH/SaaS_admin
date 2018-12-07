@@ -6,7 +6,7 @@
         <el-form-item label="建立开始时间">
           <el-date-picker
             v-model="formInline.createdUserTimeBegin"
-            type="date"
+            type="date" size="small"
             value-format="timestamp"
             placeholder="建立开始时间">
           </el-date-picker>
@@ -14,19 +14,19 @@
         <el-form-item label="建立结束时间">
           <el-date-picker
             v-model="formInline.createdUserTimeEnd"
-            type="date"
+            type="date" size="small"
             value-format="timestamp"
             placeholder="建立结束时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="奖品名称：">
-          <el-input v-model="formInline.name" placeholder="奖品名称"></el-input>
+          <el-input v-model="formInline.name" placeholder="奖品名称" size="small"></el-input>
         </el-form-item>
         <el-form-item label="所属用户：">
-          <el-input v-model="formInline.user" placeholder="所属用户"></el-input>
+          <el-input v-model="formInline.user" placeholder="所属用户" size="small"></el-input>
         </el-form-item>
         <el-form-item label="状态: ">
-          <el-select v-model="formInline.status" placeholder="状态">
+          <el-select v-model="formInline.status" placeholder="状态" size="small">
             <el-option label="全部" value="">全部</el-option>
             <!-- 状态：1启用 2禁用 3已上架 4审批中 5审批不通过 -->
             <!--<el-option label="启用" value="1">启用</el-option>-->
@@ -37,8 +37,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="searchData">筛选</el-button>
-          <el-button type="text" @click="clearData">清空</el-button>
+          <el-button type="primary" @click="searchData" size="small">筛选</el-button>
+          <el-button type="text" @click="clearData" size="small">清空</el-button>
         </el-form-item>
       </el-form>
     </div>
