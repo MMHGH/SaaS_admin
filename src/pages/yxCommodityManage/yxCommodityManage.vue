@@ -82,9 +82,11 @@
             <el-table-column align="center" prop="goodsName" label="商品名" min-width="150"></el-table-column>
             <el-table-column align="center" prop="firstCategory" label="一级类目" width="150"></el-table-column>
             <el-table-column align="center" prop="secondCategory" label="二级类目" width="150"></el-table-column>
-            <el-table-column align="center" prop="YXSpuId" label="ITEMID" width="120"></el-table-column>
-            <el-table-column align="center" prop="YXSkuId" label="SKUID" width="120"></el-table-column>
+            <el-table-column align="center" prop="yxspuId" label="ITEMID" width="120"></el-table-column>
+            <el-table-column align="center" prop="yxskuId" label="SKUID" width="120"></el-table-column>
             <el-table-column align="center" prop="specName" label="规格" width="150"></el-table-column>
+            <el-table-column align="center" prop="inventory" label="库存" width="100"></el-table-column>
+            <el-table-column align="center" prop="classification" label="商品等级" width="100"></el-table-column>
             <el-table-column align="center" prop="skuType" label="sku状态" width="100">
               <template slot-scope="scope">{{ scope.row.skuType | fmtStatus(skuStatus)}}</template>
             </el-table-column>
