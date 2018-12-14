@@ -639,9 +639,12 @@ export default {
   // 网易严选
   yxGoods: {
     getGoodsList: '@root/yxGoods/getGoodsList',        //获取严选商品列表
+    importItems: '@root/yxGoods/importItems', // 一键导入商品信息接口
     getGoodsCategoryList: '@root/yxGoods/getGoodsCategoryList',        //查询所有类目信息
     batchUpdateGoodsStatus: '@root/yxGoods/batchUpdateGoodsStatus',        // 批量上架、下架
     updateGoodsPrice: '@root/yxGoods/updateGoodsPrice',        // 设置价格
+    getGoodsAccountInfoList: '@root/yxGoodsAccount/getGoodsAccountInfoList',        // 获取严选商品对账信息列表
+    exportGoodsAccountInfoList: '@root/yxGoodsAccount/exportGoodsAccountInfoList',        // 导出严选商品对账信息列表
   },
 
 

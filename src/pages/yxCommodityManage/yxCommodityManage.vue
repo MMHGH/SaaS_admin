@@ -74,6 +74,7 @@
         <div class="btns">
           <el-button type="primary" size="small" @click="allUpStatus('up')">批量上架</el-button>
           <el-button type="primary" size="small" @click="allUpStatus('down')">批量下架</el-button>
+          <el-button type="primary" size="small" @click="refreshData">刷新</el-button>
         </div>
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}"
@@ -230,6 +231,8 @@
           if (msg == 'ok') {
             this.tableData = data.list;
             this.total = data.total;
+          } else {
+            this.$message.error('查询失败：' + msg);
           }
         })
       },
@@ -242,6 +245,24 @@
       // 获取选中数据
       handleSelectionChange(val) {
         this.allSelection = val;
+      },
+      /**
+       * 刷新
+       * */
+      refreshData() {
+        this.axios.post(this.$api.yxGoods.importItems, {}).then((res) => {
+          let data = res.data.data, msg = res.data.message;
+          if (msg == 'ok') {
+            this.pageNum = 1;
+            this.queryData();
+            this.$message({
+              message: '刷新成功',
+              type: 'success'
+            });
+          } else {
+            this.$message.error('刷新失败：' + msg);
+          }
+        })
       },
       /**
        * 批量 上架 / 下架
@@ -272,6 +293,8 @@
               });
               this.pageNum = 1;
               this.queryData();
+            } else {
+              this.$message.error('操作失败：' + msg);
             }
           })
         }).catch(() => {
@@ -295,6 +318,8 @@
             });
             this.pageNum = 1;
             this.queryData();
+          } else {
+            this.$message.error('操作失败：' + msg);
           }
         })
       },
@@ -329,6 +354,8 @@
                 this.pageNum = 1;
                 this.queryData();
                 this.dialogVisible = false;
+              } else {
+                this.$message.error('设置失败：' + msg);
               }
             })
           } else {

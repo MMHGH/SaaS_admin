@@ -6,8 +6,9 @@
       <!-- 查询条件 -->
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item prop="orderSn" label="订单号：">
-            <el-input v-model="ruleForm.orderSn" placeholder="订单号" size="small" style="width: 215px;"></el-input>
+          <el-form-item prop="thirdpartyOrderId" label="订单号：">
+            <el-input v-model="ruleForm.thirdpartyOrderId" placeholder="订单号" size="small"
+                      style="width: 215px;"></el-input>
           </el-form-item>
           <el-form-item prop="orderStatus" label="订单状态：">
             <el-select v-model="ruleForm.orderStatus" placeholder="订单状态" size="small">
@@ -27,15 +28,16 @@
               v-model="ruleForm.orderTime"
               type="datetimerange"
               range-separator="至"
+              value-format="yyyy-MM-dd HH:mm:ss"
               start-placeholder="开始时间"
               end-placeholder="结束时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="userName" label="用户信息：">
-            <el-input v-model="ruleForm.userName" placeholder="用户信息" size="small" style="width: 215px;"></el-input>
+          <el-form-item prop="memberPhone" label="用户手机：">
+            <el-input v-model="ruleForm.memberPhone" placeholder="用户手机" size="small" style="width: 215px;"></el-input>
           </el-form-item>
-          <el-form-item prop="enterprise" label="所属企业用户：">
-            <el-input v-model="ruleForm.enterprise" placeholder="所属企业用户" size="small" style="width: 215px;"></el-input>
+          <el-form-item prop="organName" label="所属企业用户：">
+            <el-input v-model="ruleForm.organName" placeholder="所属企业用户" size="small" style="width: 215px;"></el-input>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
             <el-button type="primary" @click="queryData" size="small">筛选</el-button>
@@ -51,16 +53,21 @@
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column align="center" prop="goodsName" label="订单号" min-width="150"></el-table-column>
-            <el-table-column align="center" prop="firstCategory" label="订单状态" width="150"></el-table-column>
-            <el-table-column align="center" prop="secondCategory" label="用户信息" width="150"></el-table-column>
-            <el-table-column align="center" prop="YXSpuId" label="商品名" width="120"></el-table-column>
-            <el-table-column align="center" prop="YXSkuId" label="规格" width="120"></el-table-column>
-            <el-table-column align="center" prop="specName" label="订单时间" width="150"></el-table-column>
-            <el-table-column align="center" prop="saasPrice" label="订单价格" width="120"></el-table-column>
-            <el-table-column align="center" prop="YXSkuId" label="地址" width="120"></el-table-column>
-            <el-table-column align="center" prop="specName" label="物流状态" width="150"></el-table-column>
-            <el-table-column align="center" prop="saasPrice" label="所属企业用户" width="120"></el-table-column>
+            <el-table-column align="center" prop="thirdpartyOrderId" label="订单号" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="orderStatus" label="订单状态" width="150">
+              <template slot-scope="scope">{{ scope.row.orderStatus | fmtStatus(orderStatus)}}</template>
+            </el-table-column>
+            <el-table-column align="center" prop="memberNickname" label="用户名称" width="150"></el-table-column>
+            <el-table-column align="center" prop="memberPhone" label="用户手机" width="150"></el-table-column>
+            <el-table-column align="center" prop="goodsName" label="商品名" width="120"></el-table-column>
+            <el-table-column align="center" prop="goodsDesc" label="规格" width="120"></el-table-column>
+            <el-table-column align="center" prop="createdTime" label="订单时间" width="160">
+              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
+            </el-table-column>
+            <el-table-column align="center" prop="orderPrice" label="订单价格" width="120"></el-table-column>
+            <el-table-column align="center" prop="address" label="地址" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="expressInfo" label="物流状态" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="organName" label="所属企业用户" width="120"></el-table-column>
           </el-table>
         </div>
         <div class="page">
@@ -91,12 +98,12 @@
           {label: '失败', value: 2}
         ],
         ruleForm: {
-          orderSn: '',
+          thirdpartyOrderId: '',
           orderStatus: '',
           goodsName: '',
           orderTime: '',
-          userName: '',
-          enterprise: ''
+          memberPhone: '',
+          organName: ''
         },
         tableData: [],
         pageNum: 1,
@@ -104,11 +111,38 @@
         total: 0,
       }
     },
+    filters: {
+      // 状态过滤器
+      fmtStatus(val, list) {
+        if (val) {
+          for (let item of list) {
+            if (item.value == val) {
+              return item.label;
+            }
+          }
+        }
+        return '';
+      }
+    },
     methods: {
       /**
        * 查询
        * */
       queryData() {
+        let param = this.ruleForm;
+        param.pageNum = this.pageNum;
+        param.pageSize = this.pageSize;
+        param.startTime = this.ruleForm.orderTime[0];//	否	String	开始时间
+        param.endTime = this.ruleForm.orderTime[1];//	否	String	结束时间
+        this.axios.post(this.$api.yxGoods.getGoodsAccountInfoList, param).then((res) => {
+          let data = res.data.data, msg = res.data.message;
+          if (msg == 'ok') {
+            this.tableData = data.list;
+            this.total = data.total;
+          } else {
+            this.$message.error('查询失败：' + msg);
+          }
+        })
       },
       /**
        * 清空
@@ -120,6 +154,38 @@
        * 导出Excel
        */
       exportExcel() {
+        let load = this.$api.yxGoods.exportGoodsAccountInfoList.replace('@root', '/api');
+        console.log(load)
+
+        var _form = document.createElement('FORM');
+        _form.setAttribute('method', 'post');
+        _form.setAttribute('action', load);
+
+        // 组织查询参数
+        let attrs = Object.keys(this.ruleForm);
+        for (let i in attrs) {
+          let key = attrs[i];
+          console.log(key)
+          if (key !== 'pageNum' && key !== 'pageSize') {
+            var attr = document.createElement('input');
+            attr.setAttribute('type', 'hidden');
+            attr.setAttribute('name', key);
+            if (key === 'startTime') {
+              let sTime = this.ruleForm.orderTime[0]
+              attr.setAttribute("value", sTime ? sTime : '');
+            } else if (key === 'endTime') {
+              let eTime = this.ruleForm.orderTime[1]
+              attr.setAttribute("value", eTime ? eTime : '');
+            } else {
+              attr.setAttribute("value", this.ruleForm[key]);
+            }
+            _form.append(attr);
+          }
+        }
+
+        document.body.appendChild(_form);
+        _form.submit();
+        document.body.removeChild(_form)
       },
       /**
        * 切换 页大小
@@ -140,7 +206,7 @@
       },
     },
     mounted() {
-
+      this.queryData();
     }
   }
 </script>
