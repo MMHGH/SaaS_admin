@@ -221,8 +221,15 @@
       },
       /**
        * 查询
-       */
+       * */
       queryData() {
+        this.pageNum = 1;
+        this.getGoodsList();
+      },
+      /**
+       * 查询 严选商品
+       */
+      getGoodsList() {
         let param = this.ruleForm;
         param.pageNum = this.pageNum;
         param.pageSize = this.pageSize;
@@ -371,7 +378,7 @@
       handleSizeChange(val) {
         this.pageNum = 1;
         this.pageSize = val;
-        this.queryData();
+        this.getGoodsList();
       },
       /**
        * 翻页
@@ -379,7 +386,7 @@
        */
       handleCurrentChange(val) {
         this.pageNum = val;
-        this.queryData();
+        this.getGoodsList();
       },
     },
     filters: {

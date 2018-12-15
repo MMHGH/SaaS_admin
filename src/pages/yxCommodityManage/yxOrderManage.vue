@@ -54,12 +54,12 @@
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column align="center" prop="thirdpartyOrderId" label="订单号" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="goodsName" label="商品名" min-width="150"></el-table-column>
             <el-table-column align="center" prop="orderStatus" label="订单状态" width="150">
               <template slot-scope="scope">{{ scope.row.orderStatus | fmtStatus(orderStatus)}}</template>
             </el-table-column>
             <el-table-column align="center" prop="memberNickname" label="用户名称" width="150"></el-table-column>
             <el-table-column align="center" prop="memberPhone" label="用户手机" width="150"></el-table-column>
-            <el-table-column align="center" prop="goodsName" label="商品名" width="120"></el-table-column>
             <el-table-column align="center" prop="goodsDesc" label="规格" width="120"></el-table-column>
             <el-table-column align="center" prop="createdTime" label="订单时间" width="160">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
@@ -129,6 +129,13 @@
        * 查询
        * */
       queryData() {
+        this.pageNum = 1;
+        this.getGoodsAccountInfoList();
+      },
+      /**
+       * 查询 订单
+       * */
+      getGoodsAccountInfoList() {
         let param = this.ruleForm;
         param.pageNum = this.pageNum;
         param.pageSize = this.pageSize;
@@ -194,7 +201,7 @@
       handleSizeChange(val) {
         this.pageNum = 1;
         this.pageSize = val;
-        this.queryData();
+        this.getGoodsAccountInfoList();
       },
       /**
        * 翻页
@@ -202,7 +209,7 @@
        */
       handleCurrentChange(val) {
         this.pageNum = val;
-        this.queryData();
+        this.getGoodsAccountInfoList();
       },
     },
     mounted() {
