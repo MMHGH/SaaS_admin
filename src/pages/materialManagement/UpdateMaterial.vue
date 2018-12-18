@@ -155,9 +155,12 @@ import { Message,MessageBox } from 'element-ui'
 
         callback()
       };
-        var validatePrice = (rule, value, callback)=>{
-          if(!parseFloat(Number(value))){
-             return callback(new Error('请输入数字'));
+        var validateInventory = (rule, value, callback)=>{
+          if (!Number.isInteger(Number(value))) {
+             return callback(new Error('请输入整数'));
+          }
+          if (value<0) {
+            return callback(new Error('请输入大于0的数'));
           }
           if( String(value).length > 9 ){
              return callback(new Error('最多只能输入9位'));
@@ -165,7 +168,6 @@ import { Message,MessageBox } from 'element-ui'
           callback()
         };
         var validateUnit = (rule, value, callback)=>{
-
           if( String(value).length > 20 ){
              return callback(new Error('输入过长，最多20个字符'));
           }
@@ -218,7 +220,7 @@ import { Message,MessageBox } from 'element-ui'
           ],
           inventory: [
             { required: true, message: '请输入库存数量', trigger: 'blur' },
-            { validator: validatePrice, trigger: 'blur' }
+            { validator: validateInventory, trigger: 'blur' }
           ],
           planOnsaleTime: [
             { required: true, message: '请输入上架时间', trigger: 'blur' },

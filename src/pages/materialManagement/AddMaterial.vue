@@ -140,7 +140,7 @@ import { Message,MessageBox } from 'element-ui'
             if (!regex.test(value)){
              return callback(new Error('最多包含8位正整数和两位小数格式'));
           }
-          
+
           callback()
         };
       var validatePrice2 = (rule, value, callback)=>{
@@ -151,17 +151,16 @@ import { Message,MessageBox } from 'element-ui'
 
         callback()
       };
-        var validatePrice = (rule, value, callback)=>{
-           var regex =/^([0]|[1-9][0-9]{0,8})?$/;
-           if (!regex.test(value)){
-             return callback(new Error('最多只能输入9位'));
+        var validateInventory = (rule, value, callback)=>{
+          if (!Number.isInteger(Number(value))) {
+            return callback(new Error('请输入整数'));
           }
-          // if(!parseFloat(Number(value))){
-          //    return callback(new Error('请输入数字'));
-          // }
-          // if( String(value).length > 8 ){
-          //    return callback(new Error('输入过长'));
-          // }
+          if (value<0) {
+            return callback(new Error('请输入大于0的数'));
+          }
+          if( String(value).length > 9 ){
+            return callback(new Error('最多只能输入9位'));
+          }
           callback()
         };
       var validateOffTime = (rule, value, callback) => {
@@ -209,7 +208,7 @@ import { Message,MessageBox } from 'element-ui'
           ],
           inventory: [
             { required: true, message: '请输入库存数量', trigger: 'blur' },
-            { validator: validatePrice, trigger: 'blur' }
+            { validator: validateInventory, trigger: 'blur' }
           ],
           planOnsaleTime: [
             { required: true, message: '请输入上架时间', trigger: 'blur' },
@@ -283,7 +282,7 @@ import { Message,MessageBox } from 'element-ui'
         this.thumbImgUrl = file.data;
         // this.dialogVisible = true;
       },
-      
+
       handleAvatarSuccess2(file) {
         this.imgs.splice(0,1,{
           sort: this.sortCount,
