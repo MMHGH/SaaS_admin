@@ -14,7 +14,8 @@ export default {
    */
   statusCode: {
     success: 0,
-    sessionInvalid: 1
+    notAuthority: 1,
+    loginElsewhere: 2,
   },
 
   /**

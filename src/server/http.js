@@ -69,18 +69,25 @@ axios.interceptors.response.use(
     // 关闭loading
     loadingInstance.close()
     let data = response.data
-    if(data.code === api.statusCode.sessionInvalid){
-      // 没有权限或者 session 失效
-      Message({message: '登录超时，请重新登录！', type: 'error'})
+    if(data.code === api.statusCode.notAuthority){
+      Message({message: '您没有权限！', type: 'error'})
       router.push({
         name: 'Login',
         query: {redirect: router.currentRoute.fullPath}
       })
+      return
+    }
+    if(data.code === api.statusCode.loginElsewhere){
+      Message({message: '您的账号在其他地方登录，请修改密码或重新登录！', type: 'error'})
+      router.push({
+        name: 'Login',
+        query: {redirect: router.currentRoute.fullPath}
+      })
+      return
     }
     return response
   },
   error => {
-
     // 恢复请求锁
     if (error === 'end') return;
     let config = error.config || error;
