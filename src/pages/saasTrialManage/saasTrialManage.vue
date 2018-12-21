@@ -10,7 +10,7 @@
             <el-date-picker
               v-model="ruleForm.startTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;" @change="changeTime('start')"
+              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
               placeholder="开始时间">
             </el-date-picker>
           </el-form-item>
@@ -18,7 +18,7 @@
             <el-date-picker
               v-model="ruleForm.endTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;" @change="changeTime('end')"
+              value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
               placeholder="结束时间">
             </el-date-picker>
           </el-form-item>
@@ -35,7 +35,7 @@
           <el-form-item prop="status" label="审核结果：">
             <el-select v-model="ruleForm.status" placeholder="审核结果" size="small">
               <el-option
-                v-for="item in results"
+                v-for="item in statusList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -56,9 +56,6 @@
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column align="center" prop="createdTime" label="申请时间" min-width="150">
-              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
-            </el-table-column>
             <el-table-column align="center" prop="type" label="申请类别" min-width="150">
               <template slot-scope="scope">{{ scope.row.type | fmtStatus(categorys)}}</template>
             </el-table-column>
@@ -69,8 +66,14 @@
             <el-table-column align="center" prop="createdTime" label="团队规模" width="160">
               <template slot-scope="scope">{{ scope.row.teamSize | fmtStatus(teamSize)}}</template>
             </el-table-column>
+            <el-table-column align="center" prop="status" label="审核结果" width="160">
+              <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
+            </el-table-column>
             <el-table-column align="center" prop="email" label="邮箱" width="120"></el-table-column>
             <el-table-column align="center" prop="cityName" label="所在城市" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="createdTime" label="申请时间" min-width="150">
+              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
+            </el-table-column>
             <el-table-column align="center" label="操作" min-width="150">
               <template slot-scope="scope">
                 <el-button type="text" @click="review(scope.row)">审核</el-button>
@@ -133,11 +136,12 @@
           {label: '试用申请', value: 1},
           {label: '代理商申请', value: 2}
         ],
-        results: [
+        statusList: [
+          // 状态 ：Y已联系 N未联系 W待审批
           {label: '全部', value: ''},
-          {label: '已通过', value: 1},
-          {label: '未通过', value: 2},
-          {label: '空', value: 3}
+          {label: '已通过', value: 'Y'},
+          {label: '未通过', value: 'N'},
+          {label: '空', value: 'W'}
         ],
         teamSize: [
           {label: '小于50人', value: 1},
@@ -181,7 +185,7 @@
             }
           }
         }
-        return '';
+        return '--';
       }
     },
     methods: {
@@ -199,7 +203,7 @@
         let param = this.ruleForm;
         param.pageNum = this.pageNum;
         param.pageSize = this.pageSize;
-        this.axios.post(this.$api.getFeedbackList, param).then((res) => {
+        this.axios.post(this.$api.feedback.getFeedbackList, param).then((res) => {
           let data = res.data.data, msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
@@ -232,8 +236,12 @@
       /**
        * 审核
        * */
-      review() {
+      review(row) {
         this.dialogVisible = true;
+        this.ruleForm2.id = row.id;
+        this.ruleForm2.status = row.status;
+        this.ruleForm2.phone = row.phone;
+        this.ruleForm2.description = row.description;
         this.$nextTick(() => {
           this.$refs['ruleForm2'].resetFields();
         })
@@ -244,7 +252,21 @@
       saveReview(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            console.log(this.ruleForm2)
+            this.axios.post(this.$api.feedback.approve, this.ruleForm2).then((res) => {
+              let data = res.data.data, msg = res.data.message;
+              if (msg == 'ok') {
+                this.$message({
+                  message: '审核成功',
+                  type: 'success'
+                });
+                this.dialogVisible = false;
+                // 刷新
+                this.queryData()
+              } else {
+                this.$message.error('审核失败：' + msg);
+              }
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -261,7 +283,7 @@
        * 导出Excel
        */
       exportExcel() {
-        let load = this.$api.exportFeedbackList.replace('@root', '/api');
+        let load = this.$api.feedback.exportFeedbackList.replace('@root', '/api');
         var _form = document.createElement('FORM');
         _form.setAttribute('method', 'post');
         _form.setAttribute('action', load);
@@ -304,8 +326,8 @@
     mounted() {
       // 默认近期三个月
       let date = new Date();//1516499610000 2018-01-21 09:53:30
-      this.ruleForm.endTime = Util.getTimeByTimestamp(new Date().getTime());
-      this.ruleForm.startTime = Util.getTimeByTimestamp(new Date(date.setMonth(date.getMonth() - 3)));
+      this.ruleForm.endTime = new Date().getTime();
+      this.ruleForm.startTime = new Date(date.setMonth(date.getMonth() - 3)).getTime();
       // 查询
       this.queryData();
     }

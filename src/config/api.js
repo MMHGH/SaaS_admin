@@ -647,9 +647,11 @@ export default {
     getGoodsAccountInfoList: '@root/yxGoodsAccount/getGoodsAccountInfoList',        // 获取严选商品对账信息列表
     exportGoodsAccountInfoList: '@root/yxGoodsAccount/exportGoodsAccountInfoList',        // 导出严选商品对账信息列表
   },
-  getFeedbackList: '@root/feedback/list',        // 查询SaaS使用申请
-  exportFeedbackList: '@root/feedback/exportFeedbackList',        // SaaS使用申请导出
-
+  feedback:{
+    getFeedbackList: '@root/feedback/list',        // 查询SaaS使用申请
+    exportFeedbackList: '@root/feedback/exportFeedbackList',        // SaaS使用申请导出
+    approve: '@root/feedback/approve',        // saas试用申请审批接口
+  },
 
   //上传图片地址
   uploadUrl: '/api/adminFile/imgUpload',
