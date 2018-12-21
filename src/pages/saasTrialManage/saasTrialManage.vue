@@ -62,7 +62,7 @@
             <el-table-column align="center" prop="name" label="联系人" width="150"></el-table-column>
             <el-table-column align="center" prop="phone" label="联系电话" width="150"></el-table-column>
             <el-table-column align="center" prop="enterpriseName" label="企业名称" width="150"></el-table-column>
-            <el-table-column align="center" prop="goodsDesc" label="所属行业" width="120"></el-table-column>
+            <el-table-column align="center" prop="sector" label="所属行业" width="120"></el-table-column>
             <el-table-column align="center" prop="createdTime" label="团队规模" width="160">
               <template slot-scope="scope">{{ scope.row.teamSize | fmtStatus(teamSize)}}</template>
             </el-table-column>
@@ -101,8 +101,9 @@
           <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
             <el-form-item label="审核结果" prop="status">
               <el-select v-model="ruleForm2.status" size="small" style="width:100%">
-                <el-option label="通过" value="Y"></el-option>
+                <el-option label="已通过" value="Y"></el-option>
                 <el-option label="不通过" value="N"></el-option>
+                <el-option label="待审核" value="W"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="开通账号" prop="phone">
@@ -141,7 +142,7 @@
           {label: '全部', value: ''},
           {label: '已通过', value: 'Y'},
           {label: '未通过', value: 'N'},
-          {label: '空', value: 'W'}
+          {label: '待审核', value: 'W'}
         ],
         teamSize: [
           {label: '小于50人', value: 1},
