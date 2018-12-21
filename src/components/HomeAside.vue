@@ -37,6 +37,7 @@
           <el-menu-item index="/yxCommodityManage"><span>网易严选商品管理</span></el-menu-item>
           <el-menu-item index="/yxOrderManage"><span>网易严选订单</span></el-menu-item>
         </el-submenu>
+        <el-menu-item index="/saasTrialManage"><span>SAAS试用申请</span></el-menu-item>
     </el-menu>
   </aside>
 </template>

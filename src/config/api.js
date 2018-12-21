@@ -647,6 +647,8 @@ export default {
     getGoodsAccountInfoList: '@root/yxGoodsAccount/getGoodsAccountInfoList',        // 获取严选商品对账信息列表
     exportGoodsAccountInfoList: '@root/yxGoodsAccount/exportGoodsAccountInfoList',        // 导出严选商品对账信息列表
   },
+  getFeedbackList: '@root/feedback/list',        // 查询SaaS使用申请
+  exportFeedbackList: '@root/feedback/exportFeedbackList',        // SaaS使用申请导出
 
 
   //上传图片地址

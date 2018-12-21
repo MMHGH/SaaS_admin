@@ -75,6 +75,8 @@ import ResourceAllocationRecordDetail from '@/pages/resourceAllocationRecord/Res
 // 严选商品管理
 import YxCommodityManage from '@/pages/yxCommodityManage/yxCommodityManage.vue'
 import YxOrderManage from '@/pages/yxCommodityManage/yxOrderManage.vue'
+// SaaS试用申请管理
+import SaasTrialManage from '@/pages/saasTrialManage/saasTrialManage.vue'
 
 Vue.use(Router)
 
@@ -367,6 +369,12 @@ const routes = [
         name: 'yxOrderManage',
         component: YxOrderManage,
         meta: {title: '网易严选订单'}
+      },
+      {
+        path: '/saasTrialManage',
+        name: 'saasTrialManage',
+        component: SaasTrialManage,
+        meta: {title: 'SaaS试用申请管理'}
       },
     ]
   },
