@@ -101,8 +101,8 @@
           <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
             <el-form-item label="审核结果" prop="status">
               <el-select v-model="ruleForm2.status" size="small" style="width:100%">
-                <el-option label="通过" value="1"></el-option>
-                <el-option label="不通过" value="2"></el-option>
+                <el-option label="通过" value="Y"></el-option>
+                <el-option label="不通过" value="N"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="开通账号" prop="phone">
@@ -238,12 +238,12 @@
        * */
       review(row) {
         this.dialogVisible = true;
-        this.ruleForm2.id = row.id;
-        this.ruleForm2.status = row.status;
-        this.ruleForm2.phone = row.phone;
-        this.ruleForm2.description = row.description;
         this.$nextTick(() => {
           this.$refs['ruleForm2'].resetFields();
+          this.ruleForm2.id = row.id;
+          this.ruleForm2.status = row.status;
+          this.ruleForm2.phone = row.phone;
+          this.ruleForm2.description = row.description;
         })
       },
       /**
@@ -252,7 +252,6 @@
       saveReview(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(this.ruleForm2)
             this.axios.post(this.$api.feedback.approve, this.ruleForm2).then((res) => {
               let data = res.data.data, msg = res.data.message;
               if (msg == 'ok') {
