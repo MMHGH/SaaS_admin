@@ -107,11 +107,11 @@
               </el-select>
             </el-form-item>
             <el-form-item label="开通账号" prop="phone">
-              <el-input v-model="ruleForm2.phone" placeholder="请输入开通账号" size="small"></el-input>
+              <el-input v-model="ruleForm2.phone" placeholder="请输入开通账号" size="small" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="备注说明" prop="description">
               <el-input type="textarea" v-model="ruleForm2.description" placeholder="请输入备注" rows="5"
-                        size="small" resize="none"></el-input>
+                        size="small" resize="none" maxlength="255"></el-input>
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
@@ -296,7 +296,7 @@
             var attr = document.createElement('input');
             attr.setAttribute('type', 'hidden');
             attr.setAttribute('name', key);
-            attr.setAttribute("value", this.ruleForm[key]);
+            attr.setAttribute("value", !this.ruleForm[key] ? '' : this.ruleForm[key]);
             _form.append(attr);
           }
         }

@@ -202,7 +202,7 @@
             var attr = document.createElement('input');
             attr.setAttribute('type', 'hidden');
             attr.setAttribute('name', key);
-            attr.setAttribute("value", this.ruleForm[key]);
+            attr.setAttribute("value", !this.ruleForm[key] ? '' : this.ruleForm[key]);
             _form.append(attr);
           }
         }
