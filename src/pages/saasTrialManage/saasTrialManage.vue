@@ -6,9 +6,9 @@
       <!-- 查询条件 -->
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item prop="startTime" label="申请时间范围：">
+          <el-form-item prop="beginTime" label="申请时间范围：">
             <el-date-picker
-              v-model="ruleForm.startTime"
+              v-model="ruleForm.beginTime"
               type="datetime"
               value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
               placeholder="开始时间">
@@ -150,7 +150,7 @@
           {label: '100人以上', value: 3}
         ],
         ruleForm: {
-          startTime: '',
+          beginTime: '',
           endTime: '',
           type: '',
           status: ''
@@ -216,14 +216,14 @@
       },
       // 验证时间
       changeTime(type) {
-        if (this.ruleForm.startTime && this.ruleForm.endTime) {
-          let start = new Date(this.ruleForm.startTime).getTime()
+        if (this.ruleForm.beginTime && this.ruleForm.endTime) {
+          let start = new Date(this.ruleForm.beginTime).getTime()
           let end = new Date(this.ruleForm.endTime).getTime()
           if (start > end) {
             let msg = '结束时间不能小于开始时间'
             if (type === 'start') {
               msg = '开始时间不能大于结束时间'
-              this.ruleForm.startTime = ''
+              this.ruleForm.beginTime = ''
             } else {
               this.ruleForm.endTime = ''
             }
@@ -327,7 +327,7 @@
       // 默认近期三个月
       let date = new Date();//1516499610000 2018-01-21 09:53:30
       this.ruleForm.endTime = new Date().getTime();
-      this.ruleForm.startTime = new Date(date.setMonth(date.getMonth() - 3)).getTime();
+      this.ruleForm.beginTime = new Date(date.setMonth(date.getMonth() - 3)).getTime();
       // 查询
       this.queryData();
     }
