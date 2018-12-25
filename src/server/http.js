@@ -69,7 +69,7 @@ axios.interceptors.response.use(
     loadingInstance.close()
     let data = response.data
     if(data.code === api.statusCode.notAuthority){
-      Message({message: '您没有权限！', type: 'error'})
+      Message({message: '登录超时，请重新登录！', type: 'error'})
       router.push({
         name: 'Login',
         query: {redirect: router.currentRoute.fullPath}

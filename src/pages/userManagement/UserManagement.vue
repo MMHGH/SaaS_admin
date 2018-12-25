@@ -19,10 +19,10 @@
                   <el-input v-model="filterForm.phone" maxlength="11"></el-input>
                 </el-form-item>
                 <el-form-item label="开始时间" prop="beginDate">
-                  <el-date-picker v-model="filterForm.beginDate" placeholder="选择开始时间"></el-date-picker>
+                  <el-date-picker v-model="filterForm.beginDate" placeholder="选择开始时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="结束时间" prop="endDate">
-                  <el-date-picker v-model="filterForm.endDate" placeholder="选择结束时间"></el-date-picker>
+                  <el-date-picker popper-class="custom-popper" type="datetime" v-model="filterForm.endDate" placeholder="选择结束时间" format="yyyy-MM-dd" value-format="yyyy-MM-dd HH:mm:ss" default-time="23:59:59"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="企业关键词" prop="organName">
                   <el-input v-model="filterForm.organName"></el-input>
@@ -412,6 +412,9 @@
   /*.user-management-wrapper .pagination .el-pagination__sizes .el-input .el-input__inner:hover{border-color: #666;}*/
   /*.user-management-wrapper .pagination-popper .el-select-dropdown__item{color: #d7d7d7;}*/
   /*.user-management-wrapper .pagination-popper .el-select-dropdown__item.selected{color: #666;}*/
+
+  .custom-popper .el-date-picker__time-header{display: none;}
+  .custom-popper .el-button.el-picker-panel__link-btn.el-button--text.el-button--mini{display: none;}
 </style>
 <style type="text/css" scoped>
   .el-table{border: none;margin-top: 10px;text-align: center;}
