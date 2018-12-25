@@ -95,7 +95,7 @@
           <el-table-column property="" label="修改库存" align="center">
             <template slot-scope="scope">
               <!-- <el-input size="small" style="width: 60%;" v-model="inventoryNum"></el-input> -->
-              <el-input-number v-model="inventoryNum" :min="-scope.row.inventory" size="mini"></el-input-number>
+              <el-input-number v-model="inventoryNum" :min="-scope.row.inventory" :max="9999999" size="mini"></el-input-number>
             </template>
           </el-table-column>
         </el-table>
@@ -150,6 +150,7 @@ import { MessageBox,Message } from 'element-ui'
       },
       // 修改库存
       updateStock(row){
+        this.inventoryNum = '';
         this.dialogFormVisible = true;
         this.stockData.length = 0;
         // 1.sendData
