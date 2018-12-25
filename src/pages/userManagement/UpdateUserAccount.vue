@@ -24,11 +24,8 @@
           <el-input placeholder="输入企业名称" maxlength="300" v-model="form.organName"></el-input>
         </el-form-item>
         <el-form-item label="用户账号" prop="account">{{form.account}}</el-form-item>
-        <el-form-item label="密码" prop="pwd">
-          <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.pwd"></el-input>
-        </el-form-item>
-        <el-form-item label="重复密码" prop="repeatedPwd">
-          <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.repeatedPwd"></el-input>
+        <el-form-item label="密码">
+          <el-button type="text" @click="dialogPwd=true">修改密码</el-button>
         </el-form-item>
         <el-form-item label="是否限制IP地址" prop="isIpLimit">
           <el-radio-group v-model="form.isIpLimit">
@@ -44,11 +41,80 @@
           <el-button size="medium" @click="back">取消</el-button>
         </el-form-item>
       </el-form>
+      <comp-pwd :visible.sync="dialogPwd" v-if="dialogPwd" @getNewPwd="value => form.pwd = value"></comp-pwd>
     </div>
   </div>
 </template>
 <script>
+  let compPwd = {
+    name: 'compPwd',
+    template: `
+      <el-dialog title="修改密码" :visible.sync="_visible">
+          <el-form ref="form" :model="form" :rules="formRules" size="small" label-position="right" label-width="200px" label-suffix="：">
+            <el-form-item label="密码" prop="pwd">
+              <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.pwd"></el-input>
+            </el-form-item>
+            <el-form-item label="重复密码" prop="repeatedPwd">
+              <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.repeatedPwd"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="_visible = false">取 消</el-button>
+            <el-button type="primary" @click="submit">确 定</el-button>
+          </div>
+        </el-dialog>
+    `,
+    props: ['visible'],
+    computed: {
+      _visible: {
+        get(){return this.visible},
+        set(value){this.$emit('update:visible', value)}
+      }
+    },
+    data(){
+      let validateRepeatedPassword = (rule, value, callback) => {
+        this.$refs.form.validateField('pwd')
+        if(!value){
+          callback(new Error('请输入密码'))
+        }
+        if(value.length <8 || value.length > 25){
+          callback(new Error('密码为8-25位'))
+        }
+        if(value !== this.form.pwd){
+          callback(new Error('两次密码输入不一致'))
+        }
+        callback()
+      }
+      return {
+        form: {},
+        formRules: {
+          pwd: [{ validator: this.$validator.password, trigger: 'blur' }],
+          repeatedPwd: [{ validator: validateRepeatedPassword, trigger: 'blur' }],
+        }
+      }
+    },
+    methods: {
+      submit(){
+        this.$confirm('是否修改账户密码？', '确认信息', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '保存',
+          cancelButtonText: '放弃修改'
+        })
+          .then(() => {
+            this.$refs['form'].validate((valid, object)=>{
+              // 校验成功
+              if(valid){
+                this.$emit('getNewPwd', this.form.pwd)
+                this._visible = false
+              }
+            })
+          })
+          .catch(action => {})
+      },
+    }
+  }
   export default {
+    components: {compPwd},
     data(){
       let validateCategory = (rule, value, callback) => {
         if(!value){
@@ -125,7 +191,8 @@
             { validator: validateIpLimit, trigger: 'blur' }
           ]
         },
-        formDisabled: false
+        formDisabled: false,
+        dialogPwd: false
       }
     },
     computed: {
