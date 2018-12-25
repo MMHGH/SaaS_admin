@@ -205,7 +205,7 @@
                 this.$set(array[index], 'form', {updatedQuantity: item.inventory})
                 array[index].privilegeId = array[index].id
               })
-              this.$nextTick(callback)
+              callback && this.$nextTick(callback)
             },
           })
         }else{
@@ -230,7 +230,7 @@
                   this.$set(array[index], 'form', { updatedQuantity: item.privilegeValue ? (item.unitName === '%' ? item.privilegeValue : parseInt(item.privilegeValue)) : 0 })
                 }
               })
-              this.$nextTick(callback)
+              callback && this.$nextTick(callback)
             }
           })
         }

@@ -198,7 +198,7 @@
                 ipLimit: this.form.ipLimit,
               },
               successHook: () => { this.formDisabled = true },
-              successMessage: '已成功添加类别',
+              successMessage: '已成功创建帐号',
               successCloseHook: () => {
                 // this.$router.push({
                 //   name: 'UserManagement',
