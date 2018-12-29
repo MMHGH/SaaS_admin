@@ -28,8 +28,7 @@
                 {{ currentCategory }}
               </template>
             </el-table-column>
-            <el-table-column v-if="currentLevelId && currentPriceConfig !== 1" align="center" prop="privilegeName"
-                             :label="getPrivilegeName(currentPriceConfig)">
+            <el-table-column v-if="currentLevelId && currentPriceConfig !== 1" align="center" prop="privilegeName" :label="getPrivilegeName(currentPriceConfig)">
               <template slot-scope="scope">
                 {{ scope.row.privilegeName }}
               </template>
