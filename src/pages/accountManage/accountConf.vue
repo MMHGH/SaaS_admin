@@ -14,7 +14,7 @@
           <el-button type="text" @click="logOut" style="margin-left: 20px;" title="注销登录">注销</el-button>
         </el-form-item>
         <el-form-item label="密码:">
-          <el-button type="text" @click="dialogFormVisible=true" title="修改密码">修改密码</el-button>
+          <el-button type="text" @click="openUpPwd" title="修改密码">修改密码</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -95,8 +95,15 @@
       this.ruleForm.name = sessionStorage.getItem('username')
     },
     methods: {
+      // 修改密码
+      openUpPwd() {
+        this.dialogFormVisible = true;
+        this.$nextTick(() => {
+          this.resetForm('ruleForm2');
+        });
+      },
       // 注销
-      logOut(){
+      logOut() {
         this.$confirm('确定注销用户?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -106,19 +113,19 @@
 
           // 2.post
           let vm = this
-          this.axios.post(this.$api.sloginOut,sendData).then(function(respone){
+          this.axios.post(this.$api.sloginOut, sendData).then(function (respone) {
             let msg = respone.data.message;
-            if(msg == 'ok'){
+            if (msg == 'ok') {
               vm.$message({message: '已成功注销！'})
               setTimeout(function () {
                 // 清除缓存
                 sessionStorage.removeItem('username')
                 setTimeout(() => {
-                  vm.$router.push({ path: '/login' });
+                  vm.$router.push({path: '/login'});
                 }, 500);
               }, 1000)
             }
-          }).catch(function(error){
+          }).catch(function (error) {
             console.error(error);
           });
         }).catch((err) => {
