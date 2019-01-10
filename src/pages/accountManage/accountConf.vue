@@ -22,13 +22,16 @@
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
         <el-form-item label="旧密码" prop="oldPWD">
-          <el-input v-model="ruleForm2.oldPWD" type="password" style="width:240px" auto-complete="off"></el-input>
+          <el-input v-model="ruleForm2.oldPWD" type="password" oninput="this.value=this.value.replace(/\s+/g,'')"
+                    style="width:240px" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm2.pass" auto-complete="off" style="width:240px"></el-input>
+          <el-input type="password" v-model="ruleForm2.pass" oninput="this.value=this.value.replace(/\s+/g,'')"
+                    auto-complete="off" style="width:240px"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" style="width:240px"></el-input>
+          <el-input type="password" v-model="ruleForm2.checkPass" oninput="this.value=this.value.replace(/\s+/g,'')"
+                    auto-complete="off" style="width:240px"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
@@ -153,6 +156,7 @@
                   message: '修改成功'
                 });
                 vm.dialogFormVisible = false;
+                // 重新登录
                 setTimeout(() => {
                   // 清除缓存
                   sessionStorage.removeItem('username')
