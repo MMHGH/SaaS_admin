@@ -5,10 +5,10 @@
       <img src="../assets/images/logo.png"/>
       <figcaption>
         <h1>快消品平台管理后台</h1>
-        <br/>
         <p>
           <span>用户名：{{username}}</span>
-          <a href="javascript:;" @click="logOut">注销</a>
+          <!--<a href="javascript:;" @click="logOut">注销</a>-->
+          <a href="javascript:;" @click="$router.push({path:'/accountConf'})" title="设置账号">设置</a>
         </p>
       </figcaption>
     </figure>
@@ -122,7 +122,7 @@ export default {
 /* LOGO */
 .home-aside .logo{position: relative;top:20px;z-index: 20;margin: 0;/*padding-top: 20px;*/text-align: center;font-size: 14px;}
 .home-aside .logo h1{margin: 0;padding: 20px 1em 0;font-size: 12px;color: #e6e6e6;text-align: center;}
-.home-aside .logo p{margin-left: 1em;text-align: left;color: #e6e6e6;font-size: 12px;}
+.home-aside .logo p{text-align: left;color: #e6e6e6;font-size: 12px; margin: 10px auto;display: inline-block;}
 .home-aside .logo p a{margin-left: 1em;font-size: 12px;color: #e6e6e6;outline: none;}
 .home-aside .logo img{width: 120px;}
 /* menu */

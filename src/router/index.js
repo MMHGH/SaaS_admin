@@ -77,6 +77,8 @@ import YxCommodityManage from '@/pages/yxCommodityManage/yxCommodityManage.vue'
 import YxOrderManage from '@/pages/yxCommodityManage/yxOrderManage.vue'
 // SaaS试用申请管理
 import SaasTrialManage from '@/pages/saasTrialManage/saasTrialManage.vue'
+// 账号设置
+import AccountConf from '@/pages/accountManage/accountConf.vue'
 
 Vue.use(Router)
 
@@ -375,6 +377,12 @@ const routes = [
         name: 'saasTrialManage',
         component: SaasTrialManage,
         meta: {title: 'SaaS试用申请管理'}
+      },
+      {
+        path: '/accountConf',
+        name: 'accountConf',
+        component: AccountConf,
+        meta: {title: '账号设置'}
       },
     ]
   },

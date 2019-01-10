@@ -44,6 +44,10 @@ export default {
    * @return
    */
   logout: '@root/loginOut',
+  /**
+   * 修改密码
+   */
+  updateUserPwd: '@root/updateUserPwd',
 
   /**
    * 获取平台用户类别列表
