@@ -11,10 +11,10 @@
       <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="账号:" style="margin-bottom: 0px">
           <span v-text="ruleForm.name"></span>
-          <el-button type="text" @click="logOut" style="margin-left: 20px;">注销</el-button>
+          <el-button type="text" @click="logOut" style="margin-left: 20px;" title="注销登录">注销</el-button>
         </el-form-item>
         <el-form-item label="密码:">
-          <el-button type="text" @click="dialogFormVisible=true">修改密码</el-button>
+          <el-button type="text" @click="dialogFormVisible=true" title="修改密码">修改密码</el-button>
         </el-form-item>
       </el-form>
     </div>
