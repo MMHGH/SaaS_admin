@@ -72,7 +72,7 @@
 
             <el-table-column align="center" label="设置">
               <template slot-scope="scope">
-                <el-button :form="scope.row.privilegeId" native-type="submit" size="medium" type="text" @click="updateFunctionPowerConfig(scope.row)">保存</el-button>
+                <el-button :form="scope.row.privilegeId" size="medium" type="text" @click="updateFunctionPowerConfig(scope.row)">保存</el-button>
               </template>
             </el-table-column>
           </el-table>
