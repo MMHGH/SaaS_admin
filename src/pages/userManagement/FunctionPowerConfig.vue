@@ -188,7 +188,6 @@
       },
       // 获取单个平台用户类别的功能权益配置列表
       getFunctionPowerConfigList(callback){
-        this.tableData = []
         if(this.currentConfigType === 6){
           // 资源配置
           this.$service.post({
