@@ -38,7 +38,7 @@ const validatePrivilege = {
       case 'pda.num':validator.limitNum(callback, value, 0, 999, '有效数值为0~999'); break;
       case 'print-code.num':validator.limitNum(callback, value, 0, 62, '有效数值为0~62'); break;
       case 'product-static-trace-template-max.num':validator.limitNum(callback, value, 0, 9999, '有效数值为0~9999'); break;
-      default: validator.limitNum(callback, value, 0, 100000, '有效数值为0~100000');
+      // default: validator.limitNum(callback, value, 0, 100000, '有效数值为0~100000');
     }
   },
   unitName: function(rule, value, callback, name){
