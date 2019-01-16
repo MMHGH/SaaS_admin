@@ -19,7 +19,7 @@
       </el-form>
     </div>
 
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="550px">
       <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
         <el-form-item label="旧密码" prop="oldPWD">
           <el-input v-model="ruleForm2.oldPWD" type="password" oninput="this.value=this.value.replace(/\s+/g,'')"
