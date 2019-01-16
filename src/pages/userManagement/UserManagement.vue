@@ -149,7 +149,6 @@
       currentLevelId(newVal, oldVal){
         if(!newVal) return
         this.$urlTool.setQueryStringArgs({currentLevelId: this.currentLevelId})
-        this.currentFilterType = 0
       },
       status(newVal, oldVal){
         if(!newVal) return
@@ -243,7 +242,11 @@
           this.currentLevel = data.label;
           this.currentPageNumber = 1;
           this.currentPageSize = 10;
+
+          this.currentFilterType = 0
+
           this.getUserList(this.currentLevelId);
+
         }
       },
       // 获取平台用户列表
