@@ -149,9 +149,9 @@
       currentLevelId(newVal, oldVal){
         if(!newVal) return
         this.$urlTool.setQueryStringArgs({currentLevelId: this.currentLevelId})
+        this.currentFilterType = 0
       },
       status(newVal, oldVal){
-
         if(!newVal) return
         this.$urlTool.setQueryStringArgs({status: newVal})
       },
