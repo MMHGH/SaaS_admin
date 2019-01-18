@@ -70,7 +70,9 @@
               <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
             </el-table-column>
             <el-table-column align="center" prop="email" label="邮箱" width="120"></el-table-column>
-            <el-table-column align="center" prop="cityName" label="所在城市" min-width="150"></el-table-column>
+            <el-table-column align="center" prop="cityName" label="所在城市" min-width="150">
+              <template slot-scope="scope">{{ scope.row.address==''?scope.row.cityName:scope.row.address}}</template>
+            </el-table-column>
             <el-table-column align="center" prop="createdTime" label="申请时间" min-width="150">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
@@ -100,7 +102,8 @@
           width="450px">
           <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
             <el-form-item label="审核结果" prop="status">
-              <el-select v-model="ruleForm2.status" size="small" style="width:100%">
+              <el-select v-model="ruleForm2.status" size="small" style="width:100%"
+                         :disabled="ruleForm2.status=='Y' && ruleForm2.type==3">
                 <el-option label="已通过" value="Y"></el-option>
                 <el-option label="不通过" value="N"></el-option>
                 <el-option label="待审核" value="W"></el-option>
@@ -135,7 +138,8 @@
         categorys: [
           {label: '全部', value: ''},
           {label: '试用申请', value: 1},
-          {label: '代理商申请', value: 2}
+          {label: '代理商申请', value: 2},
+          {label: '注册申请', value: 3}
         ],
         statusList: [
           // 状态 ：Y已联系 N未联系 W待审批
@@ -147,7 +151,9 @@
         teamSize: [
           {label: '小于50人', value: 1},
           {label: '50-100人', value: 2},
-          {label: '100人以上', value: 3}
+          {label: '100-1000人', value: 3},
+          {label: '1000-5000人', value: 4},
+          {label: '5000人以上', value: 5}
         ],
         ruleForm: {
           beginTime: '',
@@ -159,6 +165,7 @@
           id: '',
           status: '1',
           phone: '',
+          type: '',
           description: ''
         },
         rules2: {
@@ -241,10 +248,7 @@
         this.dialogVisible = true;
         this.$nextTick(() => {
           this.$refs['ruleForm2'].resetFields();
-          this.ruleForm2.id = row.id;
-          this.ruleForm2.status = row.status;
-          this.ruleForm2.phone = row.phone;
-          this.ruleForm2.description = row.description;
+          this.ruleForm2 = row;
         })
       },
       /**
