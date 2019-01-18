@@ -139,7 +139,7 @@
           {label: '全部', value: ''},
           {label: '试用申请', value: 1},
           {label: '代理商申请', value: 2},
-          {label: '注册申请', value: 3}
+          {label: '注册试用', value: 3}
         ],
         statusList: [
           // 状态 ：Y已联系 N未联系 W待审批
