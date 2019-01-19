@@ -103,7 +103,7 @@
           <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
             <el-form-item label="审核结果" prop="status">
               <el-select v-model="ruleForm2.status" size="small" style="width:100%"
-                         :disabled="ruleForm2.status=='Y' && ruleForm2.type==3">
+                         :disabled="ruleForm2.status=='Y' && ruleForm2.type==3 && !isCheck">
                 <el-option label="已通过" value="Y"></el-option>
                 <el-option label="不通过" value="N"></el-option>
                 <el-option label="待审核" value="W"></el-option>
@@ -177,6 +177,7 @@
           ],
         },
         dialogVisible: false,
+        isCheck: true, // 是否可审核
         tableData: [],
         pageNum: 1,
         pageSize: 10,
@@ -246,6 +247,7 @@
        * */
       review(row) {
         this.dialogVisible = true;
+        this.isCheck = true;
         this.$nextTick(() => {
           this.$refs['ruleForm2'].resetFields();
           // this.ruleForm2 = row;
@@ -254,6 +256,8 @@
           this.ruleForm2.phone = row.phone;
           this.ruleForm2.type = row.type;
           this.ruleForm2.description = row.description;
+          // 注册试用审核已通过则不可审核
+          this.isCheck = (row.status == 'Y' && row.type == 3) ? false : true;
         })
       },
       /**
