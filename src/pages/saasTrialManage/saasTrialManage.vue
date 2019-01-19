@@ -163,7 +163,7 @@
         },
         ruleForm2: {
           id: '',
-          status: '1',
+          status: '',
           phone: '',
           type: '',
           description: ''
@@ -248,7 +248,12 @@
         this.dialogVisible = true;
         this.$nextTick(() => {
           this.$refs['ruleForm2'].resetFields();
-          this.ruleForm2 = row;
+          // this.ruleForm2 = row;
+          this.ruleForm2.id = row.id;
+          this.ruleForm2.status = row.status;
+          this.ruleForm2.phone = row.phone;
+          this.ruleForm2.type = row.type;
+          this.ruleForm2.description = row.description;
         })
       },
       /**
