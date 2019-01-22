@@ -449,7 +449,6 @@ export default {
      */
     disablePowerConfig: '@root/sysOrganPrivilege/disable',
 
-
     /**
      * 用户管理-物资分配列表
      * @parameter
@@ -470,6 +469,47 @@ export default {
      * @return
      */
     shareOrganGoods: '@root/goods/shareOrganGoods',
+    
+    /**
+     * 获取标签打印信息
+     * @parameter
+     * total      Number  数据总条数
+     * pageNum    Number  当前页码
+     * pageSize   Number  一页总条数
+     * pages      Numebr  当前总共页数
+     */
+    getListTag: '@root/equipment/listTagClientRegister',
+
+    /**
+     * 标签设备禁用or启用
+     * @parameter
+     * machineId  int  设备id
+     */
+    updateTagState: '@root/equipment/updateTagClientState',
+    
+    /**
+     * 获取Pad手持登录信息
+     * @parameter
+     * total      Number  数据总条数
+     * pageNum    Number  当前页码
+     * pageSize   Number  一页总条数
+     * pages      Numebr  当前总共页数
+     */
+    getListPdaManage: '@root/equipment/listPdaEquipmentManage',
+
+    /**
+     * Pad手持登录信息禁用or启用
+     * @parameter
+     * id  int  设备id
+     */
+    updatePdaState: '@root/equipment/updatePdaState',
+
+    /**
+     * 添加PDA手持设备
+     * @parameter
+     * machineId  int  设备id
+     */
+    addPdaManage: '@root/equipment/addPdaEquipmentManage',
   },
 
   /* 价格配置 */

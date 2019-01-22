@@ -24,6 +24,7 @@ import UserManagementUpdateUserAccount from '@/pages/userManagement/UpdateUserAc
 import UserManagementFunctionConfig from '@/pages/userManagement/FunctionConfig.vue'
 import UserManagementOrganizationPowerConfig from '@/pages/userManagement/OrganizationPowerConfig.vue'
 import UserManagementFunctionPowerConfig from '@/pages/userManagement/FunctionPowerConfig.vue'
+import FacilityManage from '@/pages/userManagement/FacilityManage.vue'
 
 // 价格配置
 import PriceConfig from '@/pages/priceConfig/PriceConfig.vue'
@@ -162,6 +163,12 @@ const routes = [
         name: 'UserManagementFunctionPowerConfig',
         component: UserManagementFunctionPowerConfig,
         meta: {title: '功能权益配置'}
+      },
+      {
+        path: '/userManagement/facilityManage',
+        name: 'FacilityManage',
+        component: FacilityManage,
+        meta: {title: '设备登录管理'}
       },
       // 价格配置
       {
