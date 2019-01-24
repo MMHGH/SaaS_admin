@@ -66,6 +66,9 @@
             <el-table-column align="center" prop="createdTime" label="团队规模" width="160">
               <template slot-scope="scope">{{ scope.row.teamSize | fmtStatus(teamSize)}}</template>
             </el-table-column>
+            <el-table-column align="center" prop="ip" label="IP地址" width="120"></el-table-column>
+            <el-table-column align="center" prop="ipArea" label="IP地址所属地区" width="120"></el-table-column>
+
             <el-table-column align="center" prop="status" label="审核结果" width="160">
               <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
             </el-table-column>
