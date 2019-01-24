@@ -91,9 +91,12 @@ export default {
                     pageSize: this.currentPageSize,
                     organId:parseInt(this.$route.query.organId)||''
                 },
-                successHook: (data) => {
-                    that.tableData = data.list
-                    that.currentTotal = data.total
+                successHook: (data,response) => {
+                    let msg = response.data.message;
+                    if(msg=='ok'){
+                        that.tableData = response.data.data.list;
+                        that.currentTotal = response.data.data.total;
+                    }
                 }
             })
         },
