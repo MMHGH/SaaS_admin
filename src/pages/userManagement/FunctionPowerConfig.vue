@@ -173,6 +173,7 @@
       getCurrentConfigType(index){
         this.currentPageNumber = 1
         this.currentConfigType = parseInt(index)
+        this.currentRow = null
         this.getFunctionPowerConfigList()
       },
       // 当前页码改变刷新列表
@@ -236,8 +237,10 @@
       },
       // 移除校验结果
       clearValidate(row){
-        let ref = this.$refs['form' + this.currentRow.privilegeId]
-        ref && ref.clearValidate()
+        if(this.currentRow){
+          let ref = this.$refs['form' + this.currentRow.privilegeId]
+          ref && ref.clearValidate()
+        }
         this.currentRow = row
       },
       // 修改单个平台用户类别的功能权益配置

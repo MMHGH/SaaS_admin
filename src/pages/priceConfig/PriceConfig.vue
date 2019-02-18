@@ -54,6 +54,10 @@
               </template>
             </el-table-column>
           </el-table>
+          <!--分页-->
+          <el-pagination
+            class="pagination" background :current-page="currentPageNumber" layout="prev, pager, next, total, sizes, jumper" :total="currentTotal" :page-size="currentPageSize" :page-sizes="[5, 10, 20, 50, 100]"
+            @current-change="pageNumberChange" @prev-clicke="pageNumberChange" @next-click="pageNumberChange" @size-change="pageSizeChange"></el-pagination>
         </el-col>
       </el-row>
     </div>
@@ -76,6 +80,9 @@
           isLeaf: 'leaf'
         },
         tableData: [],
+        currentPageNumber: 1,
+        currentPageSize: 10,
+        currentTotal: null,
         treeData: [{
           label: '平台用户等级',
           children: []
@@ -190,7 +197,6 @@
           }
         })
       },
-
       // 获取价格配置列表
       getPriceConfigList(){
         this.$service.post({
@@ -198,10 +204,15 @@
           params: {
             userLevelId: this.currentLevelId,
             smallClass: this.currentPriceConfig,
+            pageNum: this.currentPageNumber,
+            pageSize: this.currentPageSize,
           },
           successHook: (data) => {
             this.currentPrivilegeId = data.list[0].privilegeId
             this.tableData = data.list
+            this.currentTotal = data.total
+            this.currentPageNumber = data.pageNum
+            this.currentPageSize = data.pageSize
           }
         })
       },
@@ -218,12 +229,12 @@
       },
       // 获取当前价格配置
       getCurrentPriceConfig(index){
+        this.currentPageNumber = 1
         this.currentPriceConfig = parseInt(index)
         if(this.currentLevelId){
           this.getPriceConfigList()
         }
       },
-
       // 新增平台使用费
       addPlatformUsageFee(){
         this.$router.push({name: 'PriceConfigAddPlatformUsageFee', params: {
@@ -318,6 +329,17 @@
         if(column.property === 'privilegeName' && this.currentPriceConfig === 4) {
           return {color: '#F56C6C'}
         }
+      },
+      // 当前页码改变刷新列表
+      pageNumberChange(pageNumber){
+        this.currentPageNumber = pageNumber
+        this.getPriceConfigList()
+      },
+      // 当前每页数量改变刷新列表
+      pageSizeChange(pageSize){
+        this.currentPageNumber = 1
+        this.currentPageSize = pageSize
+        this.getPriceConfigList()
       },
     },
     created(){
