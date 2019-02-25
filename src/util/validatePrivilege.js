@@ -17,7 +17,7 @@ const validatePrivilege = {
       case 'goodsNum':validator.limitNum(callback, value, 0, 100000, '有效数值为0~100000'); break;
       case 'code.generate.visual.stock':validator.limitNum(callback, value, 0, 500000, '有效数值为0~500000'); break;
       case 'code.generate.visual.per_max_qty':validator.limitNum(callback, value, 0, 50000, '有效数值为0~50000'); break;
-      case 'code.generate.package.stock':validator.limitNum(callback, value, 0, 10000000000, '有效数值为0~10000000000'); break;
+      case 'code.generate.package.stock':validator.limitNum(callback, value, 0, 9900000000, '有效数值为0~9900000000'); break;
       case 'code.generate.package.per_max_qty':validator.limitNum(callback, value, 0, 10000000, '有效数值为0~10000000'); break;
       case 'accountNum':validator.limitNum(callback, value, 0, 2000, '有效数值为0~2000'); break;
       case 'prizeDiscount':validator.limitNum(callback, value, 0, 2000, '有效数值为0~2000'); break;
