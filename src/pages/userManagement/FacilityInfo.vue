@@ -114,7 +114,7 @@ export default {
                 params: {
                     pageNum: this.currentPageNumber,
                     pageSize: this.currentPageSize,
-                    organId:parseInt(this.$route.query.organId)||''
+                    organId:parseInt(this.$route.query.id)||''
                 },
                 successHook: (data,response) => {
                     let msg = response.data.message;

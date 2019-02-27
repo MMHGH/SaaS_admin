@@ -82,7 +82,7 @@
                 <el-button size="medium" type="text" @click="functionConfig(currentLevelId, scope.row)">功能配置</el-button>
                 <!--<el-button size="medium" type="text" @click="organizationPowerConfig(currentCategory, currentLevel, scope.row.id, scope.row.organId)">组织权限</el-button>-->
                 <el-button size="medium" type="text" @click="functionPowerConfig(currentCategory, currentLevel, scope.row.id, scope.row.organId, scope.row)">权益分配</el-button>
-                <el-button size="medium" type="text" @click="setLoginManage(scope.row.id)">设备登录管理</el-button>
+                <el-button size="medium" type="text" @click="setLoginManage(scope.row)">设备登录管理</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -359,9 +359,10 @@
         }})
       },
       // 跳转到设备登录管理页面
-      setLoginManage(id){
+      setLoginManage(row){
         this.$router.push({path:'/userManagement/facilityManage', query: {
-          organId: id
+          organId: row.organId,
+          id: row.id,
         }})
       },
       // 平台用户列表的列样式设置
