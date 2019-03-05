@@ -19,6 +19,7 @@
             <el-radio label="3" value="3">微信红包</el-radio>
             <el-radio label="4" value="4">实物奖品</el-radio>
             <el-radio label="5" value="5">电影票</el-radio>
+            <el-radio label="8" value="8">方圆资源</el-radio>
           </el-radio-group>
         </el-form-item>
         <h1 style="font-weight: 400;line-height: 40px;background: #f2f2f2;margin-bottom: 10px;padding-left: 20px;">基本信息</h1>
@@ -36,6 +37,10 @@
         </el-form-item> -->
         <el-form-item label="价格" prop="price">
           <el-input v-model.number="form.price" :disabled="!isEditInfo"></el-input>
+          <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">元</p>
+        </el-form-item>
+        <el-form-item label="虚拟物品价值" prop="value" v-show="form.material==8">
+          <el-input v-model.number="form.value" :disabled="!isEditInfo"></el-input>
           <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">元</p>
         </el-form-item>
         <el-form-item label="虚拟物品价值" prop="value" v-show="isValue" >
@@ -398,7 +403,7 @@ import { Message,MessageBox } from 'element-ui'
             let data = response.data.data
             if(msg=='ok'){
               vm.form = data;
-              vm.isValue = data.classId==2?true:false;
+              vm.isValue = (data.classId==2 || data.classId==8)?true:false;
               vm.formRules.value[0].required= vm.isValue?true:false;
               if(vm.isValue){
                 vm.formRules.value[1].validator= (rule, value, callback)=>{

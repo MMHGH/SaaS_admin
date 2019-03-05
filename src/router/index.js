@@ -62,6 +62,9 @@ import PrizeList from '@/pages/prizeList/PrizeList.vue'
 import BatchExportInvoice from '@/pages/prizeList/BatchExportInvoice.vue'
 import BatchImportInvoice from '@/pages/prizeList/BatchImportInvoice.vue'
 
+// 虚拟中奖信息
+import VirtualWinningList from '@/pages/virtualWinning/virtualWinningList.vue'
+
 // 代理商用户列表
 import AgentUserList from '@/pages/agentUserList/AgentUserList.vue'
 
@@ -333,6 +336,13 @@ const routes = [
         name: 'BatchImportInvoice',
         component: BatchImportInvoice,
         meta: {title: '批量导入发货单'}
+      },
+      // 虚拟中奖信息
+      {
+        path: '/virtualWinningList',
+        name: 'VirtualWinningList',
+        component: VirtualWinningList,
+        meta: {title: '虚拟中奖信息'}
       },
       // 代理商用户列表
       {
