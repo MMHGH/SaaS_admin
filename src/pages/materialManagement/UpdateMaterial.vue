@@ -43,7 +43,7 @@
           <el-input v-model.number="form.value" :disabled="!isEditInfo"></el-input>
           <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">元</p>
         </el-form-item>
-        <el-form-item label="虚拟物品价值" prop="value" v-show="isValue" >
+        <el-form-item label="虚拟物品价值" prop="value" v-show="form.material==2" >
           <!--<el-input v-model.number="form.value" :disabled="!isEditInfo"></el-input>-->
           <!--<p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">分</p>-->
           <el-select v-model="form.value" placeholder="请选择虚拟物品价值">
