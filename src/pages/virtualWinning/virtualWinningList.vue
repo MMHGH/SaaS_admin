@@ -1,177 +1,297 @@
 <template>
-  <div class="prize-list-wrapper">
-    <div class="header">
-      <el-breadcrumb>
-        <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-        <el-breadcrumb-item>中奖信息</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-    <div class="main">
-      <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right" label-width="100px" label-suffix="：" :rules="filterFormRules" style="background: #f2f2f2;padding-top: 20px;">
-        <el-form-item label="订单号" prop="prizeAccount">
-          <el-input v-model="filterForm.prizeAccount" maxlength="11"></el-input>
-        </el-form-item>
-        <el-form-item label="兑奖时间" prop="prizeTime">
-          <el-date-picker v-model="filterForm.prizeTime" placeholder="选择中奖时间"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束账号" prop="prizeAccount">
-          <el-input v-model="filterForm.prizeAccount" maxlength="11"></el-input>
-        </el-form-item>
-        <el-form-item label="关联账号" prop="relationAccount">
-          <el-input v-model="filterForm.relationAccount" maxlength="11"></el-input>
-        </el-form-item>
-        <el-form-item label="中奖账号" prop="relationAccount">
-          <el-input v-model="filterForm.relationAccount" maxlength="11"></el-input>
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="filterForm.status">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="已发货" value="2"></el-option>
-            <el-option label="未发货" value="3"></el-option>
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item label="所属物流" prop="logistics">
-          <el-select v-model="filterForm.logistics">
-            <el-option label="太和物流" value="1"></el-option>
-            <el-option label="顺丰" value="2"></el-option>
-            <el-option label="京东" value="3"></el-option>
-            <el-option label="申通" value="4"></el-option>
-            <el-option label="圆通" value="5"></el-option>
-            <el-option label="韵达" value="6"></el-option>
-          </el-select>
-        </el-form-item> -->
-        <el-form-item style="width: 100px;">
-          <el-button style="margin-left: 1em;width: 6em;" type="primary" size="medium" @click.stop.prevent="searchData">搜索</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button style="margin-left: 1em;width: 6em;" type="text" size="medium" @click.stop.prevent="clearData">清空</el-button>
-        </el-form-item>
-        <!--<el-form-item style="width: 150px;">-->
-          <!--<el-button style="margin-left: 1em;" type="primary" size="medium" @click.stop.prevent="batchExportInvoice">批量导出发货单</el-button>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item style="width: 150px;">-->
-          <!--<el-button style="margin-left: 1em;" type="primary" size="medium" @click.stop.prevent="batchImportInvoice">批量导入发货单</el-button>-->
-        <!--</el-form-item>-->
-      </el-form>
+  <div class="yxOrderManage">
+    <div class="mat-header">权限后台 / <span>中奖信息</span></div>
 
-      <div>
-        <el-button style="margin-left: 1em;" type="primary" size="medium" @click.stop.prevent="batchExportInvoice">导出</el-button>
+    <div class="body">
+      <!-- 查询条件 -->
+      <div class="mateForm">
+        <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
+          <el-form-item label="订单号" prop="orderNo">
+            <el-input v-model="ruleForm.orderNo" maxlength="11" placeholder="请输入订单号"></el-input>
+          </el-form-item>
+          <el-form-item prop="beginDate" label="兑奖时间：">
+            <el-date-picker
+              v-model="ruleForm.beginDate"
+              type="datetime"
+              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
+              placeholder="兑奖时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item prop="endDate" label="结束时间：">
+            <el-date-picker
+              v-model="ruleForm.endDate"
+              type="datetime"
+              value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
+              placeholder="结束时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="关联账户" prop="relationAccount">
+            <el-input v-model="ruleForm.relationAccount" maxlength="11" placeholder="请输入关联账户"></el-input>
+          </el-form-item>
+          <el-form-item label="中奖账户" prop="winAccount">
+            <el-input v-model="ruleForm.winAccount" maxlength="11" placeholder="请输入中奖账户"></el-input>
+          </el-form-item>
+          <el-form-item label="状态：" prop="status">
+            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
+              <el-option
+                v-for="item in statusList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item style="padding-left: 30px;">
+            <el-button type="primary" @click="queryData" size="small">筛选</el-button>
+            <el-button type="text" @click="resetForm('ruleForm')" size="small">清空</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-        <el-table-column align="center" prop="oddNumbers" label="订单号"></el-table-column>
-        <el-table-column align="center" property="prizeAccount" label="中奖账号"></el-table-column>
-        <el-table-column align="center" property="prizeName" label="奖品名称"></el-table-column>
-        <el-table-column align="center" property="prizeTime" label="兑换时间"></el-table-column>
-        <el-table-column align="center" property="relationAccount" label="价格"></el-table-column>
-        <el-table-column align="center" property="status" label="状态"></el-table-column>
-        <el-table-column align="center" property="consignor" label="关联账户"></el-table-column>
-        <!--<el-table-column align="center" label="操作">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button size="medium" type="text" @click="changeStatue">删除</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-      </el-table>
-
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNum"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
+      <!-- 表格 -->
+      <div class="metaContent">
+        <div class="btns">
+          <el-button type="primary" size="small" @click="exportExcel">导出Excel</el-button>
+        </div>
+        <div class="mateTable">
+          <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
+            <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
+            <el-table-column align="center" property="winAccount" label="中奖账号"></el-table-column>
+            <el-table-column align="center" property="awardName" label="奖品名称"></el-table-column>
+            <el-table-column align="center" property="receivedTime" label="兑换时间">
+              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
+            </el-table-column>
+            <el-table-column align="center" property="price" label="价格"></el-table-column>
+            <el-table-column align="center" property="status" label="状态">
+              <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
+            </el-table-column>
+            <el-table-column align="center" property="relationAccount" label="关联账户"></el-table-column>
+            <el-table-column align="center" prop="operation" label="操作">
+              <template slot-scope="scope">
+                <el-button type="text" @click="delWin(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="page">
+          <el-pagination
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+          </el-pagination>
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
 <script>
+  import Util from '../../util/timestamp'
+
   export default {
-    data(){
+    name: "saasTrialManage",
+    data() {
       return {
-        filterForm: {
-          prizeTime: '',
-          prizeAccount: '',
+        statusList: [
+          // 状态： 1未领取(待兑换) 2 已兑换 3 已过期
+          {label: '全部', value: ''},
+          {label: '未领取', value: 1},
+          {label: '已兑换', value: 2},
+          {label: '已过期', value: 3}
+        ],
+        ruleForm: {
+          orderNo: '',
+          winAccount: '',
           relationAccount: '',
           status: '',
-          logistics: ''
+          beginDate: '',
+          endDate: ''
         },
-        filterFormRules: {},
         tableData: [],
-        dialogFormVisible: false,
-        form: {},
-        stockData: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
       }
     },
-    mounted(){
-      this.getData()
-    },
-    methods:{
-      // 跳转到批量导出发货单
-      batchExportInvoice(){
-        // this.$router.push({name: 'BatchExportInvoice'})
-      },
-      // 跳转到批量导入发货单
-      batchImportInvoice(){
-        // this.$router.push({name: 'BatchImportInvoice'})
-      },
-      // 筛选
-      searchData(){
-        this.pageNum = 1
-        // this.$refs['filterForm'].validate((valid, object)=>{
-        //   if(valid){}
-        // })
-      },
-      clearData(){},
-      handleSizeChange(val){},
-      handleCurrentChange(val){},
-      getData(){
-        // 1.sendData
-        let sendData = {
-
-        };
-
-        // 2.post
-        let vm = this
-        this.axios.post(this.$api.prizeMana.supperManaGetMaterialPrizeList,sendData).then(function(respone){
-          let msg = respone.data.message;
-          let data = respone.data.data;
-          if(msg == 'ok'){
-            // vm.tableData = data.orderDetailApiVOList
-            // vm.account = data.account;
-            // vm.orderNo = data.orderNo;
-            // vm.status = data.status;
-            // vm.goodsAmount = data.goodsAmount;
-            // vm.discountAmount = data.discountAmount;
-            // vm.dueAmount = data.dueAmount;
+    filters: {
+      // 状态过滤器
+      fmtStatus(val, list) {
+        if (val) {
+          for (let item of list) {
+            if (item.value == val) {
+              return item.label;
+            }
           }
-        }).catch(function(error){
-          console.error(error);
-        });
+        }
+        return '--';
+      }
+    },
+    methods: {
+      /**
+       * 查询
+       * */
+      queryData() {
+        this.pageNum = 1;
+        this.getAwardByPage();
       },
-      changeStatue(){}
+      /**
+       * 查询 申请用户
+       * */
+      getAwardByPage() {
+        let param = this.ruleForm;
+        param.pageNum = this.pageNum;
+        param.pageSize = this.pageSize;
+        this.axios.post(this.$api.virtualWin.listPlatformAwardByPage, param).then((res) => {
+          let data = res.data.data, msg = res.data.message;
+          if (msg == 'ok') {
+            this.tableData = data.list;
+            this.total = data.total;
+          } else {
+            this.$message.error('查询失败：' + msg);
+          }
+        })
+      },
+      // 验证时间
+      changeTime(type) {
+        if (this.ruleForm.beginDate && this.ruleForm.endDate) {
+          let start = new Date(this.ruleForm.beginDate).getTime()
+          let end = new Date(this.ruleForm.endDate).getTime()
+          if (start > end) {
+            let msg = '结束时间不能小于兑奖时间'
+            if (type === 'start') {
+              msg = '兑奖时间不能大于结束时间'
+              this.ruleForm.beginDate = ''
+            } else {
+              this.ruleForm.endDate = ''
+            }
+            this.$message({
+              message: msg,
+              type: 'warning'
+            });
+          }
+        }
+      },
+      /**
+       * 清空
+       */
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      /**
+       * 导出Excel
+       */
+      exportExcel() {
+        let load = this.$api.feedback.exportFeedbackList.replace('@root', '/api');
+        var _form = document.createElement('FORM');
+        _form.setAttribute('method', 'post');
+        _form.setAttribute('action', load);
+
+        // 组织查询参数
+        let attrs = Object.keys(this.ruleForm);
+        for (let i in attrs) {
+          let key = attrs[i];
+          if (key !== 'pageNum' && key !== 'pageSize') {
+            var attr = document.createElement('input');
+            attr.setAttribute('type', 'hidden');
+            attr.setAttribute('name', key);
+            attr.setAttribute("value", !this.ruleForm[key] ? '' : this.ruleForm[key]);
+            _form.append(attr);
+          }
+        }
+
+        document.body.appendChild(_form);
+        _form.submit();
+        document.body.removeChild(_form)
+      },
+      /**
+       * 切换 页大小
+       * @param val
+       */
+      handleSizeChange(val) {
+        this.pageNum = 1;
+        this.pageSize = val;
+        this.getAwardByPage();
+      },
+      /**
+       * 翻页
+       * @param val
+       */
+      handleCurrentChange(val) {
+        this.pageNum = val;
+        this.getAwardByPage();
+      },
+    },
+    mounted() {
+      // 查询
+      this.queryData();
     }
   }
 </script>
-<style type="text/css">
-  .prize-list-wrapper .el-form--inline .el-form-item__content{width: 150px;}
-  .prize-list-wrapper .el-input--suffix .el-input__inner{padding: 0 15px;}
-  .prize-list-wrapper .el-form--inline .filter.el-form-item{width: 100%;padding-left: 15px;}
-  .prize-list-wrapper .el-form--inline .filter.el-form-item .el-form-item__content{width: 100%;}
-  .prize-list-wrapper .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 100%;}
-  .prize-list-wrapper .el-input--suffix.el-date-editor .el-input__inner{text-indent: 20px;}
-  .prize-list-wrapper .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{padding-left: 0;}
-  .prize-list-wrapper .el-table .cell, .el-table th div{padding-right: 0;white-space: nowrap;}
 
-  .mailing-address .cell{white-space: normal!important;}
-</style>
-<style type="text/css" scoped>
-  .el-table{border: none;margin-top: 10px;text-align: center;}
-  .el-table:after{background-color: transparent;}
-  .el-table th{text-align: center;}
-  .el-pagination{text-align: center;padding-top: 20px;padding-bottom: 10px;}
-</style>
+<style scoped>
+  .yxOrderManage {
+    background: rgb(242, 242, 242);
+  }
 
+  .yxOrderManage .body {
+    background: #ffffff;
+    padding: 5px 15px 15px 15px;
+    margin-top: 5px;
+  }
+
+  .mat-header {
+    background-color: #ffffff;
+    padding: 15px 15px;
+    font-size: 20px;
+  }
+
+  .mat-header span {
+    color: #0033FF;
+  }
+
+  .yxOrderManage > p {
+    text-indent: 20px;
+  }
+
+  .mateForm {
+    background: #f2f2f2;
+    padding-top: 20px;
+  }
+
+  .metaContent {
+    background-color: #ffffff;
+    margin-top: 10px;
+  }
+
+  .metaContent .btns {
+    padding-left: 20px;
+    padding-bottom: 10px;
+  }
+
+  .mateForm form {
+    padding-left: 10px;
+  }
+
+  .mateTable img {
+    width: 100px;
+  }
+
+  .page {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .top_info {
+    margin: 10px 20px 0 20px;
+    background: rgba(255, 247, 204, 1);
+  }
+
+  .left_size {
+    color: #0033FF;
+    margin-left: 20px;
+  }
+</style>

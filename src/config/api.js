@@ -696,6 +696,10 @@ export default {
     exportFeedbackList: '@root/feedback/exportFeedbackList',        // SaaS使用申请导出
     approve: '@root/feedback/approve',        // saas试用申请审批接口
   },
+  // 虚拟中奖信息
+  virtualWin:{
+    listPlatformAwardByPage: '@root/award/listPlatformAwardByPage',        // 虚拟中奖信息
+  },
 
   //上传图片地址
   uploadUrl: '/api/adminFile/imgUpload',
