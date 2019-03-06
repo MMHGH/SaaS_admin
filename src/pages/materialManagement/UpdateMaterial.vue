@@ -19,7 +19,7 @@
             <el-radio label="3" value="3">微信红包</el-radio>
             <el-radio label="4" value="4">实物奖品</el-radio>
             <el-radio label="5" value="5">电影票</el-radio>
-            <el-radio label="8" value="8">方圆资源</el-radio>
+            <el-radio label="8" value="8">方圆</el-radio>
           </el-radio-group>
         </el-form-item>
         <h1 style="font-weight: 400;line-height: 40px;background: #f2f2f2;margin-bottom: 10px;padding-left: 20px;">基本信息</h1>

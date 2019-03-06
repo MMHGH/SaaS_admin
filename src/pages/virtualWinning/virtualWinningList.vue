@@ -65,11 +65,11 @@
               <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
             </el-table-column>
             <el-table-column align="center" property="relationAccount" label="关联账户"></el-table-column>
-            <el-table-column align="center" prop="operation" label="操作">
-              <template slot-scope="scope">
-                <el-button type="text" @click="delWin(scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
+            <!--<el-table-column align="center" prop="operation" label="操作">-->
+              <!--<template slot-scope="scope">-->
+                <!--<el-button type="text" @click="delWin(scope.row)">删除</el-button>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
           </el-table>
         </div>
         <div class="page">
@@ -268,7 +268,7 @@
   }
 
   .metaContent .btns {
-    padding-left: 20px;
+    /*padding-left: 20px;*/
     padding-bottom: 10px;
   }
 
