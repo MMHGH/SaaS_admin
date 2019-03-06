@@ -50,7 +50,7 @@
       <!-- 表格 -->
       <div class="metaContent">
         <div class="btns">
-          <el-button type="primary" size="small" @click="exportExcel">导出Excel</el-button>
+          <el-button type="primary" size="small" @click="exportExcel">导出</el-button>
         </div>
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
@@ -66,9 +66,9 @@
             </el-table-column>
             <el-table-column align="center" property="relationAccount" label="关联账户"></el-table-column>
             <!--<el-table-column align="center" prop="operation" label="操作">-->
-              <!--<template slot-scope="scope">-->
-                <!--<el-button type="text" @click="delWin(scope.row)">删除</el-button>-->
-              <!--</template>-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-button type="text" @click="delWin(scope.row)">删除</el-button>-->
+            <!--</template>-->
             <!--</el-table-column>-->
           </el-table>
         </div>
@@ -185,7 +185,7 @@
        * 导出Excel
        */
       exportExcel() {
-        let load = this.$api.feedback.exportFeedbackList.replace('@root', '/api');
+        let load = this.$api.virtualWin.listPlatformAwardForExport.replace('@root', '/api');
         var _form = document.createElement('FORM');
         _form.setAttribute('method', 'post');
         _form.setAttribute('action', load);
@@ -204,8 +204,8 @@
         }
 
         document.body.appendChild(_form);
-        _form.submit();
-        document.body.removeChild(_form)
+        // _form.submit();
+        // document.body.removeChild(_form)
       },
       /**
        * 切换 页大小
