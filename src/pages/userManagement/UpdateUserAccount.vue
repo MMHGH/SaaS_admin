@@ -55,8 +55,9 @@
               <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.pwd"></el-input>
             </el-form-item>
             <el-form-item label="重复密码" prop="repeatedPwd">
-              <el-input type="password" placeholder="请输入密码" auto-complete="new-password" v-model="form.repeatedPwd"></el-input>
+              <el-input type="password" placeholder="请输入重复密码" auto-complete="new-password" v-model="form.repeatedPwd"></el-input>
             </el-form-item>
+            <div style="text-align: center;color: #e6a23c;">点击修改后生效</div>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="_visible = false">取 消</el-button>
@@ -72,44 +73,59 @@
       }
     },
     data(){
-      let validateRepeatedPassword = (rule, value, callback) => {
-        this.$refs.form.validateField('pwd')
+      let validatePassword = (rule, value, callback) => {
         if(!value){
           callback(new Error('请输入密码'))
+          return
         }
         if(value.length <8 || value.length > 25){
           callback(new Error('密码为8-25位'))
+          return
+        }
+        callback()
+      }
+      let validateRepeatedPassword = (rule, value, callback) => {
+        // this.$refs.form.validateField('pwd')
+        if(!value){
+          callback(new Error('请输入重复密码'))
+          return
+        }
+        if(value.length <8 || value.length > 25){
+          callback(new Error('密码为8-25位'))
+          return
         }
         if(value !== this.form.pwd){
           callback(new Error('两次密码输入不一致'))
+          return
         }
         callback()
       }
       return {
         form: {},
         formRules: {
-          pwd: [{ validator: this.$validator.password, trigger: 'blur' }],
-          repeatedPwd: [{ validator: validateRepeatedPassword, trigger: 'blur' }],
+          pwd: [{ required: true, validator: validatePassword, trigger: 'blur' }],
+          repeatedPwd: [{ required: true, validator: validateRepeatedPassword, trigger: 'blur' }],
         }
       }
     },
     methods: {
       submit(){
-        this.$confirm('是否修改账户密码？', '确认信息', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '保存',
-          cancelButtonText: '放弃修改'
+        // this.$confirm('是否修改账户密码？', '确认信息', {
+        //   distinguishCancelAndClose: true,
+        //   confirmButtonText: '保存',
+        //   cancelButtonText: '放弃修改'
+        // })
+        //   .then(() => {
+        //
+        //   })
+        //   .catch(action => {})
+        this.$refs['form'].validate((valid, object)=>{
+          // 校验成功
+          if(valid){
+            this.$emit('getNewPwd', this.form.pwd)
+            this._visible = false
+          }
         })
-          .then(() => {
-            this.$refs['form'].validate((valid, object)=>{
-              // 校验成功
-              if(valid){
-                this.$emit('getNewPwd', this.form.pwd)
-                this._visible = false
-              }
-            })
-          })
-          .catch(action => {})
       },
     }
   }
