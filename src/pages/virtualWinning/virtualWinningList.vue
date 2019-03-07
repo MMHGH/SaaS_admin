@@ -204,8 +204,8 @@
         }
 
         document.body.appendChild(_form);
-        // _form.submit();
-        // document.body.removeChild(_form)
+        _form.submit();
+        document.body.removeChild(_form)
       },
       /**
        * 切换 页大小
