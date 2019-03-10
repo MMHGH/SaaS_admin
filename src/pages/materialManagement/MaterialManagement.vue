@@ -26,6 +26,7 @@
             <el-option label="微信红包" value="3">微信红包</el-option>
             <el-option label="实物奖品" value="4">实物奖品</el-option>
             <el-option label="电影票" value="5">电影票</el-option>
+            <el-option label="方圆" value="8">方圆</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="status">
@@ -463,6 +464,9 @@ import { MessageBox,Message } from 'element-ui'
           case 5:
           classId = '电影票';
           break;
+          case 8:
+            classId = '方圆';
+            break;
         }
         return classId
       },

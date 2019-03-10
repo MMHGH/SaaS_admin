@@ -24,7 +24,8 @@
         <el-menu-item index="/priceConfig"><span>价格配置</span></el-menu-item>
         <el-menu-item index="/orderManagement"><span>订单管理</span></el-menu-item>
         <el-menu-item index="/materialManagement"><span>物资管理</span></el-menu-item>
-        <el-menu-item index="/prizeList"><span>实物中奖列表</span></el-menu-item>
+        <!--<el-menu-item index="/prizeList"><span>实物中奖列表</span></el-menu-item>-->
+        <el-menu-item index="/virtualWinningList"><span>虚拟中奖信息</span></el-menu-item>
         <el-menu-item index="/agentUserList"><span>代理商用户列表</span></el-menu-item>
         <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
         <el-menu-item index="/resourceAllocationRecord"><span>资源分配记录</span></el-menu-item>
