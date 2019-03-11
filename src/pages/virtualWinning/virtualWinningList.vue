@@ -7,7 +7,7 @@
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
           <el-form-item label="订单号" prop="orderNo">
-            <el-input v-model="ruleForm.orderNo" maxlength="11" placeholder="请输入订单号"></el-input>
+            <el-input v-model="ruleForm.orderNo" maxlength="50" placeholder="请输入订单号"></el-input>
           </el-form-item>
           <el-form-item prop="beginDate" label="兑奖时间：">
             <el-date-picker
