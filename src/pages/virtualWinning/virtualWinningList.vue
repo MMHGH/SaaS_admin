@@ -61,6 +61,7 @@
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
             </el-table-column>
             <el-table-column align="center" property="price" label="价格"></el-table-column>
+            <el-table-column align="center" property="value" label="虚拟价值"></el-table-column>
             <el-table-column align="center" property="status" label="状态">
               <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
             </el-table-column>
