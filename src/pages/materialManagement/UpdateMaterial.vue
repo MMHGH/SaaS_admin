@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item> -->
         <el-form-item label="价格" prop="price">
-          <el-input v-model.number="form.price" :disabled="!isEditInfo"></el-input>
+          <el-input v-model="form.price" :disabled="!isEditInfo"></el-input>
           <p style="display: inline-block;margin-left: 10px;color: #C0C4CC;">元</p>
         </el-form-item>
         <el-form-item label="虚拟物品价值" prop="value" v-show="form.material==8">
