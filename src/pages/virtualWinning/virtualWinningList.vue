@@ -191,7 +191,7 @@
         _form.setAttribute('method', 'post');
         _form.setAttribute('action', load);
 
-        // 组织查询参数
+        // 组织查询参数1
         let attrs = Object.keys(this.ruleForm);
         for (let i in attrs) {
           let key = attrs[i];
