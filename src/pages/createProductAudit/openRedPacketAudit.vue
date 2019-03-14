@@ -1,20 +1,17 @@
 <template>
   <div class="yxOrderManage">
-    <div class="mat-header">权限后台 / <span>中奖信息</span></div>
+    <div class="mat-header">资源管理 / <span>开通微信红包奖品</span></div>
 
     <div class="body">
       <!-- 查询条件 -->
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item label="订单号" prop="orderNo">
-            <el-input v-model="ruleForm.orderNo" maxlength="50" placeholder="请输入订单号"></el-input>
-          </el-form-item>
-          <el-form-item prop="beginDate" label="兑奖时间：">
+          <el-form-item prop="beginDate" label="申请时间：">
             <el-date-picker
               v-model="ruleForm.beginDate"
               type="datetime"
               value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
-              placeholder="兑奖时间">
+              placeholder="请选择申请时间">
             </el-date-picker>
           </el-form-item>
           <el-form-item prop="endDate" label="结束时间：">
@@ -22,55 +19,48 @@
               v-model="ruleForm.endDate"
               type="datetime"
               value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
-              placeholder="结束时间">
+              placeholder="请选择结束时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="关联账户" prop="relationAccount">
-            <el-input v-model="ruleForm.relationAccount" maxlength="11" placeholder="请输入关联账户"></el-input>
-          </el-form-item>
-          <el-form-item label="中奖账户" prop="winAccount">
-            <el-input v-model="ruleForm.winAccount" maxlength="11" placeholder="请输入中奖账户"></el-input>
+          <el-form-item label="用户账号" prop="organName">
+                <el-input v-model="ruleForm.organName" placeholder="请输入用户账号"></el-input>
           </el-form-item>
           <el-form-item label="状态：" prop="status">
             <el-select v-model="ruleForm.status" placeholder="状态" size="small">
-              <el-option
-                v-for="item in statusList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
+                <el-option
+                    v-for="item in statusList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
             </el-select>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
-            <el-button type="primary" @click="queryData" size="small">筛选</el-button>
+            <el-button type="primary" @click="queryData" size="small">搜索</el-button>
             <el-button type="info" @click="resetForm('ruleForm')" size="small">清空</el-button>
           </el-form-item>
         </el-form>
       </div>
       <!-- 表格 -->
       <div class="metaContent">
-        <div class="btns">
-          <el-button type="primary" size="small" @click="exportExcel">导出</el-button>
-        </div>
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-            <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
-            <el-table-column align="center" property="winAccount" label="中奖账号"></el-table-column>
-            <el-table-column align="center" property="awardName" label="奖品名称"></el-table-column>
-            <el-table-column align="center" property="receivedTime" label="兑换时间">
+            <el-table-column align="center" property="receivedTime" label="申请时间">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" property="price" label="价格"></el-table-column>
-            <el-table-column align="center" property="value" label="虚拟价值"></el-table-column>
+            <el-table-column align="center" prop="orderNo" label="用户账号"></el-table-column>
+            <el-table-column align="center" prop="orderNo" label="企业名称"></el-table-column>
             <el-table-column align="center" property="status" label="状态">
               <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
             </el-table-column>
-            <el-table-column align="center" property="relationAccount" label="关联账户"></el-table-column>
-            <!--<el-table-column align="center" prop="operation" label="操作">-->
-            <!--<template slot-scope="scope">-->
-            <!--<el-button type="text" @click="delWin(scope.row)">删除</el-button>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                align="center"
+                prop="operation"
+                label="操作">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="lookDetail(scope.row, scope.$index)" >查看</el-button>
+                </template>
+            </el-table-column>
           </el-table>
         </div>
         <div class="page">
@@ -92,11 +82,19 @@
 
 <script>
   import Util from '../../util/timestamp'
-
+ 
   export default {
-    name: "saasTrialManage",
     data() {
       return {
+        ruleForm: {
+          orderNo: '',
+          winAccount: '',
+          relationAccount: '',
+          organName:'',
+          status: '',
+          beginDate: '',
+          endDate: ''
+        },
         statusList: [
           // 状态： 1未领取(待兑换) 2 已兑换 3 已过期
           {label: '全部', value: ''},
@@ -104,14 +102,6 @@
           {label: '已兑换', value: 2},
           {label: '已过期', value: 3}
         ],
-        ruleForm: {
-          orderNo: '',
-          winAccount: '',
-          relationAccount: '',
-          status: '',
-          beginDate: '',
-          endDate: ''
-        },
         tableData: [],
         pageNum: 1,
         pageSize: 10,
@@ -183,32 +173,6 @@
         this.$refs[formName].resetFields();
       },
       /**
-       * 导出Excel
-       */
-      exportExcel() {
-        let load = this.$api.virtualWin.listPlatformAwardForExport.replace('@root', '/api');
-        var _form = document.createElement('FORM');
-        _form.setAttribute('method', 'post');
-        _form.setAttribute('action', load);
-
-        // 组织查询参数1
-        let attrs = Object.keys(this.ruleForm);
-        for (let i in attrs) {
-          let key = attrs[i];
-          if (key !== 'pageNum' && key !== 'pageSize') {
-            var attr = document.createElement('input');
-            attr.setAttribute('type', 'hidden');
-            attr.setAttribute('name', key);
-            attr.setAttribute("value", !this.ruleForm[key] ? '' : this.ruleForm[key]);
-            _form.append(attr);
-          }
-        }
-
-        document.body.appendChild(_form);
-        _form.submit();
-        document.body.removeChild(_form)
-      },
-      /**
        * 切换 页大小
        * @param val
        */
@@ -225,6 +189,10 @@
         this.pageNum = val;
         this.getAwardByPage();
       },
+      //查看
+      lookDetail(row){
+        this.$router.push({path:'/auditawardDetail',query:{id:row.id}});
+      }   
     },
     mounted() {
       // 查询

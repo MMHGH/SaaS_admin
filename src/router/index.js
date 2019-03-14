@@ -64,6 +64,11 @@ import BatchImportInvoice from '@/pages/prizeList/BatchImportInvoice.vue'
 
 // 虚拟中奖信息
 import VirtualWinningList from '@/pages/virtualWinning/virtualWinningList.vue'
+import RedPacketWinningList from '@/pages/virtualWinning/redPacketWinningList.vue'
+
+// 自建商品审核
+import OpenRedPacketAudit from '@/pages/createProductAudit/openRedPacketAudit.vue'
+import AuditawardDetail from '@/pages/createProductAudit/auditawardDetail.vue'
 
 // 代理商用户列表
 import AgentUserList from '@/pages/agentUserList/AgentUserList.vue'
@@ -343,6 +348,25 @@ const routes = [
         name: 'VirtualWinningList',
         component: VirtualWinningList,
         meta: {title: '虚拟中奖信息'}
+      },
+      {
+        path: '/redPacketWinningList',
+        name: 'RedPacketWinningList',
+        component: RedPacketWinningList,
+        meta: {title: '微信红包中奖信息'}
+      },
+      // 自建商品审核
+      {
+        path: '/openRedPacketAudit',
+        name: 'OpenRedPacketAudit',
+        component: OpenRedPacketAudit,
+        meta: {title: '开通微信红包奖品'}
+      },
+      {
+        path: '/auditawardDetail',
+        name: 'AuditawardDetail',
+        component: AuditawardDetail,
+        meta: {title: '开通微信红包奖品'}
       },
       // 代理商用户列表
       {

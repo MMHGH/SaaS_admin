@@ -1,6 +1,6 @@
 <template>
   <div class="yxOrderManage">
-    <div class="mat-header">权限后台 / <span>中奖信息</span></div>
+    <div class="mat-header">权限后台 / <span>红包中奖信息</span></div>
 
     <div class="body">
       <!-- 查询条件 -->
@@ -9,20 +9,20 @@
           <el-form-item label="订单号" prop="orderNo">
             <el-input v-model="ruleForm.orderNo" maxlength="50" placeholder="请输入订单号"></el-input>
           </el-form-item>
-          <el-form-item prop="beginDate" label="兑奖时间：">
-            <el-date-picker
-              v-model="ruleForm.beginDate"
-              type="datetime"
-              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
-              placeholder="兑奖时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item prop="endDate" label="结束时间：">
+          <el-form-item prop="endDate" label="中奖时间：">
             <el-date-picker
               v-model="ruleForm.endDate"
               type="datetime"
               value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
-              placeholder="结束时间">
+              placeholder="请选择中奖时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item prop="beginDate" label="兑换时间：">
+            <el-date-picker
+              v-model="ruleForm.beginDate"
+              type="datetime"
+              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
+              placeholder="请选择兑换时间">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="关联账户" prop="relationAccount">
@@ -42,7 +42,7 @@
             </el-select>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
-            <el-button type="primary" @click="queryData" size="small">筛选</el-button>
+            <el-button type="primary" @click="queryData" size="small">搜索</el-button>
             <el-button type="info" @click="resetForm('ruleForm')" size="small">清空</el-button>
           </el-form-item>
         </el-form>
@@ -53,25 +53,60 @@
           <el-button type="primary" size="small" @click="exportExcel">导出</el-button>
         </div>
         <div class="mateTable">
-          <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-            <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
-            <el-table-column align="center" property="winAccount" label="中奖账号"></el-table-column>
-            <el-table-column align="center" property="awardName" label="奖品名称"></el-table-column>
-            <el-table-column align="center" property="receivedTime" label="兑换时间">
-              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
-            </el-table-column>
-            <el-table-column align="center" property="price" label="价格"></el-table-column>
-            <el-table-column align="center" property="value" label="虚拟价值"></el-table-column>
-            <el-table-column align="center" property="status" label="状态">
-              <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
-            </el-table-column>
-            <el-table-column align="center" property="relationAccount" label="关联账户"></el-table-column>
-            <!--<el-table-column align="center" prop="operation" label="操作">-->
-            <!--<template slot-scope="scope">-->
-            <!--<el-button type="text" @click="delWin(scope.row)">删除</el-button>-->
-            <!--</template>-->
-            <!--</el-table-column>-->
-          </el-table>
+           <!-- 首页 -->
+           <div v-if="this.$route.query.page != 'info'">
+               <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
+                    <el-table-column
+                        align="center"
+                        prop=""
+                        width=150
+                        type="index"
+                        label="序号">
+                        <template slot-scope="scope">
+                            <span>{{scope.$index+(pageNum - 1) * pageSize + 1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
+                    <el-table-column align="center" property="price" label="企业名称"></el-table-column>
+                    <el-table-column align="center" property="value" label="红包总金额">
+                        <template slot-scope="scope">{{ scope.row.value}}元</template>
+                    </el-table-column>
+                    <el-table-column align="center" property="value" label="发放个数">
+                        <template slot-scope="scope">{{ scope.row.value}}个</template>
+                    </el-table-column>
+                    <el-table-column
+                        align="center"
+                        prop="operation"
+                        label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="text" @click="lookDetail(scope.row)" >查看</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+           </div>
+           <!-- 查看 -->
+           <div v-else>
+                <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
+                    <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
+                    <el-table-column align="center" property="receivedTime" label="中奖时间">
+                    <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
+                    </el-table-column>
+                    <el-table-column align="center" property="receivedTime" label="兑换时间">
+                    <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
+                    </el-table-column>
+                    <el-table-column align="center" property="winAccount" label="中奖账户"></el-table-column>
+                    <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
+                    <el-table-column align="center" property="value" label="企业名称"></el-table-column>
+                    <el-table-column align="center" property="price" label="产品二维码"></el-table-column>
+                    <el-table-column align="center" property="value" label="活动名称"></el-table-column>
+                    <el-table-column align="center" property="value" label="红包金额">
+                        <template slot-scope="scope">{{ scope.row.value}}元</template>
+                    </el-table-column>
+                    <el-table-column align="center" property="status" label="状态">
+                    <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
+                    </el-table-column>
+                </el-table>
+           </div>
         </div>
         <div class="page">
           <el-pagination
@@ -225,6 +260,10 @@
         this.pageNum = val;
         this.getAwardByPage();
       },
+      //查看
+      lookDetail(row){
+        this.$router.push({path:'/redPacketWinningList',query:{page:'info',id:row.id}});
+      }   
     },
     mounted() {
       // 查询
