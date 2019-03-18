@@ -43,7 +43,7 @@
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
             <el-button type="primary" @click="queryData" size="small">搜索</el-button>
-            <el-button type="info" @click="resetForm('ruleForm')" size="small">清空</el-button>
+            <el-button  @click="resetForm('ruleForm')" size="small">清空</el-button>
           </el-form-item>
         </el-form>
       </div>

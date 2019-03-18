@@ -27,8 +27,8 @@
         </el-form-item>
         <el-form-item style="margin-top:80px">
           <el-button native-type="submit" type="primary" size="small" @click.stop.prevent="subData('1')" style="width:100px;margin-right:10px">通过</el-button>
-          <el-button native-type="submit" type="primary" size="small" @click.stop.prevent="subData('2')" style="width:100px;margin-right:10px">未通过</el-button>
-          <el-button native-type="submit" type="primary" size="small" @click.stop.prevent="subData('3')" style="width:100px;margin-right:10px">取消</el-button>
+          <el-button native-type="submit"  size="small" @click.stop.prevent="subData('2')" style="width:100px;margin-right:10px">未通过</el-button>
+          <el-button native-type="submit"  size="small" @click.stop.prevent="subData('3')" style="width:100px;margin-right:10px">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
