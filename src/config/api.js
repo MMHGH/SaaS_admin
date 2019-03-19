@@ -701,6 +701,13 @@ export default {
     listPlatformAwardByPage: '@root/award/listPlatformAwardByPage',        // 虚拟中奖信息
     listPlatformAwardForExport: '@root/award/listPlatformAwardForExport',        // 导出虚拟中奖信息列表接口
   },
+  // 自建商品审核
+  createProduct:{
+    listWxRedPacketConf: '@root/wxRedPacketConf/listWxRedPacketConf',  // 获取分页列表接口
+    redPacketDetail: '@root/wxRedPacketConf/detail',  // 查看详情
+    redPacketEnable: '@root/wxRedPacketConf/enable',  // 审核通过
+    redPacketDisable: '@root/wxRedPacketConf/disable',  // 审核不通过
+  },
 
   //上传图片地址
   uploadUrl: '/api/adminFile/imgUpload',

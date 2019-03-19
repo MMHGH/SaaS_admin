@@ -7,27 +7,27 @@
       </el-breadcrumb>
     </div>
     <div class="main" style="position: relative;">
-      <el-form ref="form" :model="form"  size="small" label-position="right" label-width="180px" label-suffix="：">
-        <el-form-item label="商户号" prop="name" required>
-          <el-input v-model="form.name" disabled></el-input>
+      <el-form ref="form" :model="formData"  size="small" label-position="right" label-width="180px" label-suffix="：">
+        <el-form-item label="商户号" prop="mchId" required>
+          <el-input v-model="formData.mchId" disabled></el-input>
         </el-form-item>
-        <el-form-item label="appid" prop="price">
-          <el-input v-model="form.price" disabled></el-input>
+        <el-form-item label="appid" prop="appId" required>
+          <el-input v-model="formData.appId" disabled></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="value">
-          <el-input v-model.number="form.value" disabled></el-input>
+        <el-form-item label="秘钥" prop="mchKey" required>
+          <el-input v-model.number="formData.mchKey" disabled></el-input>
         </el-form-item>
-        <el-form-item label="pck12证书" prop="value">
-          <el-input class="pck" v-model.number="form.value" disabled></el-input>
+        <el-form-item label="pck12证书" prop="cert" required>
+          <el-input class="pck" v-model.number="formData.cert" disabled></el-input>
           <el-button type="primary" style="margin-left:20px;" size="small" @click="exportExcel">下载</el-button>
         </el-form-item>
         <el-form-item label="每天每人限制红包个数" class="astrictNum">
-          <el-input v-model="num" disabled></el-input>
+          <el-input v-model="formData.dayLimitQty" disabled></el-input>
            <span style="margin-left: 10px;">个</span>
         </el-form-item>
         <el-form-item style="margin-top:80px">
           <el-button native-type="submit" type="primary" size="small" @click.stop.prevent="subData('1')" style="width:100px;margin-right:10px">通过</el-button>
-          <el-button native-type="submit"  size="small" @click.stop.prevent="subData('2')" style="width:100px;margin-right:10px">未通过</el-button>
+          <el-button native-type="submit" type="info" size="small" @click.stop.prevent="subData('2')" style="width:100px;margin-right:10px">未通过</el-button>
           <el-button native-type="submit"  size="small" @click.stop.prevent="subData('3')" style="width:100px;margin-right:10px">取消</el-button>
         </el-form-item>
       </el-form>
@@ -40,48 +40,72 @@ import { Message,MessageBox } from 'element-ui'
   export default {
     data(){
       return {
-        form: {
-         description:"",
-          material: '1',
-          name: '',
-          price: '',
-          value: '',
+        formData: {
+          mchId:'',
+          mchKey:'',
+          cert:'',
+          dayLimitQty:'',
+          appId:''
         },
-        num:'99',
+        organId:''
       }
     },
     mounted(){
-      this.getDetailData()
+      this.getData()
     },
     methods: {
-       getDetailData(){
+      getData(){
         let sendData = {
-          id: sessionStorage.getItem('supperGoodsId')
+          organId: this.$route.query.organId
         };
-        let vm = this
-        this.$service.post({
-          url: this.$api.goodsMana.supperManaDetail,
-          params: sendData,
-          successHook: (dataResource, response) => {
-            let msg = response.data.message
-            let data = response.data.data
+        this.axios.post(this.$api.createProduct.redPacketDetail,sendData).then((res) => {
+            let data = res.data.data, 
+                msg = res.data.message;
             if(msg=='ok'){
-              vm.form = data;
-             
+              this.formData.mchId = data.mchId;
+              this.formData.mchKey = data.mchKey;
+              this.formData.cert = data.cert;
+              this.formData.dayLimitQty = data.dayLimitQty;
+              this.formData.appId = data.appId;
+              this.organId = data.organId;
             }
-          }
         })
-       },  
+      },
       subData(type){
         let that = this
         switch(type){
             case '1':
+              this.enable();
               break;
             case '2':
+              this.disable();
+              break;
             case '3':
               this.$router.go(-1);//返回上一层
               break;
         }
+      },
+      // 通过
+      enable(){
+        let sendData = {
+          organId: this.organId
+        };
+        this.axios.post(this.$api.createProduct.redPacketEnable,sendData).then((res) => {
+            if(res.data.message == 'ok'){
+              this.$router.go(-1);//返回上一层
+            }
+        })
+      },
+      // 不通过
+      disable(){
+        let sendData = {
+          organId: this.organId
+        };
+        this.axios.post(this.$api.createProduct.redPacketDisable,sendData).then((res) => {
+            if(res.data.message == 'ok'){
+              this.$router.go(-1);//返回上一层
+            }
+        })
       },
       // 下载
       exportExcel(){

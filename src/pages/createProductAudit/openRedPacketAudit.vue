@@ -10,7 +10,8 @@
             <el-date-picker
               v-model="ruleForm.beginDate"
               type="datetime"
-              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
+              value-format="yyyy-MM-dd hh:mm:ss"
+              style="width: 215px;" @change="changeTime('start')"
               placeholder="请选择申请时间">
             </el-date-picker>
           </el-form-item>
@@ -18,15 +19,15 @@
             <el-date-picker
               v-model="ruleForm.endDate"
               type="datetime"
-              value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
+              value-format="yyyy-MM-dd hh:mm:ss" style="width: 215px;" @change="changeTime('end')"
               placeholder="请选择结束时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="用户账号" prop="organName">
-                <el-input v-model="ruleForm.organName" placeholder="请输入用户账号"></el-input>
+          <el-form-item label="用户账号" prop="account">
+                <el-input v-model="ruleForm.account" placeholder="请输入用户账号"></el-input>
           </el-form-item>
-          <el-form-item label="状态：" prop="status">
-            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
+          <el-form-item label="状态：" prop="auditStatus">
+            <el-select v-model="ruleForm.auditStatus" placeholder="状态" size="small">
                 <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -45,13 +46,13 @@
       <div class="metaContent">
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-            <el-table-column align="center" property="receivedTime" label="申请时间">
-              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
+            <el-table-column align="center" property="createdTime" label="申请时间">
+              <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" prop="orderNo" label="用户账号"></el-table-column>
-            <el-table-column align="center" prop="orderNo" label="企业名称"></el-table-column>
-            <el-table-column align="center" property="status" label="状态">
-              <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
+            <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
+            <el-table-column align="center" prop="organName" label="企业名称"></el-table-column>
+            <el-table-column align="center" property="auditStatus" label="状态">
+              <template slot-scope="scope">{{ scope.row.auditStatus | fmtStatus()}}</template>
             </el-table-column>
             <el-table-column
                 align="center"
@@ -87,20 +88,16 @@
     data() {
       return {
         ruleForm: {
-          orderNo: '',
-          winAccount: '',
-          relationAccount: '',
-          organName:'',
-          status: '',
+          account: '',
+          auditStatus: '',
           beginDate: '',
           endDate: ''
         },
         statusList: [
-          // 状态： 1未领取(待兑换) 2 已兑换 3 已过期
           {label: '全部', value: ''},
-          {label: '未领取', value: 1},
-          {label: '已兑换', value: 2},
-          {label: '已过期', value: 3}
+          {label: '未审核', value: 0},
+          {label: '审核通过', value: 1},
+          {label: '审核不通过', value: 2}
         ],
         tableData: [],
         pageNum: 1,
@@ -110,15 +107,20 @@
     },
     filters: {
       // 状态过滤器
-      fmtStatus(val, list) {
-        if (val) {
-          for (let item of list) {
-            if (item.value == val) {
-              return item.label;
-            }
-          }
+      fmtStatus(val) {
+        let auditStatus = '';
+        switch(Number(val)){
+          case 0:
+           auditStatus = '未审核'
+           break;
+          case 1:
+           auditStatus = '审核通过'
+           break;
+          case 2:
+           auditStatus = '审核不通过'
+           break;
         }
-        return '--';
+        return auditStatus
       }
     },
     methods: {
@@ -127,17 +129,23 @@
        * */
       queryData() {
         this.pageNum = 1;
-        this.getAwardByPage();
+        this.getData();
       },
       /**
        * 查询 申请用户
        * */
-      getAwardByPage() {
-        let param = this.ruleForm;
-        param.pageNum = this.pageNum;
-        param.pageSize = this.pageSize;
-        this.axios.post(this.$api.virtualWin.listPlatformAwardByPage, param).then((res) => {
-          let data = res.data.data, msg = res.data.message;
+      getData() {
+        let param = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          account: this.ruleForm.account,
+          auditStatus: this.ruleForm.auditStatus,
+          beginDate: this.ruleForm.beginDate,
+          endDate: this.ruleForm.endDate,
+        }
+        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+          let data = res.data.data, 
+              msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
             this.total = data.total;
@@ -179,7 +187,7 @@
       handleSizeChange(val) {
         this.pageNum = 1;
         this.pageSize = val;
-        this.getAwardByPage();
+        this.getData();
       },
       /**
        * 翻页
@@ -187,11 +195,11 @@
        */
       handleCurrentChange(val) {
         this.pageNum = val;
-        this.getAwardByPage();
+        this.getData();
       },
       //查看
       lookDetail(row){
-        this.$router.push({path:'/auditawardDetail',query:{id:row.id}});
+        this.$router.push({path:'/auditawardDetail',query:{organId:row.organId}});
       }   
     },
     mounted() {
