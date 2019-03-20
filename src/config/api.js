@@ -711,6 +711,7 @@ export default {
     redPacketDetail: '@root/wxRedPacketConf/detail',  // 查看详情
     redPacketEnable: '@root/wxRedPacketConf/enable',  // 审核通过
     redPacketDisable: '@root/wxRedPacketConf/disable',  // 审核不通过
+    redPacketDownload: '@root/wxRedPacketConf/download',  // 下载证书
   },
 
   //上传图片地址

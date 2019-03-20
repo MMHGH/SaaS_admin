@@ -36,6 +36,8 @@
 </template>
 <script>
 import { Message,MessageBox } from 'element-ui'
+import api from '@/config/api'
+import formatterURL from '@/util/formatterURL'
 
   export default {
     data(){
@@ -93,6 +95,8 @@ import { Message,MessageBox } from 'element-ui'
         this.axios.post(this.$api.createProduct.redPacketEnable,sendData).then((res) => {
             if(res.data.message == 'ok'){
               this.$router.go(-1);//返回上一层
+            }else{
+              this.$message.warning(res.data.message);
             }
         })
       },
@@ -104,12 +108,14 @@ import { Message,MessageBox } from 'element-ui'
         this.axios.post(this.$api.createProduct.redPacketDisable,sendData).then((res) => {
             if(res.data.message == 'ok'){
               this.$router.go(-1);//返回上一层
+            }else{
+              this.$message.warning(res.data.message);
             }
         })
       },
       // 下载
       exportExcel(){
-
+          window.location.href = formatterURL.formatterURL(this.$api.createProduct.redPacketDownload) + '?organId=' + this.$route.query.organId
       }
     }
   }

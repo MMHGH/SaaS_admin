@@ -10,8 +10,8 @@
             <el-date-picker
               v-model="ruleForm.beginDate"
               type="datetime"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              style="width: 215px;" @change="changeTime('start')"
+              value-format="timestamp"
+              style="width: 215px;" 
               placeholder="请选择申请时间">
             </el-date-picker>
           </el-form-item>
@@ -19,7 +19,7 @@
             <el-date-picker
               v-model="ruleForm.endDate"
               type="datetime"
-              value-format="yyyy-MM-dd hh:mm:ss" style="width: 215px;" @change="changeTime('end')"
+              value-format="timestamp" style="width: 215px;"
               placeholder="请选择结束时间">
             </el-date-picker>
           </el-form-item>
@@ -153,26 +153,6 @@
             this.$message.error('查询失败：' + msg);
           }
         })
-      },
-      // 验证时间
-      changeTime(type) {
-        if (this.ruleForm.beginDate && this.ruleForm.endDate) {
-          let start = new Date(this.ruleForm.beginDate).getTime()
-          let end = new Date(this.ruleForm.endDate).getTime()
-          if (start > end) {
-            let msg = '结束时间不能小于兑奖时间'
-            if (type === 'start') {
-              msg = '兑奖时间不能大于结束时间'
-              this.ruleForm.beginDate = ''
-            } else {
-              this.ruleForm.endDate = ''
-            }
-            this.$message({
-              message: msg,
-              type: 'warning'
-            });
-          }
-        }
       },
       /**
        * 清空

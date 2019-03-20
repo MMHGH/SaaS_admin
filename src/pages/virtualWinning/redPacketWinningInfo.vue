@@ -70,7 +70,7 @@
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
             </el-table-column>
             <el-table-column align="center" property="winAccount" label="中奖账户"></el-table-column>
-            <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
+            <!-- <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column> -->
             <el-table-column align="center" property="organName" label="企业名称"></el-table-column>
             <el-table-column align="center" property="codeItem" label="产品二维码"></el-table-column>
             <el-table-column align="center" property="activityName" label="活动名称"></el-table-column>
@@ -119,7 +119,6 @@
         ruleForm: {
           orderNo: '',
           winAccount: '',
-          relationAccount: '',
           status: '',
           time1: '',
           time2: ''
@@ -201,16 +200,25 @@
         var _form = document.createElement('FORM');
         _form.setAttribute('method', 'post');
         _form.setAttribute('action', load);
-
+         let param = {
+          subOrganId:this.$route.query.id,
+          orderNo:this.ruleForm.orderNo,
+          winAccount:this.ruleForm.winAccount,
+          status:this.ruleForm.status,
+          zbeginDate:this.ruleForm.time1?this.ruleForm.time1[0] : '',
+          zendDate:this.ruleForm.time1?this.ruleForm.time1[1] : '',
+          beginDate:this.ruleForm.time2?this.ruleForm.time2[0] : '',
+          endDate:this.ruleForm.time2?this.ruleForm.time2[1] : '',
+        }
         // 组织查询参数1
-        let attrs = Object.keys(this.ruleForm);
+        let attrs = Object.keys(param);
         for (let i in attrs) {
           let key = attrs[i];
           if (key !== 'pageNum' && key !== 'pageSize') {
             var attr = document.createElement('input');
             attr.setAttribute('type', 'hidden');
             attr.setAttribute('name', key);
-            attr.setAttribute("value", !this.ruleForm[key] ? '' : this.ruleForm[key]);
+            attr.setAttribute("value", !param[key] ? '' : param[key]);
             _form.append(attr);
           }
         }
