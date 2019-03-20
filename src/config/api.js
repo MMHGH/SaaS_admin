@@ -700,6 +700,10 @@ export default {
   virtualWin:{
     listPlatformAwardByPage: '@root/award/listPlatformAwardByPage',        // 虚拟中奖信息
     listPlatformAwardForExport: '@root/award/listPlatformAwardForExport',        // 导出虚拟中奖信息列表接口
+    listRedPacket: '@root/award/listPlatformTotalRedPacketAwardByPage',   // 按单位统计红包记录列表接口
+    listRedPacketExport: '@root/award/listPlatformTotalRedPacketAwardForExport',   // 导出按单位统计红包记录接口
+    listRedPacketInfo: '@root/award/listPlatformRedPacketAwardByPage',   // 获取单个单位红包记录列表接口
+    listRedPacketInfoExport: '@root/award/listPlatformRedPacketAwardForExport',   // 导出单个单位红包记录接口
   },
   // 自建商品审核
   createProduct:{

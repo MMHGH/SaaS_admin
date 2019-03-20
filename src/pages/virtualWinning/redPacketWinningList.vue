@@ -3,110 +3,44 @@
     <div class="mat-header">权限后台 / <span>红包中奖信息</span></div>
 
     <div class="body">
-      <!-- 查询条件 -->
-      <div class="mateForm">
-        <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item label="订单号" prop="orderNo">
-            <el-input v-model="ruleForm.orderNo" maxlength="50" placeholder="请输入订单号"></el-input>
-          </el-form-item>
-          <el-form-item prop="endDate" label="中奖时间：">
-            <el-date-picker
-              v-model="ruleForm.endDate"
-              type="datetime"
-              value-format="timestamp" style="width: 215px;" @change="changeTime('end')"
-              placeholder="请选择中奖时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item prop="beginDate" label="兑换时间：">
-            <el-date-picker
-              v-model="ruleForm.beginDate"
-              type="datetime"
-              value-format="timestamp" style="width: 215px;" @change="changeTime('start')"
-              placeholder="请选择兑换时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="关联账户" prop="relationAccount">
-            <el-input v-model="ruleForm.relationAccount" maxlength="11" placeholder="请输入关联账户"></el-input>
-          </el-form-item>
-          <el-form-item label="中奖账户" prop="winAccount">
-            <el-input v-model="ruleForm.winAccount" maxlength="11" placeholder="请输入中奖账户"></el-input>
-          </el-form-item>
-          <el-form-item label="状态：" prop="status">
-            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
-              <el-option
-                v-for="item in statusList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item style="padding-left: 30px;">
-            <el-button type="primary" @click="queryData" size="small">搜索</el-button>
-            <el-button  @click="resetForm('ruleForm')" size="small">清空</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
       <!-- 表格 -->
       <div class="metaContent">
         <div class="btns">
           <el-button type="primary" size="small" @click="exportExcel">导出</el-button>
         </div>
         <div class="mateTable">
-           <!-- 首页 -->
-           <div v-if="this.$route.query.page != 'info'">
-               <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-                    <el-table-column
-                        align="center"
-                        prop=""
-                        width=150
-                        type="index"
-                        label="序号">
-                        <template slot-scope="scope">
-                            <span>{{scope.$index+(pageNum - 1) * pageSize + 1}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
-                    <el-table-column align="center" property="price" label="企业名称"></el-table-column>
-                    <el-table-column align="center" property="value" label="红包总金额">
-                        <template slot-scope="scope">{{ scope.row.value}}元</template>
-                    </el-table-column>
-                    <el-table-column align="center" property="value" label="发放个数">
-                        <template slot-scope="scope">{{ scope.row.value}}个</template>
-                    </el-table-column>
-                    <el-table-column
-                        align="center"
-                        prop="operation"
-                        label="操作">
-                        <template slot-scope="scope">
-                            <el-button type="text" @click="lookDetail(scope.row)" >查看</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-           </div>
-           <!-- 查看 -->
-           <div v-else>
-                <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-                    <el-table-column align="center" prop="orderNo" label="订单号"></el-table-column>
-                    <el-table-column align="center" property="receivedTime" label="中奖时间">
-                    <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
-                    </el-table-column>
-                    <el-table-column align="center" property="receivedTime" label="兑换时间">
-                    <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
-                    </el-table-column>
-                    <el-table-column align="center" property="winAccount" label="中奖账户"></el-table-column>
-                    <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
-                    <el-table-column align="center" property="value" label="企业名称"></el-table-column>
-                    <el-table-column align="center" property="price" label="产品二维码"></el-table-column>
-                    <el-table-column align="center" property="value" label="活动名称"></el-table-column>
-                    <el-table-column align="center" property="value" label="红包金额">
-                        <template slot-scope="scope">{{ scope.row.value}}元</template>
-                    </el-table-column>
-                    <el-table-column align="center" property="status" label="状态">
-                    <template slot-scope="scope">{{ scope.row.status | fmtStatus(statusList)}}</template>
-                    </el-table-column>
-                </el-table>
-           </div>
+          <!-- 首页 -->
+          <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
+              <el-table-column
+                  align="center"
+                  prop=""
+                  width=150
+                  type="index"
+                  label="序号">
+                  <template slot-scope="scope">
+                      <span>{{scope.$index+(pageNum - 1) * pageSize + 1}}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column align="center" property="relationAccount" label="关联账号"></el-table-column>
+              <el-table-column align="center" property="organName" label="企业名称"></el-table-column>
+              <el-table-column align="center" property="totalValue" label="红包总金额">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.totalValue && scope.row.totalValue.toFixed(2)}}</span>
+                    <span v-if="scope.row.totalValue">元</span>
+                  </template>
+              </el-table-column>
+              <el-table-column align="center" property="totalNum" label="发放个数">
+                  <template slot-scope="scope">{{ scope.row.totalNum}}个</template>
+              </el-table-column>
+              <el-table-column
+                  align="center"
+                  prop="operation"
+                  label="操作">
+                  <template slot-scope="scope">
+                      <el-button type="text" @click="lookDetail(scope.row)" >查看</el-button>
+                  </template>
+              </el-table-column>
+          </el-table>
         </div>
         <div class="page">
           <el-pagination
@@ -144,7 +78,7 @@
           winAccount: '',
           relationAccount: '',
           status: '',
-          beginDate: '',
+          zbeginDate: '',
           endDate: ''
         },
         tableData: [],
@@ -154,17 +88,6 @@
       }
     },
     filters: {
-      // 状态过滤器
-      fmtStatus(val, list) {
-        if (val) {
-          for (let item of list) {
-            if (item.value == val) {
-              return item.label;
-            }
-          }
-        }
-        return '--';
-      }
     },
     methods: {
       /**
@@ -178,11 +101,14 @@
        * 查询 申请用户
        * */
       getAwardByPage() {
-        let param = this.ruleForm;
-        param.pageNum = this.pageNum;
-        param.pageSize = this.pageSize;
-        this.axios.post(this.$api.virtualWin.listPlatformAwardByPage, param).then((res) => {
-          let data = res.data.data, msg = res.data.message;
+        let param = {
+          pageNum:this.pageNum,
+          pageSize:this.pageSize
+        };
+       
+        this.axios.post(this.$api.virtualWin.listRedPacket, param).then((res) => {
+          let data = res.data.data, 
+              msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
             this.total = data.total;
@@ -190,26 +116,6 @@
             this.$message.error('查询失败：' + msg);
           }
         })
-      },
-      // 验证时间
-      changeTime(type) {
-        if (this.ruleForm.beginDate && this.ruleForm.endDate) {
-          let start = new Date(this.ruleForm.beginDate).getTime()
-          let end = new Date(this.ruleForm.endDate).getTime()
-          if (start > end) {
-            let msg = '结束时间不能小于兑奖时间'
-            if (type === 'start') {
-              msg = '兑奖时间不能大于结束时间'
-              this.ruleForm.beginDate = ''
-            } else {
-              this.ruleForm.endDate = ''
-            }
-            this.$message({
-              message: msg,
-              type: 'warning'
-            });
-          }
-        }
       },
       /**
        * 清空
@@ -221,7 +127,7 @@
        * 导出Excel
        */
       exportExcel() {
-        let load = this.$api.virtualWin.listPlatformAwardForExport.replace('@root', '/api');
+        let load = this.$api.virtualWin.listRedPacketExport.replace('@root', '/api');
         var _form = document.createElement('FORM');
         _form.setAttribute('method', 'post');
         _form.setAttribute('action', load);
@@ -262,7 +168,7 @@
       },
       //查看
       lookDetail(row){
-        this.$router.push({path:'/redPacketWinningList',query:{page:'info',id:row.id}});
+        this.$router.push({path:'/redPacketWinningInfo',query:{id:row.subOrganId}});
       }   
     },
     mounted() {

@@ -37,13 +37,16 @@
           <template slot="title" >
             <span>自建商品审核</span>
           </template>
+          <el-menu-item index="/myAwardList"><span>自建商品审核</span></el-menu-item>
           <el-menu-item index="/openRedPacketAudit"><span>开通微信红包审核</span></el-menu-item>
         </el-submenu>
 
         <el-menu-item index="/agentUserList"><span>代理商用户列表</span></el-menu-item>
         <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
         <el-menu-item index="/resourceAllocationRecord"><span>资源分配记录</span></el-menu-item>
-        <el-menu-item index="/myAwardList"><span>自建商品审核</span></el-menu-item>
+        <!-- <el-menu-item index="/myAwardList">
+            <span>自建商品审核</span>
+        </el-menu-item> -->
         <el-submenu class="m-submenu-popper" index="2">
           <template slot="title" >
             <!--<i class="icon" data-icon="4"></i>-->

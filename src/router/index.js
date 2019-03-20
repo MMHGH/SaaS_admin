@@ -65,6 +65,7 @@ import BatchImportInvoice from '@/pages/prizeList/BatchImportInvoice.vue'
 // 虚拟中奖信息
 import VirtualWinningList from '@/pages/virtualWinning/virtualWinningList.vue'
 import RedPacketWinningList from '@/pages/virtualWinning/redPacketWinningList.vue'
+import RedPacketWinningInfo from '@/pages/virtualWinning/redPacketWinningInfo.vue'
 
 // 自建商品审核
 import OpenRedPacketAudit from '@/pages/createProductAudit/openRedPacketAudit.vue'
@@ -353,6 +354,12 @@ const routes = [
         path: '/redPacketWinningList',
         name: 'RedPacketWinningList',
         component: RedPacketWinningList,
+        meta: {title: '微信红包中奖信息'}
+      },
+      {
+        path: '/redPacketWinningInfo',
+        name: 'RedPacketWinningInfo',
+        component: RedPacketWinningInfo,
         meta: {title: '微信红包中奖信息'}
       },
       // 自建商品审核
