@@ -98,14 +98,13 @@
     data() {
       return {
         statusList: [
-          // 状态： 1待兑换 2 未发货 3 已过期 4 已兑换 5已领取 6兑换失败
           {label: '全部', value: ''},
           {label: '待兑换', value: 1},
           {label: '未发货', value: 2},
           {label: '已过期', value: 3},
-          {label: '已兑换', value: 4},
-          {label: '已领取', value: 5},
-          {label: '兑换失败', value: 6}
+          {label: '待发货', value: 4},
+          {label: '已发货', value: 5},
+          {label: '领取失败', value: 6}
         ],
         ruleForm: {
           orderNo: '',
@@ -124,6 +123,7 @@
     filters: {
       // 状态过滤器
       fmtStatus(val) {
+        // 状态： 1待兑换 2 未发货 3 已过期 4 待发货 5待发货 6领取失败
         let status = '';
         switch(val){
             case 1:
@@ -136,13 +136,13 @@
                 status='已过期';
                 break;
             case 4:
-                status='已兑换';
+                status='待发货';
                 break;
             case 5:
-                status='已领取';
+                status='已发货';
                 break;
             case 6:
-                status='兑换失败';
+                status='领取失败';
                 break;
         }
         return status
