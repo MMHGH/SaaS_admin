@@ -31,7 +31,7 @@ export default {
   .home-main .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus{border-color: rgb(220, 223, 230);}
 
   /* 补丁 element-ui el-tree */
-  .home-main .el-tree-node{white-space: normal;}
+  .home-main .el-tree-node{white-space: normal; word-break: break-all;}
   .home-main .el-tree-node__content{height: auto;}
 </style>
 
