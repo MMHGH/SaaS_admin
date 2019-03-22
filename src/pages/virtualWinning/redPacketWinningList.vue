@@ -3,6 +3,21 @@
     <div class="mat-header">权限后台 / <span>红包中奖信息</span></div>
 
     <div class="body">
+        <!-- 查询条件 -->
+      <div class="mateForm">
+        <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
+          <el-form-item label="关联账户" prop="relationAccount">
+            <el-input v-model="ruleForm.relationAccount"  placeholder="请输入关联账户"></el-input>
+          </el-form-item>
+          <el-form-item label="企业名称" prop="organName">
+            <el-input v-model="ruleForm.organName" maxlength="11" placeholder="请输入企业名称"></el-input>
+          </el-form-item>
+          <el-form-item style="padding-left: 30px;">
+            <el-button type="primary" @click="queryData" size="small">搜索</el-button>
+            <el-button  @click="resetForm('ruleForm')" size="small">清空</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <!-- 表格 -->
       <div class="metaContent">
         <div class="btns">
@@ -74,12 +89,8 @@
           {label: '已过期', value: 3}
         ],
         ruleForm: {
-          orderNo: '',
-          winAccount: '',
           relationAccount: '',
-          status: '',
-          zbeginDate: '',
-          endDate: ''
+          organName: '',
         },
         tableData: [],
         pageNum: 1,
@@ -103,7 +114,9 @@
       getAwardByPage() {
         let param = {
           pageNum:this.pageNum,
-          pageSize:this.pageSize
+          pageSize:this.pageSize,
+          relationAccount:this.ruleForm.relationAccount,
+          organName:this.ruleForm.organName
         };
        
         this.axios.post(this.$api.virtualWin.listRedPacket, param).then((res) => {
