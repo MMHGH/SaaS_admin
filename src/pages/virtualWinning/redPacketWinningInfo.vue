@@ -33,9 +33,9 @@
               end-placeholder="结束时间">
             </el-date-picker>
           </el-form-item>
-          <!-- <el-form-item label="关联账户" prop="relationAccount">
+          <el-form-item label="关联账户" prop="relationAccount">
             <el-input v-model="ruleForm.relationAccount" maxlength="11" placeholder="请输入关联账户"></el-input>
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item label="中奖账户" prop="winAccount">
             <el-input v-model="ruleForm.winAccount" maxlength="11" placeholder="请输入中奖账户"></el-input>
           </el-form-item>
