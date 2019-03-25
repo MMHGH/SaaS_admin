@@ -10,7 +10,7 @@
             <el-date-picker
               v-model="ruleForm.beginDate"
               type="datetime"
-              value-format="timestamp"
+              value-format="yyyy-MM-dd HH:mm:ss"
               style="width: 215px;" 
               placeholder="请选择申请时间">
             </el-date-picker>
@@ -19,7 +19,7 @@
             <el-date-picker
               v-model="ruleForm.endDate"
               type="datetime"
-              value-format="timestamp" style="width: 215px;"
+              value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;"
               placeholder="请选择结束时间">
             </el-date-picker>
           </el-form-item>
