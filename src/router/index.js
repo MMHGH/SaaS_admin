@@ -56,6 +56,15 @@ import UpdateMaterial from '@/pages/materialManagement/UpdateMaterial.vue'
 import myAwardList from '@/pages/myAwardList/myAwardList.vue'
 // 自建奖品-查看详情
 import awardDetail from '@/pages/myAwardList/awardDetail.vue'
+// 自建商品审核
+import OpenRedPacketAudit from '@/pages/createProductAudit/openRedPacketAudit.vue'
+import AuditawardDetail from '@/pages/createProductAudit/auditawardDetail.vue'
+import VideoAudit from '@/pages/createProductAudit/videoAudit.vue'
+import SetWhiteList from '@/pages/createProductAudit/setWhiteList.vue'
+import ImageTextAudit from '@/pages/createProductAudit/imageTextAudit.vue'
+import AuditLogging from '@/pages/createProductAudit/auditLogging.vue'
+import AuditRuleSetting from '@/pages/createProductAudit/auditRuleSetting.vue'
+
 
 // 实物中奖列表
 import PrizeList from '@/pages/prizeList/PrizeList.vue'
@@ -66,10 +75,6 @@ import BatchImportInvoice from '@/pages/prizeList/BatchImportInvoice.vue'
 import VirtualWinningList from '@/pages/virtualWinning/virtualWinningList.vue'
 import RedPacketWinningList from '@/pages/virtualWinning/redPacketWinningList.vue'
 import RedPacketWinningInfo from '@/pages/virtualWinning/redPacketWinningInfo.vue'
-
-// 自建商品审核
-import OpenRedPacketAudit from '@/pages/createProductAudit/openRedPacketAudit.vue'
-import AuditawardDetail from '@/pages/createProductAudit/auditawardDetail.vue'
 
 // 代理商用户列表
 import AgentUserList from '@/pages/agentUserList/AgentUserList.vue'
@@ -374,6 +379,37 @@ const routes = [
         name: 'AuditawardDetail',
         component: AuditawardDetail,
         meta: {title: '开通微信红包奖品'}
+      },
+
+      {
+        path: '/videoAudit',
+        name: 'VideoAudit',
+        component: VideoAudit,
+        meta: {title: '视频审核'}
+      },
+      {
+        path: '/setWhiteList',
+        name: 'SetWhiteList',
+        component: SetWhiteList,
+        meta: {title: '设置白名单'}
+      },
+      {
+        path: '/imageTextAudit',
+        name: 'ImageTextAudit',
+        component: ImageTextAudit,
+        meta: {title: '图文审核'}
+      },
+      {
+        path: '/auditLogging',
+        name: 'AuditLogging',
+        component: AuditLogging,
+        meta: {title: '审核记录'}
+      },
+      {
+        path: '/auditRuleSetting',
+        name: 'AuditRuleSetting',
+        component: AuditRuleSetting,
+        meta: {title: '自动审核规则设置'}
       },
       // 代理商用户列表
       {

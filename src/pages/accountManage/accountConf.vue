@@ -13,8 +13,11 @@
           <span v-text="ruleForm.name"></span>
           <el-button type="text" @click="logOut" style="margin-left: 20px;" title="注销登录">注销</el-button>
         </el-form-item>
-        <el-form-item label="密码:">
+        <el-form-item label="密码:"  style="margin-bottom: 0px">
           <el-button type="text" @click="openUpPwd" title="修改密码">修改密码</el-button>
+        </el-form-item>
+        <el-form-item label="邮箱:">
+          <el-button type="text" @click="dialogEmail = true" title="修改邮箱">修改邮箱</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,6 +40,19 @@
           <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
           <el-button @click="resetForm('ruleForm2')">重置</el-button>
           <el-button @click="dialogFormVisible = false">取 消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    
+    <el-dialog title="修改邮箱" :visible.sync="dialogEmail" width="550px">
+      <el-form :model="ruleForm3" status-icon :rules="rules3" ref="ruleForm3" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="新的邮箱" prop="email">
+          <el-input v-model="ruleForm3.email" type="email"
+                    style="width:240px" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitEmail('ruleForm3')">提交</el-button>
+          <el-button @click="dialogEmail = false">取 消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -68,15 +84,33 @@
           callback();
         }
       };
+      var valiEamil = (rule, value, callback) => {
+        var reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
+        if (!reg.test(value)) {
+          callback(new Error('请输入正确的邮箱'));
+        } else {
+          callback();
+        }
+      };
       return {
         ruleForm: {
           name: ''
         },
         dialogFormVisible: false,
+        dialogEmail:false,
         ruleForm2: {
           pass: '',
           checkPass: '',
           oldPWD: ''
+        },
+        ruleForm3: {
+          email: ''
+        },
+        rules3: {
+          email: [
+            {required: true, message: '请输入邮箱', trigger: 'blur'},
+            {validator: valiEamil, trigger: 'blur'}
+          ],
         },
         rules2: {
           pass: [
@@ -103,6 +137,35 @@
         this.dialogFormVisible = true;
         this.$nextTick(() => {
           this.resetForm('ruleForm2');
+        });
+      },
+      // 修改邮箱
+      submitEmail(formName){
+         let vm = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let sendData = {
+              email: vm.ruleForm3.email,
+            };
+            this.axios.post(this.$api.updateUserPwd, sendData).then(function (respone) {
+              let msg = respone.data.message
+              if (msg === 'ok') {
+                Message({
+                  type: 'success',
+                  message: '修改成功'
+                });
+                vm.dialogEmail = false;
+              } else {
+                Message({
+                  type: 'error',
+                  message: msg
+                });
+              }
+              vm.$refs[formName].resetFields();
+            })
+          } else {
+            return false;
+          }
         });
       },
       // 注销
