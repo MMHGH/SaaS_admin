@@ -11,7 +11,7 @@
               v-model="ruleForm.beginDate"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
-              style="width: 215px;" 
+              style="width: 215px;"
               placeholder="请选择建立开始时间">
             </el-date-picker>
           </el-form-item>
@@ -205,7 +205,7 @@
           endDate: this.ruleForm.endDate,
         }
         this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
@@ -241,8 +241,8 @@
       //查看
       lookDetail(row){
         this.auditData = row;
-        this.showAudit = true;
-      }   
+        this.showAudit = !this.showAudit;
+      }
     },
     mounted() {
       // 查询
