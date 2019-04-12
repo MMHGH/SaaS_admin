@@ -6,8 +6,8 @@
         <p>文本违禁检测分（<span class="warning-text">*代表允许检测内容的风险程度，分数越高风险越大，默认0.5</span>）</p>
         <div class="slide-list">
             <el-slider
-                v-model="slideValue"
-                :min="0.1" :max="1" :step="0.1"
+                v-model="score"
+                :min="0" :max="1" :step="0.1"
                 show-input
                 show-stops>
             </el-slider>
@@ -26,28 +26,39 @@
   export default {
     data() {
       return {
-        slideValue: 0.5,
+        score: 0.5,
       }
     },
     methods: {
+      initData(){
+        let vm = this
+        this.axios.post(this.$api.auditDetails.getApproveScoreRule).then(function(respone){
+          let msg = respone.data.message
+          if(msg == 'ok'){
+            vm.score = respone.data.data.score;
+          }
+        })
+      },
+      // 保存
       save(){
         let vm = this
         let sendData = {   
-          id: this.slideValue,
+          score: this.score
         };
-        this.axios.post(this.$api.goodsMana.supperManaUpdateGoodsInventory,sendData).then(function(respone){
+        this.axios.post(this.$api.auditDetails.updateApproveScoreRule,sendData).then(function(respone){
           let msg = respone.data.message
           if(msg == 'ok'){
             Message({
               type: 'success',
               message: '保存成功'
             });
+            vm.initData();
           }
         })
       },
     },
     mounted() {
-      
+      this.initData();
     }
   }
 </script>
@@ -82,6 +93,7 @@
   }
   .slide-list{
       margin-top:30px;
+      margin-left:10px;
       width:500px;
   }
   .save-btn{

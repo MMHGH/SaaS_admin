@@ -44,6 +44,14 @@ export default {
    * @return
    */
   logout: '@root/loginOut',
+
+  /**
+   * 修改邮箱
+   * @parameter
+   * @return
+   */
+  updateUserEmail: '@root/updateUserEmail',
+
   /**
    * 修改密码
    */
@@ -712,6 +720,15 @@ export default {
     redPacketEnable: '@root/wxRedPacketConf/enable',  // 审核通过
     redPacketDisable: '@root/wxRedPacketConf/disable',  // 审核不通过
     redPacketDownload: '@root/wxRedPacketConf/download',  // 下载证书
+  },
+
+  // 审核
+  auditDetails:{
+    listWhiteListByPage: '@root/approve/listWhiteListByPage',  //查询视频网站白名单
+    addWhiteList: '@root/approve/addWhiteList',  //添加视频网站白名单
+    deleteWhiteList: '@root/approve/deleteWhiteList',  //删除视频网站白名单
+    getApproveScoreRule: '@root/approve/getApproveScoreRule',  //查询自动审核规则
+    updateApproveScoreRule: '@root/approve/updateApproveScoreRule',  //查询自动审核规则
   },
 
   //上传图片地址

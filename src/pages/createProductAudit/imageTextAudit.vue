@@ -90,21 +90,35 @@
         </div>
       </div>
     </div>
+
+    <!-- 审核内容 -->
+    <audit-content v-if="showAudit" :auditData="auditData"></audit-content>
   </div>
 </template>
 
 <script>
   import Util from '../../util/timestamp'
- 
+  import auditContent  from "@/components/AuditContent"
+
   export default {
     data() {
       return {
+        showAudit:false,
+        auditData:'',
         ruleForm: {
           account: '',
           auditStatus: '',
           pageName: '',
           beginDate: '',
           endDate: ''
+        },
+        ruleForm1:{
+          cause:''
+        },
+        rules1:{
+          cause: [
+            {required: true, max: 300, message: '请输入不超过300个中文字符', trigger: 'blur'}
+          ],
         },
         statusList: [
           {label: '全部审核状态', value: ''},
@@ -114,9 +128,19 @@
         ],
         pageList: [
           {label: '全部页面', value: ''},
-          {label: '品牌主页', value: 0},
-          {label: '防伪验真配置', value: 1},
-          {label: '自建奖品', value: 2}
+          {label: '品牌主页', value: 1},
+          {label: '防伪验真配置', value: 2},
+          {label: '咨询公共', value: 3},
+          {label: '商品详情配置', value: 4},
+          {label: '我的主页', value: 5},
+          {label: '自定义模板', value: 6},
+          {label: '视频展示', value: 7},
+          {label: '发展历程', value: 8},
+          {label: '商品列表', value: 9},
+          {label: '商品分类', value: 10},
+          {label: '活动管理', value: 11},
+          {label: '静态溯源模板设置', value: 12},
+          {label: '自建奖品', value: 13},
         ],
         tableData: [],
         pageNum: 1,
@@ -156,6 +180,9 @@
         }
         return pageName
       }
+    },
+    components: {
+      auditContent
     },
     methods: {
       /**
@@ -213,7 +240,8 @@
       },
       //查看
       lookDetail(row){
-        this.$router.push({path:'/auditawardDetail',query:{organId:row.organId}});
+        this.auditData = row;
+        this.showAudit = true;
       }   
     },
     mounted() {

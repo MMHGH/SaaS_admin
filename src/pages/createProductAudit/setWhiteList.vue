@@ -9,8 +9,8 @@
       <div class="metaContent">
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-            <el-table-column align="center" prop="account" label="地址"></el-table-column>
-            <el-table-column align="center" prop="organName" label="备注"></el-table-column>
+            <el-table-column align="center" prop="domain" label="地址"></el-table-column>
+            <el-table-column align="center" prop="remark" label="备注"></el-table-column>
             <el-table-column
                 align="center"
                 prop="operation"
@@ -39,8 +39,8 @@
     <el-dialog title="添加白名单" top="30vh" :visible.sync="dialogMark" width="30%"  :close-on-click-modal=false center>
         <div class="tips-text" style="text-align:center">
            <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-dynamic">
-                <el-form-item label="地址：" prop="site">
-                    <el-input v-model="ruleForm.site" placeholder="请输入地址"></el-input>
+                <el-form-item label="地址：" prop="domain">
+                    <el-input v-model="ruleForm.domain" placeholder="请输入地址"></el-input>
                 </el-form-item>
                 <el-form-item label="备注：" prop="remark">
                     <el-input v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
@@ -48,7 +48,7 @@
             </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary"  @click="submit('ruleForm')">提交</el-button>
+            <el-button type="primary"  @click="addWhiteList('ruleForm')">提交</el-button>
             <el-button type="primary"  @click="dialogMark=false">取消</el-button>
         </span>
     </el-dialog>
@@ -64,7 +64,7 @@
       return {
         dialogMark:false,
         ruleForm: {
-          site: '',
+          domain: '',
           remark:''
         },
         statusList: [
@@ -75,7 +75,7 @@
         ],
         tableData: [],
          rules: {
-          site: [
+          domain: [
             {required: true, message: '请输地址', trigger: 'blur'},
           ]
         },
@@ -91,13 +91,9 @@
       getData() {
         let param = {
           pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          account: this.ruleForm.account,
-          auditStatus: this.ruleForm.auditStatus,
-          beginDate: this.ruleForm.beginDate,
-          endDate: this.ruleForm.endDate,
+          pageSize: this.pageSize
         }
-        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+        this.axios.post(this.$api.auditDetails.listWhiteListByPage, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
@@ -125,49 +121,49 @@
         this.pageNum = val;
         this.getData();
       },
-      // 提交  
-      submit(formName){
+      // 添加白名单
+      addWhiteList(formName){
         let vm = this;
-         this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate((valid) => {
           if (valid) {
             let sendData = {
-              site: vm.ruleForm.site,
-              remark: vm.ruleForm.remark
-            };
-            this.axios.post(this.$api.updateUserPwd, sendData).then(function (respone) {
-              let msg = respone.data.message
-              if (msg === 'ok') {
-                Message({
-                  type: 'success',
-                  message: '提交成功'
-                });
-                vm.dialogMark = false;
-                vm.getData();
-              } else {
-                Message({
-                  type: 'error',
-                  message: msg
-                });
-              }
-              vm.$refs[formName].resetFields();
+              domain:this.ruleForm.domain,
+              remark:this.ruleForm.remark
+            }
+            this.axios.post(this.$api.auditDetails.addWhiteList, sendData).then(function (respone) {
+                let msg = respone.data.message
+                if (msg === 'ok') {
+                  Message({
+                    type: 'success',
+                    message: '添加成功'
+                  });
+                  vm.dialogMark = false;
+                  vm.getData();
+                } else {
+                  Message({
+                    type: 'error',
+                    message: msg
+                  });
+                }
+                vm.$refs[formName].resetFields();
             })
-          } else {
+          }else {
             return false;
           }
-        });     
+        })
       },
       // 删除
       del(row){
         let vm = this
         let sendData = {   
-          id: row.id
+          domain: row.domain
         };
         this.$confirm(`确定要删除?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          vm.axios.post(vm.$api.goodsMana.supperManaDeleteGoods,sendData).then(function(respone){
+          vm.axios.post(vm.$api.auditDetails.deleteWhiteList,sendData).then(function(respone){
             let msg = respone.data.message
             if(msg=='ok'){
               Message({

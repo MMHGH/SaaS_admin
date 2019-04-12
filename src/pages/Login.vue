@@ -96,6 +96,7 @@
                     name: data.name
                   }
                 })
+                sessionStorage.setItem('email', data.email)
                 sessionStorage.setItem('username', data.name)
                 sessionStorage.setItem('defaultMenuActive', this.$route.query.redirect ? sessionStorage.getItem('defaultMenuActive') : '/userLevelDefinition')
               },
