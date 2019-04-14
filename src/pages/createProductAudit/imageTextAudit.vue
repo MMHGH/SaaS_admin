@@ -6,25 +6,25 @@
       <!-- 查询条件 -->
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item prop="beginDate" label="建立开始时间：">
+          <el-form-item prop="createdBeginTime" label="建立开始时间：">
             <el-date-picker
-              v-model="ruleForm.beginDate"
+              v-model="ruleForm.createdBeginTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="timestamp"
               style="width: 215px;"
               placeholder="请选择建立开始时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="endDate" label="建立结束时间：">
+          <el-form-item prop="createdEndTime" label="建立结束时间：">
             <el-date-picker
-              v-model="ruleForm.endDate"
+              v-model="ruleForm.createdEndTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;"
+              value-format="timestamp" style="width: 215px;"
               placeholder="请选择建立结束时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="状态：" prop="auditStatus">
-            <el-select v-model="ruleForm.auditStatus" placeholder="状态" size="small">
+          <el-form-item label="状态：" prop="status">
+            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
                 <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -43,8 +43,8 @@
                 </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="" prop="account">
-                <el-input v-model="ruleForm.account" placeholder="搜索用户账号或企业名称"></el-input>
+          <el-form-item label="" prop="context">
+                <el-input v-model="ruleForm.context" placeholder="搜索用户账号或企业名称"></el-input>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
             <el-button type="primary" @click="queryData" size="small">搜索</el-button>
@@ -56,15 +56,15 @@
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
             <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
-            <el-table-column align="center" prop="organName" label="企业名称"></el-table-column>
+            <el-table-column align="center" prop="companyName" label="企业名称"></el-table-column>
             <el-table-column align="center" property="createdTime" label="提交时间">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" property="auditStatus" label="所在页面">
-              <template slot-scope="scope">{{ scope.row.auditStatus | fmtPage()}}</template>
+            <el-table-column align="center" property="scene" label="所在页面">
+              <template slot-scope="scope">{{ scope.row.scene | fmtPage()}}</template>
             </el-table-column>
-            <el-table-column align="center" property="auditStatus" label="状态">
-              <template slot-scope="scope">{{ scope.row.auditStatus | fmtStatus()}}</template>
+            <el-table-column align="center" property="status" label="状态">
+              <template slot-scope="scope">{{ scope.row.status | fmtStatus()}}</template>
             </el-table-column>
             <el-table-column
                 align="center"
@@ -92,7 +92,7 @@
     </div>
 
     <!-- 审核内容 -->
-    <audit-content v-if="showAudit" :auditData="auditData"></audit-content>
+    <audit-content ref="audit" @getData="getData" @setAuditContent="setAuditContent" v-if="showAudit"  :auditData="auditData"></audit-content>
   </div>
 </template>
 
@@ -107,10 +107,11 @@
         auditData:'',
         ruleForm: {
           account: '',
-          auditStatus: '',
-          pageName: '',
-          beginDate: '',
-          endDate: ''
+          status: '',
+          scene: '',
+          context:'',
+          createdBeginTime: '',
+          createdEndTime: ''
         },
         ruleForm1:{
           cause:''
@@ -121,26 +122,28 @@
           ],
         },
         statusList: [
-          {label: '全部审核状态', value: ''},
+          {label: '全部', value: ''},
           {label: '未审核', value: 0},
           {label: '审核通过', value: 1},
-          {label: '审核不通过', value: 2}
+          {label: '自动审核不通过', value: 2},
+          {label: '人工审核不通过', value: 3},
         ],
         pageList: [
           {label: '全部页面', value: ''},
           {label: '品牌主页', value: 1},
-          {label: '防伪验真配置', value: 2},
+          {label: '防伪验真配置-新建验真模板', value: 2},
           {label: '咨询公共', value: 3},
           {label: '商品详情配置', value: 4},
           {label: '我的主页', value: 5},
-          {label: '自定义模板', value: 6},
-          {label: '视频展示', value: 7},
-          {label: '发展历程', value: 8},
-          {label: '商品列表', value: 9},
-          {label: '商品分类', value: 10},
-          {label: '活动管理', value: 11},
-          {label: '静态溯源模板设置', value: 12},
-          {label: '自建奖品', value: 13},
+          {label: '自定义模板-添加模板', value: 6},
+          // {label: '视频展示', value: 7},
+          {label: '发展历程-历程模板', value: 8},
+          {label: '商品列表-添加商品', value: 9},
+          {label: '商品分类-添加分类', value: 10},
+          {label: '活动管理-添加活动', value: 11},
+          {label: '活动管理-添加活动-添加奖品-奖品基本设置', value: 12},
+          {label: '静态溯源模板设置', value: 13},
+          // {label: '自建奖品-新建奖品', value: 14},
         ],
         tableData: [],
         pageNum: 1,
@@ -160,7 +163,10 @@
            auditStatus = '审核通过'
            break;
           case 2:
-           auditStatus = '审核不通过'
+           auditStatus = '自动审核不通过'
+           break;
+          case 3:
+           auditStatus = '人工复审不通过'
            break;
         }
         return auditStatus
@@ -168,14 +174,40 @@
       fmtPage(val) {
         let pageName = '';
         switch(Number(val)){
-          case 0:
+          case 1:
            pageName = '品牌主页'
            break;
-          case 1:
-           pageName = '防伪验真配置'
-           break;
           case 2:
-           pageName = '自建奖品'
+           pageName = '防伪验真配置-新建验真模板'
+           break;
+          case 3:
+           pageName = '咨询公共'
+          case 4:
+           pageName = '商品详情配置'
+           break;
+          case 5:
+           pageName = '我的主页'
+           break;
+          case 6:
+           pageName = '自定义模板-添加模板'
+          case 7:
+           pageName = '视频展示'
+           break;
+          case 8:
+           pageName = '发展历程-历程模板'
+           break;
+          case 9:
+           pageName = '商品列表-添加商品'
+          case 10:
+           pageName = '商品分类-添加分类'
+           break;
+          case 11:
+           pageName = '活动管理-添加活动'
+           break;
+          case 12:
+           pageName = '活动管理-添加活动-添加奖品-奖品基本设置'
+          case 13:
+           pageName = '自建奖品-新建奖品'
            break;
         }
         return pageName
@@ -197,14 +229,15 @@
        * */
       getData() {
         let param = {
+          createdBeginTime: this.ruleForm.createdBeginTime,
+          createdEndTime: this.ruleForm.createdEndTime,
+          status: this.ruleForm.status,
+          scene: this.ruleForm.scene,
+          context: this.ruleForm.context,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          account: this.ruleForm.account,
-          auditStatus: this.ruleForm.auditStatus,
-          beginDate: this.ruleForm.beginDate,
-          endDate: this.ruleForm.endDate,
         }
-        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+        this.axios.post(this.$api.auditDetails.getImageList, param).then((res) => {
           let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
@@ -241,7 +274,15 @@
       //查看
       lookDetail(row){
         this.auditData = row;
-        this.showAudit = !this.showAudit;
+        this.showAudit = true;
+        //调用子组件方法
+        this.$nextTick(()=>{
+          this.$refs.audit.initData();
+          this.$refs.audit.setDialogAudit();
+        })
+      },
+      setAuditContent(){
+        this.showAudit = false;
       }
     },
     mounted() {

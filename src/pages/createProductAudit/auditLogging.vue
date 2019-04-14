@@ -6,40 +6,46 @@
       <!-- 查询条件 -->
       <div class="mateForm">
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-           <el-form-item prop="beginDate" label="建立开始时间：">
+           <el-form-item prop="createdBeginTime" label="建立开始时间：">
                 <el-date-picker
-                    v-model="ruleForm.beginDate"
+                    v-model="ruleForm.createdBeginTime"
                     type="datetime"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    value-format="timestamp"
                     style="width: 215px;" 
                     placeholder="请选择建立开始时间">
                 </el-date-picker>
           </el-form-item>
-          <el-form-item prop="endDate" label="建立结束时间：">
+          <el-form-item prop="createdEndTime" label="建立结束时间：">
                 <el-date-picker
-                    v-model="ruleForm.endDate"
+                    v-model="ruleForm.createdEndTime"
                     type="datetime"
-                    value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;"
+                    value-format="timestamp" style="width: 215px;"
                     placeholder="请选择建立结束时间">
                 </el-date-picker>
           </el-form-item>
           
-          <el-form-item label="审核结果：" prop="result">
-            <el-select v-model="ruleForm.result" placeholder="状态" size="small">
-                <el-option label="全部" value=""></el-option>
-                <el-option label="通过" value="Y"></el-option>
-                <el-option label="不通过" value="N"></el-option>
+          <el-form-item label="审核结果：" prop="status">
+            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
+                <el-option
+                    v-for="item in statusList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="审核来源：" prop="source">
-            <el-select v-model="ruleForm.source" placeholder="状态" size="small">
-                <el-option label="全部" value=""></el-option>
-                <el-option label="人工审核" value="Y"></el-option>
-                <el-option label="接口审核" value="N"></el-option>
+            <el-select v-model="ruleForm.source" placeholder="审核来源" size="small">
+                <el-option
+                    v-for="item in sourceList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="" prop="account">
-                <el-input v-model="ruleForm.account" placeholder="搜索用户账号或企业名称"></el-input>
+          <el-form-item label="" prop="context">
+                <el-input v-model="ruleForm.context" placeholder="搜索用户账号或企业名称"></el-input>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
             <el-button type="primary" @click="queryData" size="small">搜索</el-button>
@@ -53,20 +59,21 @@
             <el-table-column align="center" property="createdTime" label="时间">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" property="auditStatus" label="审核结果">
-              <template slot-scope="scope">{{ scope.row.auditStatus==0?'审核通过':'审核不通过' }}</template>
+            <el-table-column align="center" property="censored" label="审核结果">
+              <template slot-scope="scope">{{ scope.row.censored | filterCensored }}</template>
             </el-table-column>
             <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
-            <el-table-column align="center" prop="organName" label="企业名称"></el-table-column>
-            <el-table-column align="center" property="link" label="审核内容">
+            <el-table-column align="center" prop="companyName" label="企业名称"></el-table-column>
+            <el-table-column align="center" property="content" label="审核内容">
               <template slot-scope="scope">
-                  <a href="https://www.baidu.com" target="_blank" style="color: #409EFF;">111</a>
+                  <el-button type="text" v-if="scope.row.contentType == 1" @click="lookDetail(scope.row, scope.$index)" >查看</el-button>
+                  <a :href="scope.row.content" target="_blank" style="color: #409EFF;" v-else>{{scope.row.content}}</a>
               </template>
             </el-table-column>
-            <el-table-column align="center" property="auditStatus" label="审核结果">
-              <template slot-scope="scope">{{ scope.row.auditStatus==0?'人工审核':'接口审核' }}</template>
+            <el-table-column align="center" property="source" label="审核来源">
+              <template slot-scope="scope">{{ scope.row.source==1?'自动审核':'人工审核' }}</template>
             </el-table-column>
-            <el-table-column align="center" prop="organName" label="不通过原因"></el-table-column>
+            <el-table-column align="center" prop="censoredNote" label="不通过原因"></el-table-column>
           </el-table>
         </div>
         <div class="page">
@@ -83,28 +90,37 @@
         </div>
       </div>
     </div>
+
+    <!-- 审核内容 -->
+    <audit-content ref="audit" @getData="getData" @setAuditContent="setAuditContent" v-if="showAudit"  :auditData="auditData"></audit-content>
   </div>
 </template>
 
 <script>
   import Util from '../../util/timestamp'
+  import auditContent  from "@/components/AuditContent"
  
   export default {
     data() {
       return {
+        showAudit:false,
+        auditData:'',
         ruleForm: {
-          account: '',
-          auditStatus: '',
-          beginDate: '',
-          endDate: '',
-          result:'',
+          status: '',
+          createdBeginTime: '',
+          createdEndTime: '',
+          context:'',
           source:''
         },
         statusList: [
           {label: '全部', value: ''},
-          {label: '未审核', value: 0},
-          {label: '审核通过', value: 1},
-          {label: '审核不通过', value: 2}
+          {label: '通过', value: 0},
+          {label: '不通过', value: 1},
+        ],
+        sourceList: [
+          {label: '全部', value: ''},
+          {label: '自动审核', value: 1},
+          {label: '人工审核', value: 2}
         ],
         tableData: [],
         pageNum: 1,
@@ -114,21 +130,24 @@
     },
     filters: {
       // 状态过滤器
-      fmtStatus(val) {
+      filterCensored(val) {
         let auditStatus = '';
         switch(Number(val)){
-          case 0:
-           auditStatus = '未审核'
-           break;
           case 1:
            auditStatus = '审核通过'
            break;
           case 2:
-           auditStatus = '审核不通过'
+           auditStatus = '自动审核不通过'
+           break;
+          case 3:
+           auditStatus = '人工复审不通过'
            break;
         }
         return auditStatus
       }
+    },
+    components: {
+      auditContent
     },
     methods: {
       /**
@@ -143,14 +162,15 @@
        * */
       getData() {
         let param = {
+          createdBeginTime: this.ruleForm.createdBeginTime,
+          createdEndTime: this.ruleForm.createdEndTime,
+          status: this.ruleForm.status,
+          source: this.ruleForm.source,
+          context: this.ruleForm.context,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          account: this.ruleForm.account,
-          auditStatus: this.ruleForm.auditStatus,
-          beginDate: this.ruleForm.beginDate,
-          endDate: this.ruleForm.endDate,
         }
-        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+        this.axios.post(this.$api.auditDetails.getRecordList, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
@@ -186,8 +206,17 @@
       },
       //查看
       lookDetail(row){
-        this.$router.push({path:'/auditawardDetail',query:{organId:row.organId}});
-      }   
+        this.auditData = row;
+        this.showAudit = true;
+        //调用子组件方法
+        this.$nextTick(()=>{
+          this.$refs.audit.initData();
+          this.$refs.audit.setDialogAudit();
+        })
+      },
+      setAuditContent(){
+        this.showAudit = false;
+      }
     },
     mounted() {
       // 查询

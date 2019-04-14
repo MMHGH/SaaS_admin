@@ -724,6 +724,11 @@ export default {
 
   // 审核
   auditDetails:{
+    getImageList: '@root/approve/listContextCensorByPage',  //查询图文审核信息
+    getVideoList: '@root/approve/listVideoCensorByPage',  //查询视频审核信息接口
+    getRecordList: '@root/approve/listContentCensorLogByPage',  //查询审核记录
+    censor: '@root/approve/censor',  //审批
+
     listWhiteListByPage: '@root/approve/listWhiteListByPage',  //查询视频网站白名单
     addWhiteList: '@root/approve/addWhiteList',  //添加视频网站白名单
     deleteWhiteList: '@root/approve/deleteWhiteList',  //删除视频网站白名单

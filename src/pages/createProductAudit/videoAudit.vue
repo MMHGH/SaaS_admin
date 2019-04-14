@@ -9,25 +9,25 @@
             <el-button type="primary" @click="whiteList">设置视频来源白名单</el-button>
         </div>
         <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-dynamic">
-          <el-form-item prop="beginDate" label="建立开始时间：">
+          <el-form-item prop="createdBeginTime" label="建立开始时间：">
             <el-date-picker
-              v-model="ruleForm.beginDate"
+              v-model="ruleForm.createdBeginTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="timestamp"
               style="width: 215px;" 
               placeholder="请选择建立开始时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="endDate" label="建立结束时间：">
+          <el-form-item prop="createdEndTime" label="建立结束时间：">
             <el-date-picker
-              v-model="ruleForm.endDate"
+              v-model="ruleForm.createdEndTime"
               type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss" style="width: 215px;"
+              value-format="timestamp" style="width: 215px;"
               placeholder="请选择建立结束时间">
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="状态：" prop="auditStatus">
-            <el-select v-model="ruleForm.auditStatus" placeholder="状态" size="small">
+          <el-form-item label="状态：" prop="status">
+            <el-select v-model="ruleForm.status" placeholder="状态" size="small">
                 <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -36,8 +36,8 @@
                 </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="" prop="account">
-                <el-input v-model="ruleForm.account" placeholder="搜索用户账号或企业名称"></el-input>
+          <el-form-item label="" prop="context">
+                <el-input v-model="ruleForm.context" placeholder="搜索用户账号或企业名称"></el-input>
           </el-form-item>
           <el-form-item style="padding-left: 30px;">
             <el-button type="primary" @click="queryData" size="small">搜索</el-button>
@@ -49,25 +49,25 @@
         <div class="mateTable">
           <el-table ref="multipleTable" border :data="tableData" :header-cell-style="{backgroundColor: '#f2f2f2'}">
             <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
-            <el-table-column align="center" prop="organName" label="企业名称"></el-table-column>
+            <el-table-column align="center" prop="companyName" label="企业名称"></el-table-column>
             <el-table-column align="center" property="createdTime" label="提交时间">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" property="link" label="审核内容">
+            <el-table-column align="center" property="content" label="审核内容">
               <template slot-scope="scope">
-                  <a href="https://www.baidu.com" target="_blank" style="color: #409EFF;">111</a>
+                  <a :href="scope.row.content" target="_blank" style="color: #409EFF;">111</a>
               </template>
             </el-table-column>
-            <el-table-column align="center" property="auditStatus" label="审核状态">
-              <template slot-scope="scope">{{ scope.row.auditStatus | fmtStatus()}}</template>
+            <el-table-column align="center" property="status" label="审核状态">
+              <template slot-scope="scope">{{ scope.row.status | fmtStatus()}}</template>
             </el-table-column>
             <el-table-column
                 align="center"
-                prop="operation"
+                prop="status"
                 label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" v-if="scope.row.auditStatus==0 || scope.row.auditStatus==2" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
-                    <el-button type="text" v-if="scope.row.auditStatus==0 || scope.row.auditStatus==1" @click="auditHandle(scope.row,'nopass')">审核不通过</el-button>
+                    <el-button type="text" v-if="scope.row.status==0 || scope.row.status==2 || scope.row.status==3" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
+                    <el-button type="text" v-if="scope.row.status==0 || scope.row.status==1" @click="auditHandle(scope.row,'nopass')">审核不通过</el-button>
                 </template>
             </el-table-column>
           </el-table>
@@ -116,10 +116,10 @@
       return {
         dialogCause:false,
         ruleForm: {
-          beginDate: '',
-          endDate: '',
-          auditStatus: '',
-          account: ''
+          createdBeginTime: '',
+          createdEndTime: '',
+          status: '',
+          context: ''
         },
         ruleForm1:{
           cause:''
@@ -130,10 +130,11 @@
           ],
         },
         statusList: [
-          {label: '全部审核状态', value: ''},
+          {label: '全部', value: ''},
           {label: '未审核', value: 0},
           {label: '审核通过', value: 1},
-          {label: '审核不通过', value: 2}
+          {label: '自动审核不通过', value: 2},
+          {label: '人工审核不通过', value: 3},
         ],
         tableData: [],
         pageNum: 1,
@@ -154,7 +155,9 @@
            auditStatus = '审核通过'
            break;
           case 2:
-           auditStatus = '审核不通过'
+           auditStatus = '自动审核不通过'
+          case 3:
+           auditStatus = '人工复审不通过'
            break;
         }
         return auditStatus
@@ -175,12 +178,12 @@
         let param = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          account: this.ruleForm.account,
-          auditStatus: this.ruleForm.auditStatus,
-          beginDate: this.ruleForm.beginDate,
-          endDate: this.ruleForm.endDate,
+          context: this.ruleForm.context,
+          status: this.ruleForm.status,
+          createdBeginTime: this.ruleForm.createdBeginTime,
+          createdEndTime: this.ruleForm.createdEndTime,
         }
-        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+        this.axios.post(this.$api.auditDetails.getVideoList, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
@@ -216,6 +219,7 @@
             break;
           case 'nopass':
             this.id = row.id;
+            this.ruleForm1.cause = '';
             this.dialogCause = true;
             break;
         }
@@ -223,39 +227,43 @@
       pass(row){
         let param = {
           id:row.id,
+          status:1,
+          remark:''
         }
-        this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+        this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
             // Message({
             //   type: 'success',
-            //   message: '保存成功'
+            //   message: '提交成功'
             // });
             this.getData();
           } else {
-            this.$message.error('保存失败：' + msg);
+            this.$message.error('提交失败：' + msg);
           }
         })
       },
       nopass(){
         let param = {
           id:this.id,
-          cause:this.ruleForm1.cause
+          status:0,
+          remark:this.ruleForm1.cause
         }
         this.$refs['ruleForm1'].validate((valid, object)=>{
           if(valid){
-            this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
+            this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
               let data = res.data.data, 
                   msg = res.data.message;
               if (msg == 'ok') {
                 Message({
                   type: 'success',
-                  message: '保存成功'
+                  message: '提交成功'
                 });
+                this.dialogCause = false;
                 this.getData();
               } else {
-                this.$message.error('保存失败：' + msg);
+                this.$message.error('提交失败：' + msg);
               }
             })
           }
