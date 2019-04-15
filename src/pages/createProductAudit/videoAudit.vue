@@ -55,7 +55,7 @@
             </el-table-column>
             <el-table-column align="center" property="content" label="审核内容">
               <template slot-scope="scope">
-                  <a :href="scope.row.content" target="_blank" style="color: #409EFF;">111</a>
+                  <a :href="scope.row.content.videoUrl" target="_blank" style="color: #409EFF;">{{scope.row.content.videoUrl}}</a>
               </template>
             </el-table-column>
             <el-table-column align="center" property="status" label="审核状态">
@@ -188,6 +188,9 @@
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
+            for(let i =0;i<data.list.length;i++){
+              this.tableData[i].content = JSON.parse(data.list[i].content);
+            }
             this.total = data.total;
           } else {
             this.$message.error('查询失败：' + msg);

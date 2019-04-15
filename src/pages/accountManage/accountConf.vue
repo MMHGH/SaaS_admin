@@ -48,7 +48,7 @@
     <el-dialog title="修改邮箱" :visible.sync="dialogEmail" width="550px">
       <el-form :model="ruleForm3" status-icon :rules="rules3" ref="ruleForm3" label-width="100px" class="demo-ruleForm">
         <el-form-item label="新的邮箱" prop="newEmail">
-          <el-input v-model="ruleForm3.newEmail" type="email"
+          <el-input v-model="ruleForm3.newEmail" type="email" maxlength="60"
                     style="width:240px" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item>

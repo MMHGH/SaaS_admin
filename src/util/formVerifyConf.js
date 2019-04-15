@@ -5,18 +5,18 @@ export default {
     {
       value: 1, label: '品牌主页-新建主页模板',
       verifyField: [
-        {key: 'notice', label: '公告', type: 'other', value: ''},
+        {key: 'notice', label: '公告', type: 'text', value: ''},
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'imgUrls', label: '图片轮播广告', type: 'img', value: ''},
-        {key: 'footer', label: '底部文案', type: 'other', value: ''},
+        {key: 'imgUrls', label: '图片轮播广告', type: 'imgs', value: ''},
+        {key: 'footer', label: '底部文案', type: 'text', value: ''},
       ]
     },
     {
       value: 2, label: '防伪验真配置-新建验真模板',
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
-        {key: 'productImageUrl', label: '图片轮播广告', type: 'img', value: ''},
+        {key: 'imgUrls', label: '图片轮播广告', type: 'imgs', value: ''},
         {key: 'notice', label: '使用须知', type: 'text', value: ''},
       ]
     },
@@ -25,8 +25,8 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'corporateAdvertisingImageUrl', label: '设置企业广告图', type: 'img', value: ''},
-        {key: 'introduce', label: '介绍', type: 'other', value: ''},
+        {key: 'imgUrls', label: '设置企业广告图', type: 'imgs', value: ''},
+        {key: 'introduce', label: '介绍', type: 'text', value: ''},
       ]
     },
     {
@@ -41,7 +41,7 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'imageUrl', label: '设置广告图', type: 'img', value: ''},
+        {key: 'imageUrl', label: '设置广告图', type: 'imgs', value: ''},
       ]
     },
     {
@@ -111,6 +111,8 @@ export default {
     {
       value: 13, label: '静态溯源模板设置',
       verifyField: [
+        {key: 'name', label: '页面标题', type: 'text', value: ''},
+        // {key: 'name', label: '', type: 'trace', value: ''},
         
       ]
     },
@@ -146,15 +148,6 @@ export default {
         fields[i].value = jsonObj[fields[i].key];
       }else if(fields[i].type == 'img'){
         switch(type){
-          case 1:
-            jsonObj.json.carouselList.forEach((item, index) => {
-              arrImgs.push(item.url);
-            })
-            fields[i].value = arrImgs;
-            break;
-          case 2:
-          case 3:
-          case 5:
           case 8:
             fields[i].value = [jsonObj.json[fields[i].key]];
             break;
@@ -169,17 +162,16 @@ export default {
         })
         fields[i].value = arrImgs;
       }else if(fields[i].type == 'html'){
-        fields[i].value = jsonObj.json[fields[i].key];
+        fields[i].value = jsonObj[fields[i].key];
       }else{
         switch(type){
-          case 1:
-          case 3:
           case 7:
           case 8:
             fields[i].value = jsonObj.json[fields[i].key];
             break;
           case 11:
-            fields[i].value = jsonObj.templateData[fields[i].key];
+            let jsonData = JSON.parse(jsonObj.templateData);
+            fields[i].value = jsonData[fields[i].key];
             break;
         }
       }

@@ -67,7 +67,7 @@
             <el-table-column align="center" property="content" label="审核内容">
               <template slot-scope="scope">
                   <el-button type="text" v-if="scope.row.contentType == 1" @click="lookDetail(scope.row, scope.$index)" >查看</el-button>
-                  <a :href="scope.row.content" target="_blank" style="color: #409EFF;" v-else>{{scope.row.content}}</a>
+                  <a :href="scope.row.content.videoUrl" target="_blank" style="color: #409EFF;" v-else>{{scope.row.content.videoUrl}}</a>
               </template>
             </el-table-column>
             <el-table-column align="center" property="source" label="审核来源">
@@ -176,6 +176,11 @@
           if (msg == 'ok') {
             this.tableData = data.list;
             this.total = data.total;
+            for(let i =0;i<data.list.length;i++){
+              if(data.list[i].contentType == 2){
+                this.tableData[i].content = JSON.parse(data.list[i].content);
+              }
+            }
           } else {
             this.$message.error('查询失败：' + msg);
           }

@@ -33,8 +33,8 @@
                 </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="页面：" prop="pageName">
-            <el-select v-model="ruleForm.pageName" placeholder="页面" size="small">
+          <el-form-item label="页面：" prop="scene">
+            <el-select v-model="ruleForm.scene" placeholder="页面" size="small">
                 <el-option
                     v-for="item in pageList"
                     :key="item.value"
@@ -106,7 +106,6 @@
         showAudit:false,
         auditData:'',
         ruleForm: {
-          account: '',
           status: '',
           scene: '',
           context:'',
@@ -132,7 +131,7 @@
           {label: '全部页面', value: ''},
           {label: '品牌主页', value: 1},
           {label: '防伪验真配置-新建验真模板', value: 2},
-          {label: '咨询公共', value: 3},
+          {label: '咨询公告', value: 3},
           {label: '商品详情配置', value: 4},
           {label: '我的主页', value: 5},
           {label: '自定义模板-添加模板', value: 6},
@@ -181,7 +180,8 @@
            pageName = '防伪验真配置-新建验真模板'
            break;
           case 3:
-           pageName = '咨询公共'
+           pageName = '咨询公告'
+           break;
           case 4:
            pageName = '商品详情配置'
            break;
@@ -190,6 +190,7 @@
            break;
           case 6:
            pageName = '自定义模板-添加模板'
+           break;
           case 7:
            pageName = '视频展示'
            break;
@@ -198,6 +199,7 @@
            break;
           case 9:
            pageName = '商品列表-添加商品'
+           break;
           case 10:
            pageName = '商品分类-添加分类'
            break;
@@ -206,6 +208,7 @@
            break;
           case 12:
            pageName = '活动管理-添加活动-添加奖品-奖品基本设置'
+           break;
           case 13:
            pageName = '自建奖品-新建奖品'
            break;

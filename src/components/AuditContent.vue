@@ -12,6 +12,13 @@
           <img class="item-img" v-else-if="item.type === 'imgs'" v-for="(img,idx) in item.value" :key="idx" :src="img">
           <!-- html类型 -->
           <div v-else-if="item.type === 'html'" v-html="item.value"></div>
+          <!-- 静态溯源 -->
+          <!-- <div v-else-if="item.type === 'trace'">
+             <div class="temp-title"></div>
+             <p class="temp-item" v-for="(item,index) in rawMaterialInfoForm.label" :key="index">
+                {{rawMaterialInfoForm.label[index].value}}：{{rawMaterialInfoForm.value[index].value}}
+             </p>
+          </div> -->
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -105,12 +112,21 @@
 
         // 获取配置
         let conf = formVerifyConf.getConfByType(this.auditData.scene);
-        // let conf = formVerifyConf.getConfByType(12);
+        // let conf = formVerifyConf.getConfByType(13);
         console.log('1.通过类型匹配到的数据',conf)
         // 解析json
-        let data = {
-            smallName: "九宫格"
-        }
+        // let data = {
+        //   logisticsInfo: {"attrList":[],"reportList":[]},
+        //   logisticsInfoTitle: "栏目4",
+        //   name: "页面标题",
+        //   productInfo: [{"name":""},{"sequence":""},{"imgUrl":""},{"code":""},{"specification":""},{"price":""},{"origin":""}],
+        //   productionInfo: {"attrList":[{"key":"1555232402920","label":"项目名称2","value":"项目内容2"}],"reportList":[{"imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-15/74b310e5-9d69-4ce3-ae4b-2f0d55416869.jpg","key":1555294901797}]},
+        //   productionInfoTitle: "栏目2",
+        //   rawMaterialInfo: {"attrList":[{"key":"1555232380088","label":"项目名称1","value":"项目内容1"}],"reportList":[{"imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-15/c28f65b9-5d8f-4f83-a65d-b7a06732f2ed.jpg","key":1555294732054}]},
+        //   rawMaterialInfoTitle: "栏目1",
+        //   qualityInfo: {"attrList":[],"reportList":[]},
+        //   qualityInfoTitle: "栏目3",
+        // }
         // let json = JSON.parse(JSON.stringify(data));
         let json = JSON.parse(this.auditData.content);
         console.log('2.解析后台返回的json数据',json)
