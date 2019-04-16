@@ -236,6 +236,8 @@
 
         // 静态溯源模板
         if (this.auditData.scene === 13) {
+          // 设置值
+          this.formData = formVerifyConf.setVerifyField(conf.value, conf.verifyField, json);
           // 设置Form JSon数据
           let setFormJson = function (form, data) {
             let jsonObj = JSON.parse(data), idx = 0;
