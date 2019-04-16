@@ -210,8 +210,11 @@
            pageName = '活动管理-添加活动-添加奖品-奖品基本设置'
            break;
           case 13:
-           pageName = '自建奖品-新建奖品'
+           pageName = '静态溯源模板设置'
            break;
+          case 14:
+            pageName = '自建奖品-新建奖品'
+            break;
         }
         return pageName
       }
