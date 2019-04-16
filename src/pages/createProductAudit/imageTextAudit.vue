@@ -130,19 +130,19 @@
         pageList: [
           {label: '全部页面', value: ''},
           {label: '品牌主页', value: 1},
-          {label: '防伪验真配置-新建验真模板', value: 2},
-          {label: '咨询公告', value: 3},
+          {label: '防伪验真配置', value: 2},
+          {label: '咨讯公告', value: 3},
           {label: '商品详情配置', value: 4},
           {label: '我的主页', value: 5},
-          {label: '自定义模板-添加模板', value: 6},
-          // {label: '视频展示', value: 7},
-          {label: '发展历程-历程模板', value: 8},
-          {label: '商品列表-添加商品', value: 9},
-          {label: '商品分类-添加分类', value: 10},
-          {label: '活动管理-添加活动', value: 11},
-          {label: '活动管理-添加活动-添加奖品-奖品基本设置', value: 12},
+          {label: '自定义模板', value: 6},
+          {label: '视频展示', value: 7},
+          {label: '发展历程', value: 8},
+          {label: '商品列表', value: 9},
+          {label: '商品分类', value: 10},
+          {label: '活动管理', value: 11},
+          {label: '活动管理-奖品基本设置', value: 12},
           {label: '静态溯源模板设置', value: 13},
-          // {label: '自建奖品-新建奖品', value: 14},
+          {label: '自建奖品', value: 14},
         ],
         tableData: [],
         pageNum: 1,
@@ -177,7 +177,7 @@
            pageName = '品牌主页'
            break;
           case 2:
-           pageName = '防伪验真配置-新建验真模板'
+           pageName = '防伪验真配置'
            break;
           case 3:
            pageName = '咨讯公告'
@@ -189,28 +189,31 @@
            pageName = '我的主页'
            break;
           case 6:
-           pageName = '自定义模板-添加模板'
+           pageName = '自定义模板'
            break;
           case 7:
            pageName = '视频展示'
            break;
           case 8:
-           pageName = '发展历程-历程模板'
+           pageName = '发展历程'
            break;
           case 9:
-           pageName = '商品列表-添加商品'
+           pageName = '商品列表'
            break;
           case 10:
-           pageName = '商品分类-添加分类'
+           pageName = '商品分类'
            break;
           case 11:
-           pageName = '活动管理-添加活动'
+           pageName = '活动管理'
            break;
           case 12:
-           pageName = '活动管理-添加活动-添加奖品-奖品基本设置'
+           pageName = '活动管理-奖品基本设置'
            break;
           case 13:
-           pageName = '自建奖品-新建奖品'
+           pageName = '静态溯源模板设置'
+           break;
+          case 14:
+           pageName = '自建奖品'
            break;
         }
         return pageName

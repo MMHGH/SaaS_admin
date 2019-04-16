@@ -17,7 +17,7 @@
           <el-button type="text" @click="openUpPwd" title="修改密码">修改密码</el-button>
         </el-form-item>
         <el-form-item label="邮箱:">
-          <span style="margin-right:10px" v-if="email">{{email}}</span>
+          <span style="margin-right:10px" v-if="email != 'null'">{{email}}</span>
           <el-button type="text" @click="newsEmail" title="修改邮箱">修改邮箱</el-button>
         </el-form-item>
       </el-form>

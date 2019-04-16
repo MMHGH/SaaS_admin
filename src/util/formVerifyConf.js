@@ -113,7 +113,6 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         // {key: 'name', label: '', type: 'trace', value: ''},
-        
       ]
     },
     // {
