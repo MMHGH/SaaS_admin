@@ -180,7 +180,7 @@
            pageName = '防伪验真配置-新建验真模板'
            break;
           case 3:
-           pageName = '咨询公告'
+           pageName = '咨讯公告'
            break;
           case 4:
            pageName = '商品详情配置'

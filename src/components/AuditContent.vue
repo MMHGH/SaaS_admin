@@ -4,12 +4,12 @@
     <el-dialog title="审核内容" :visible.sync="dialogAudit" width="700px" center>
       <el-form ref="form" label-width="120px">
         <el-form-item class="list-item" :label="item.label+'：'" v-for="(item,index) in formData" :key="index">
-          <!-- text类型 -->
-          <el-input class="item-txt" v-if="item.type==='text' || item.type==='other'" size="small" v-model="item.value"
-                    :placeholder="item.label" disabled></el-input>
+          <!-- text类型:placeholder="item.label" -->
+          <el-input class="item-txt" v-if="item.type==='text' || item.type==='json'" size="small" v-model="item.value"
+                    disabled></el-input>
           <!-- img类型 -->
           <img class="item-img" v-else-if="item.type === 'img'" v-for="(img,idx) in item.value" :key="idx" :src="img">
-          <img class="item-img" v-else-if="item.type === 'imgs'" v-for="(img,idx) in item.value" :key="idx" :src="img">
+          <!-- <img class="item-img" v-else-if="item.type === 'imgs'" v-for="(img,idx) in item.value" :key="idx" :src="img"> -->
           <!-- html类型 -->
           <div v-else-if="item.type === 'html'" v-html="item.value"></div>
           <!-- 静态溯源 -->
@@ -112,20 +112,41 @@
 
         // 获取配置
         let conf = formVerifyConf.getConfByType(this.auditData.scene);
-        // let conf = formVerifyConf.getConfByType(13);
+        // let conf = formVerifyConf.getConfByType(8);
         console.log('1.通过类型匹配到的数据',conf)
         // 解析json
         // let data = {
-        //   logisticsInfo: {"attrList":[],"reportList":[]},
-        //   logisticsInfoTitle: "栏目4",
-        //   name: "页面标题",
-        //   productInfo: [{"name":""},{"sequence":""},{"imgUrl":""},{"code":""},{"specification":""},{"price":""},{"origin":""}],
-        //   productionInfo: {"attrList":[{"key":"1555232402920","label":"项目名称2","value":"项目内容2"}],"reportList":[{"imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-15/74b310e5-9d69-4ce3-ae4b-2f0d55416869.jpg","key":1555294901797}]},
-        //   productionInfoTitle: "栏目2",
-        //   rawMaterialInfo: {"attrList":[{"key":"1555232380088","label":"项目名称1","value":"项目内容1"}],"reportList":[{"imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-15/c28f65b9-5d8f-4f83-a65d-b7a06732f2ed.jpg","key":1555294732054}]},
-        //   rawMaterialInfoTitle: "栏目1",
-        //   qualityInfo: {"attrList":[],"reportList":[]},
-        //   qualityInfoTitle: "栏目3",
+        //   name: "固定标题",
+        //   description: "固定描述",
+        //   json:{
+        //     "brandName":"固定名称",
+        //     "imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-16/80b2a1eb-d787-465a-942b-1399942b1f44.jpg",
+        //     "description":"固定描述",
+        //     "attrs":["brandName","imgUrl","description"]
+        //   },
+        //   other: [
+        //     {
+        //       "title":"新增标题1","isShow":true,"isShowImg":true,"isOpen":true,
+        //       "children":[
+        //           {
+        //             "type":"text","key":[{"value":"1555380588024"}],
+        //             "label":[{"value":"新增项目名称1","key":1555380588024}],
+        //             "value":[{"value":"新增项目内容1","key":1555380588024}]
+        //           },
+        //           {
+        //             "type":"img",
+        //             "imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-16/54051c22-1b81-4776-b027-8b4b896af580.jpg"
+        //           },
+        //           {
+        //             "type":"text",
+        //             "key":[{"value":"1555380627273"}],
+        //             "label":[{"value":"新增项目名称1-1","key":1555380627273}],
+        //             "value":[{"value":"新增项目内容1-1","key":1555380627273}]
+        //           }
+        //       ]
+        //     },
+            
+        //     {"title":"新增标题2","isShow":true,"isShowImg":true,"isOpen":true,"children":[{"type":"text","key":[{"value":"1555380646288"}],"label":[{"value":"新增项目名称2","key":1555380646288}],"value":[{"value":"新增项目内容2","key":1555380646288}]},{"type":"img","imgUrl":"https://imgtest-1257418739.cos.ap-guangzhou.myqcloud.com/userFile/392/2019-04-16/d3719d08-8c19-40fa-801b-c9fba9fbe707.jpg"},{"type":"text","key":[{"value":"1555380676551"}],"label":[{"value":"新增项目名称2-2","key":1555380676551}],"value":[{"value":"新增项目内容2-2","key":1555380676551}]}]}],
         // }
         // let json = JSON.parse(JSON.stringify(data));
         let json = JSON.parse(this.auditData.content);

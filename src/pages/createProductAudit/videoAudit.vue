@@ -156,6 +156,7 @@
            break;
           case 2:
            auditStatus = '自动审核不通过'
+           break;
           case 3:
            auditStatus = '人工复审不通过'
            break;

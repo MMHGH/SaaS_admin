@@ -8,7 +8,7 @@ export default {
         {key: 'notice', label: '公告', type: 'text', value: ''},
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'imgUrls', label: '图片轮播广告', type: 'imgs', value: ''},
+        {key: 'imgUrls', label: '图片轮播广告', type: 'img', value: ''},
         {key: 'footer', label: '底部文案', type: 'text', value: ''},
       ]
     },
@@ -16,7 +16,7 @@ export default {
       value: 2, label: '防伪验真配置-新建验真模板',
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
-        {key: 'imgUrls', label: '图片轮播广告', type: 'imgs', value: ''},
+        {key: 'imgUrls', label: '图片轮播广告', type: 'img', value: ''},
         {key: 'notice', label: '使用须知', type: 'text', value: ''},
       ]
     },
@@ -25,7 +25,7 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'imgUrls', label: '设置企业广告图', type: 'imgs', value: ''},
+        {key: 'imgUrls', label: '设置企业广告图', type: 'img', value: ''},
         {key: 'introduce', label: '介绍', type: 'text', value: ''},
       ]
     },
@@ -41,7 +41,7 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
-        {key: 'imageUrl', label: '设置广告图', type: 'imgs', value: ''},
+        {key: 'imgUrls', label: '设置广告图', type: 'img', value: ''},
       ]
     },
     {
@@ -61,11 +61,11 @@ export default {
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'imgUrl', label: 'banner图片', type: 'img', value: ''},
-        {key: 'brandName', label: '品牌名称', type: 'other', value: ''},
+        {key: 'brandName', label: '品牌名称', type: 'json', value: ''},
         {key: 'description', label: '描述', type: 'text', value: ''},
         {key: 'specification', label: '项目名称', type: 'other', value: ''},
         {key: 'origin', label: '项目内容', type: 'other', value: ''},
-        {key: 'imgUrl', label: '项目图片', type: 'img', value: ''},
+        {key: 'imgUrl', label: '项目图片', type: 'other', value: ''},
       ]
     },
     //  商品管理:9-10
@@ -78,7 +78,7 @@ export default {
         {key: 'specification', label: '规格', type: 'text', value: ''},
         {key: 'origin', label: '产地', type: 'text', value: ''},
         {key: 'imgUrl', label: '产品正面图', type: 'img', value: ''},
-        {key: 'imgUrls', label: '产品反面图', type: 'imgs', value: ''},
+        {key: 'imgUrls', label: '产品反面图', type: 'img', value: ''},
         {key: 'brand', label: '品牌', type: 'text', value: ''},
         {key: 'manufacturer', label: '生产厂家', type: 'text', value: ''},
         {key: 'description', label: '商品简介', type: 'text', value: ''},
@@ -96,9 +96,9 @@ export default {
       value: 11, label: '活动管理-添加活动',
       verifyField: [
         {key: 'name', label: '活动名称', type: 'text', value: ''},
-        {key: 'title', label: '页面标题', type: 'other', value: ''},
-        {key: 'describe', label: '页面描述', type: 'other', value: ''},
-        {key: 'rules', label: '活动规则文字', type: 'other', value: ''},
+        {key: 'title', label: '页面标题', type: 'json', value: ''},
+        {key: 'describe', label: '页面描述', type: 'json', value: ''},
+        {key: 'rules', label: '活动规则文字', type: 'json', value: ''},
       ]
     },
     {
@@ -142,36 +142,27 @@ export default {
    * 设置 单据验证字段
    */
   setVerifyField(type,fields, jsonObj) {
-    let arrImgs = [];
+    // let arrImgs = [];
     for (let i = 0; i < fields.length; i++) {
-      if (fields[i].type == 'text') {
+      let auditType = fields[i].type;
+      if (auditType != 'other') {
         fields[i].value = jsonObj[fields[i].key];
-      }else if(fields[i].type == 'img'){
-        switch(type){
-          case 8:
-            fields[i].value = [jsonObj.json[fields[i].key]];
-            break;
-          case 9:
-          case 14:
-            fields[i].value = jsonObj[fields[i].key];
-            break;
+        if(auditType == 'json' || type == 8){
+          switch(type){
+            case 8:
+              let jsonPares = JSON.parse(jsonObj.json);
+              fields[i].value = [jsonPares[fields[i].key]];
+              break;
+            case 11:
+              let jsonData = JSON.parse(jsonObj.templateData);
+              fields[i].value = jsonData[fields[i].key];
+              break;
+          }
         }
-      }else if(fields[i].type == 'imgs'){
-        jsonObj.imgUrls.forEach((item, index) => {
-          arrImgs.push(item);
-        })
-        fields[i].value = arrImgs;
-      }else if(fields[i].type == 'html'){
-        fields[i].value = jsonObj[fields[i].key];
       }else{
         switch(type){
-          case 7:
           case 8:
-            fields[i].value = jsonObj.json[fields[i].key];
-            break;
-          case 11:
-            let jsonData = JSON.parse(jsonObj.templateData);
-            fields[i].value = jsonData[fields[i].key];
+            // fields[i].value = jsonPares[fields[i].key];
             break;
         }
       }
