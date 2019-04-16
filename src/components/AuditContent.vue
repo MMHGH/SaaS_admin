@@ -217,6 +217,17 @@
     },
     methods: {
       initData() {
+        // 重置数据
+        this.formData = [];
+        // 其他自定义栏目
+        this.otherData = [];
+        // 发展历程
+        this.devCourseData = {
+          devAttrs: {
+            attrs: ''
+          }
+        }
+
         // 获取配置
         let conf = formVerifyConf.getConfByType(this.auditData.scene);
 
