@@ -142,7 +142,7 @@
           {label: '活动管理', value: 11},
           {label: '活动管理-奖品基本设置', value: 12},
           {label: '静态溯源模板设置', value: 13},
-          {label: '自建奖品', value: 14},
+          // {label: '自建奖品', value: 14},
         ],
         tableData: [],
         pageNum: 1,
@@ -212,9 +212,9 @@
           case 13:
            pageName = '静态溯源模板设置'
            break;
-          case 14:
-           pageName = '自建奖品'
-           break;
+          // case 14:
+          //  pageName = '自建奖品'
+          //  break;
         }
         return pageName
       }

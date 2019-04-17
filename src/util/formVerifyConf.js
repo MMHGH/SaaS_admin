@@ -82,7 +82,7 @@ export default {
         {key: 'brand', label: '品牌', type: 'text', value: ''},
         {key: 'manufacturer', label: '生产厂家', type: 'text', value: ''},
         {key: 'description', label: '商品简介', type: 'text', value: ''},
-        {key: 'description', label: '奖品说明', type: 'text', value: ''},
+        // {key: 'description', label: '奖品说明', type: 'text', value: ''},
       ]
     },
     {
