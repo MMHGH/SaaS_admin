@@ -131,7 +131,7 @@
           {label: '全部页面', value: ''},
           {label: '品牌主页', value: 1},
           {label: '防伪验真配置', value: 2},
-          {label: '咨讯公告', value: 3},
+          {label: '资讯公告', value: 3},
           {label: '商品详情配置', value: 4},
           {label: '我的主页', value: 5},
           {label: '自定义模板', value: 6},
@@ -180,7 +180,7 @@
            pageName = '防伪验真配置'
            break;
           case 3:
-           pageName = '咨讯公告'
+           pageName = '资讯公告'
            break;
           case 4:
            pageName = '商品详情配置'

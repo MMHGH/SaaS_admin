@@ -296,7 +296,7 @@
             this.$message.error('保存失败：' + msg);
           }
         })
-      }   
+      }
     },
     mounted() {
       // 查询
