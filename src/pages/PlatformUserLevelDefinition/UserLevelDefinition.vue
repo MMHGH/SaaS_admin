@@ -19,12 +19,12 @@
             <el-table-column align="center" prop="sysUserLevelName" label="等级名称"></el-table-column>
             <el-table-column align="center" label="功能配置">
               <template slot-scope="scope">
-                <el-button size="medium" type="text" @click="functionConfig(scope.row.id)">配置</el-button>
+                <el-button size="medium" type="text" @click="userFunConfig(scope.row.id)">配置</el-button>
               </template>
             </el-table-column>
             <el-table-column align="center" label="功能权益配置">
               <template slot-scope="scope">
-                <el-button size="medium" type="text" @click="functionPowerConfig(scope.row.sysUserTypeName, scope.row.sysUserLevelName, scope.row.id)">配置</el-button>
+                <el-button size="medium" type="text" @click="funPowerConfig(scope.row.sysUserTypeName, scope.row.sysUserLevelName, scope.row.id)">配置</el-button>
               </template>
             </el-table-column>
             <el-table-column v-if="!isPersonalUser" align="center" label="组织权益配置">
@@ -141,11 +141,11 @@
         })
       },
       // 跳转至修改单个平台用户类别的功能配置页面
-      functionConfig(id){
+      userFunConfig(id){
         this.$router.push({name: 'FunctionConfig', params: {id: id}, query: {id: id}})
       },
       // 跳转至修改单个平台用户类别的功能权益配置页面
-      functionPowerConfig(category, level, levelId){
+      funPowerConfig(category, level, levelId){
         this.$router.push({
           name: 'FunctionPowerConfig',
           params: {category: category, level: level, levelId: levelId},
@@ -189,7 +189,7 @@
         })
       },
     },
-    created () {
+    mounted () {
       this.getCategoryList()
     }
   }

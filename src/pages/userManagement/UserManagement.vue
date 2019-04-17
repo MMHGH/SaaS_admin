@@ -79,9 +79,9 @@
                 <el-button size="medium" type="text"
                            @click="updateUserStatus(scope.row.id, scope.row.status === 'Y' ? 'N' : 'Y')">{{scope.row.status === 'Y' ? '禁用' : '启用'}}</el-button>
                 <el-button size="medium" type="text" @click="updateUserAccount(scope.row.id)">修改</el-button>
-                <el-button size="medium" type="text" @click="functionConfig(currentLevelId, scope.row)">功能配置</el-button>
+                <el-button size="medium" type="text" @click="funConfig(currentLevelId, scope.row)">功能配置</el-button>
                 <!--<el-button size="medium" type="text" @click="organizationPowerConfig(currentCategory, currentLevel, scope.row.id, scope.row.organId)">组织权限</el-button>-->
-                <el-button size="medium" type="text" @click="functionPowerConfig(currentCategory, currentLevel, scope.row.id, scope.row.organId, scope.row)">权益分配</el-button>
+                <el-button size="medium" type="text" @click="funPowerConfig(currentCategory, currentLevel, scope.row.id, scope.row.organId, scope.row)">权益分配</el-button>
                 <el-button size="medium" type="text" @click="setLoginManage(scope.row)">设备登录管理</el-button>
               </template>
             </el-table-column>
@@ -328,7 +328,7 @@
         this.$router.push({name: 'UserManagementUpdateUserAccount', params: {id: id}, query: {id: id}})
       },
       // 跳转到功能配置页面
-      functionConfig(currentLevelId, row){
+      funConfig(currentLevelId, row){
         let levelId
         // switch(this.currentFilterType){
         //   case 0: levelId = currentLevelId; break;
@@ -350,7 +350,7 @@
         }})
       },
       // 跳转到功能权益配置页面
-      functionPowerConfig(category, level, userId, organId, row){
+      funPowerConfig(category, level, userId, organId, row){
         this.$router.push({name: 'UserManagementFunctionPowerConfig', query: {
           category: category,
           level: level,
