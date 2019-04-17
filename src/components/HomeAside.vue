@@ -43,7 +43,7 @@
           <el-menu-item index="/videoAudit"><span>视频审核</span></el-menu-item>
           <el-menu-item index="/imageTextAudit"><span>图文审核</span></el-menu-item>
           <el-menu-item index="/auditLogging"><span>审核记录</span></el-menu-item>
-          <el-menu-item index="/auditRuleSetting"><span>自动审核规则设置</span></el-menu-item>
+          <!-- <el-menu-item index="/auditRuleSetting"><span>自动审核规则设置</span></el-menu-item> -->
         </el-submenu>
 
         <el-menu-item index="/agentUserList"><span>代理商用户列表</span></el-menu-item>
