@@ -36,14 +36,14 @@
       </div>
     </div>
     <!-- 添加白名单弹窗 -->
-    <el-dialog title="添加白名单" top="30vh" :visible.sync="dialogMark" width="30%"  :close-on-click-modal=false center>
-        <div class="tips-text" style="text-align:center">
+    <el-dialog title="添加白名单" top="25vh" :visible.sync="dialogMark" width="30%"  :close-on-click-modal=false center>
+        <div class="tips-text">
            <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-dynamic">
                 <el-form-item label="地址：" prop="domain">
-                    <el-input v-model="ruleForm.domain" placeholder="请输入地址"></el-input>
+                    <el-input v-model="ruleForm.domain" style="width:300px;" placeholder="请输入地址" maxlength="300"></el-input>
                 </el-form-item>
                 <el-form-item label="备注：" prop="remark">
-                    <el-input v-model="ruleForm.remark" placeholder="请输入备注"></el-input>
+                    <el-input  type="textarea" :rows="6" style="width:300px;" v-model="ruleForm.remark" placeholder="请输入备注" maxlength="300"></el-input>
                 </el-form-item>
             </el-form>
         </div>
