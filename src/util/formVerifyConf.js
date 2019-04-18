@@ -104,7 +104,7 @@ export default {
     {
       value: 12, label: '活动管理-添加活动-添加奖品-奖品基本设置',
       verifyField: [
-        {key: 'smallName', label: '缩写名称', type: 'text', value: ''},
+        {key: 'name', label: '缩写名称', type: 'text', value: ''},
       ]
     },
     //  溯源应用:13
