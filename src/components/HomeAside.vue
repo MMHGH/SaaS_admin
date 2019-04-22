@@ -28,12 +28,19 @@
         <!-- <el-menu-item index="/virtualWinningList"><span>虚拟中奖信息</span></el-menu-item> -->
         <el-submenu class="m-submenu-popper" index="0">
           <template slot="title" >
+            <span>印刷厂管理</span>
+          </template>
+          <el-menu-item index="/printHouse/printHouseManage"><span>印刷厂管理</span></el-menu-item>
+          <el-menu-item index="/printHouse/printHouseCheck"><span>印刷厂审核</span></el-menu-item>
+        </el-submenu>
+        <el-submenu class="m-submenu-popper" index="1">
+          <template slot="title" >
             <span>虚拟中奖信息</span>
           </template>
           <el-menu-item index="/virtualWinningList"><span>中奖信息</span></el-menu-item>
           <el-menu-item index="/redPacketWinningList"><span>微信红包中奖信息</span></el-menu-item>
         </el-submenu>
-        <el-submenu class="m-submenu-popper" index="1">
+        <el-submenu class="m-submenu-popper" index="2">
           <template slot="title" >
             <span>自建商品审核</span>
           </template>
@@ -52,7 +59,7 @@
         <!-- <el-menu-item index="/myAwardList">
             <span>自建商品审核</span>
         </el-menu-item> -->
-        <el-submenu class="m-submenu-popper" index="2">
+        <el-submenu class="m-submenu-popper" index="3">
           <template slot="title" >
             <!--<i class="icon" data-icon="4"></i>-->
             <span>网易严选商品管理</span>

@@ -94,6 +94,11 @@ import YxOrderManage from '@/pages/yxCommodityManage/yxOrderManage.vue'
 import SaasTrialManage from '@/pages/saasTrialManage/saasTrialManage.vue'
 // 账号设置
 import AccountConf from '@/pages/accountManage/accountConf.vue'
+// 印刷厂管理
+import PrintHouseManage from '@/pages/printHouseManage/printHouseManage.vue'
+import PrintHouseCheck from '@/pages/printHouseManage/printHouseCheck.vue'
+import PrintHouseEdit from '@/pages/printHouseManage/printHouseEdit.vue'
+
 
 Vue.use(Router)
 
@@ -467,6 +472,24 @@ const routes = [
         name: 'accountConf',
         component: AccountConf,
         meta: {title: '账号设置'}
+      },
+      {
+        path: '/printHouse/printHouseManage',
+        name: 'printHouseManage',
+        component: PrintHouseManage,
+        meta: {title: '印刷厂管理'}
+      },
+      {
+        path: '/printHouse/printHouseCheck',
+        name: 'printHouseCheck',
+        component: PrintHouseCheck,
+        meta: {title: '印刷厂审核'}
+      },
+      {
+        path: '/printHouse/printHouseEdit',
+        name: 'printHouseEdit',
+        component: PrintHouseEdit,
+        meta: {title: '印刷厂编辑'}
       },
     ]
   },
