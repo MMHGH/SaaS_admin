@@ -106,7 +106,37 @@
         total: 0,
       }
     },
+    mounted(){
+      this.getData();
+    },
     methods: {
+      /**
+       * 查询
+       */
+      getData() {
+        let param = {
+          pageNum:this.pageNum,
+          pageSize:this.pageSize,
+          subOrganId:this.$route.query.id,
+          orderNo:this.ruleForm.orderNo,
+          winAccount:this.ruleForm.winAccount,
+          status:this.ruleForm.status,
+          zbeginDate:this.ruleForm.time1?this.ruleForm.time1[0] : '',
+          zendDate:this.ruleForm.time1?this.ruleForm.time1[1] : '',
+          beginDate:this.ruleForm.time2?this.ruleForm.time2[0] : '',
+          endDate:this.ruleForm.time2?this.ruleForm.time2[1] : '',
+        }
+        this.axios.post(this.$api.printHouseManage.listPrintHouse, param).then((res) => {
+          let data = res.data.data, 
+              msg = res.data.message;
+          if (msg == 'ok') {
+            this.tableData = data.list;
+            this.total = data.total;
+          } else {
+            this.$message.error('查询失败：' + msg);
+          }
+        })
+      },
       /**
        * 点击 树
        * */
@@ -134,12 +164,7 @@
         this.pageNum = val;
         this.getData();
       },
-      /**
-       * 查询
-       */
-      getData() {
-
-      }
+      
     },
   }
 </script>

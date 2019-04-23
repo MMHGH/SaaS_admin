@@ -667,6 +667,12 @@ export default {
     supperManaInventoryDetail: '@root/goods/inventoryDetail',     //查询单个物资的库存详情
     supperManaUpdateGoodsInventory: '@root/goods/updateGoodsInventory',     //修改库存
   },
+
+  // 印刷厂管理
+  printHouseManage:{
+    
+  },
+
   // 自建奖品
   award:{
     listAwardByPage: '@root/goods/listAwardByPage',     //自建奖品列表

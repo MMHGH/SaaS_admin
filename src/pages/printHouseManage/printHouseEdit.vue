@@ -9,17 +9,17 @@
     <div class="content">
       <div class="c-title"> 编辑印刷厂信息</div>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="印刷厂名称：" prop="name">
-          <el-input v-model="ruleForm.name" class="input-txt" size="small" placeholder="请输入印刷厂名称"></el-input>
+        <el-form-item label="印刷厂全称：" prop="name">
+          <el-input v-model="ruleForm.name" class="input-txt" size="small" maxlength="300" placeholder="请输入印刷厂全称"></el-input>
         </el-form-item>
         <el-form-item label="印刷厂简称：" prop="name">
-          <el-input v-model="ruleForm.name" class="input-txt" size="small" placeholder="请输入印刷厂简称"></el-input>
+          <el-input v-model="ruleForm.name" class="input-txt" size="small" maxlength="300" placeholder="请输入印刷厂简称"></el-input>
         </el-form-item>
         <el-form-item label="联系人：" prop="name">
-          <el-input v-model="ruleForm.name" class="input-txt" size="small" placeholder="请输入联系人"></el-input>
+          <el-input v-model="ruleForm.name" class="input-txt" size="small" maxlength="300" placeholder="请输入联系人"></el-input>
         </el-form-item>
         <el-form-item label="联系电话：" prop="name">
-          <el-input v-model="ruleForm.name" class="input-txt" size="small" placeholder="请输入联系电话"></el-input>
+          <el-input v-model="ruleForm.name" class="input-txt" size="small" maxlength="300" placeholder="请输入联系电话"></el-input>
         </el-form-item>
         <el-form-item label="所在地：" prop="region">
           <el-select v-model="ruleForm.region" class="input-sel" size="small" placeholder="选择省">
@@ -36,11 +36,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="详细地址：" prop="name">
-          <el-input v-model="ruleForm.name" class="input-des" size="small" placeholder="请输入详细地址"></el-input>
+          <el-input v-model="ruleForm.name" class="input-des" size="small" maxlength="300" placeholder="请输入详细地址"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="desc">
           <el-input type="textarea" size="small" class="input-des"
-                    rows="5" v-model="ruleForm.desc" placeholder="备注"></el-input>
+                    rows="5" v-model="ruleForm.desc" placeholder="备注" maxlength="300"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+  import { MessageBox,Message } from 'element-ui'
+
   export default {
     name: "printHouseEdit",
     data() {
@@ -69,7 +71,7 @@
         rules: {
           name: [
             {required: true, message: '请输入活动名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
           ],
           region: [
             {required: true, message: '请选择活动区域', trigger: 'change'}
@@ -86,22 +88,61 @@
           resource: [
             {required: true, message: '请选择活动资源', trigger: 'change'}
           ],
-          desc: [
-            {required: true, message: '请填写活动形式', trigger: 'blur'}
-          ]
+          // desc: [
+          //   {required: true, message: '请填写活动形式', trigger: 'blur'}
+          // ]
         }
       }
     },
+    mounted(){
+      if(this.$route.query.id){
+        this.initData();
+      }
+    },
     methods: {
+      initData(){
+        let param = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          context: this.ruleForm.context,
+          status: this.ruleForm.status,
+          createdBeginTime: this.ruleForm.createdBeginTime,
+          createdEndTime: this.ruleForm.createdEndTime,
+        }
+        this.axios.post(this.$api.auditDetails.getVideoList, param).then((res) => {
+          let data = res.data.data, 
+              msg = res.data.message;
+          if (msg == 'ok') {
+            this.tableData = data.list;
+            for(let i =0;i<data.list.length;i++){
+              this.tableData[i].content = JSON.parse(data.list[i].content);
+            }
+            this.total = data.total;
+          } else {
+            this.$message.error('查询失败：' + msg);
+          }
+        })
+      },
       /**
        * 保存
        * */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            let vm = this
+            let sendData = {   
+              score: this.score
+            };
+            this.axios.post(this.$api.auditDetails.updateApproveScoreRule,sendData).then(function(respone){
+              let msg = respone.data.message
+              if(msg == 'ok'){
+                Message({
+                  type: 'success',
+                  message: '保存成功'
+                });
+              }
+            })
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
