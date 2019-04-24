@@ -71,6 +71,28 @@
         </el-form>
       </div>
 
+      <!-- 静态溯源模板 --自定义栏目 -->
+      <div class="prod-info" v-if="auditData.scene===13" v-for="(item,idx) in staticTempOther" :key="idx">
+        <div style="padding: 10px 0px;">
+          <span class="title">{{item.title}}</span>
+          <div style="float: right;">
+            <el-checkbox class="checkShow" :disabled="true" title="是否展示" v-model="item.isShow"></el-checkbox>
+          </div>
+        </div>
+
+        <div>
+          <div class="temp-item" v-for="(c,idx) in item.children" :key="idx">
+            <p v-if="c.type==='text'" style="margin-bottom: 10px">
+              {{c.label[0].value}}：{{c.value[0].value}}
+            </p>
+            <img class="item-img" v-if="c.type==='img'" :src="c.imgUrl" :onerror="ImgError"/>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <el-checkbox :disabled="true" title="图片项目展开" v-model="item.isShowImg">图片项目展开</el-checkbox>
+        </div>
+      </div>
+
       <!-- 发展历程 -->
       <el-form v-if="auditData.scene===8" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="页面标题" prop="name">
@@ -177,6 +199,8 @@
         formJson: '',
         // 其他自定义栏目
         otherData: [],
+        // 新自定义栏目
+        staticTempOther: [],
         // 发展历程
         devCourseData: {
           devAttrs: {
@@ -288,26 +312,35 @@
             value: [],
           }
           let newObj = Object.assign({}, itemObj);
-          // 原材料信息
-          newObj.title = json.rawMaterialInfoTitle;
-          setFormJson(newObj, json.rawMaterialInfo);
-          this.otherData.push(newObj)
-          // 生产信息
-          newObj = Object.assign({}, itemObj);
-          newObj.title = json.productionInfoTitle;
-          setFormJson(newObj, json.productionInfo);
-          this.otherData.push(newObj)
-          // 质检信息
-          newObj = Object.assign({}, itemObj);
-          newObj.title = json.qualityInfoTitle;
-          setFormJson(newObj, json.qualityInfo);
-          this.otherData.push(newObj)
-          // 物流配送信息
-          newObj = Object.assign({}, itemObj);
-          newObj.title = json.logisticsInfoTitle;
-          setFormJson(newObj, json.logisticsInfo);
-          this.otherData.push(newObj)
-          console.log(this.otherData)
+
+          // 兼容旧数据
+          if (json.rawMaterialInfoTitle) {
+            // 原材料信息
+            newObj.title = json.rawMaterialInfoTitle;
+            setFormJson(newObj, json.rawMaterialInfo);
+            this.otherData.push(newObj)
+            // 生产信息
+            newObj = Object.assign({}, itemObj);
+            newObj.title = json.productionInfoTitle;
+            setFormJson(newObj, json.productionInfo);
+            this.otherData.push(newObj)
+            // 质检信息
+            newObj = Object.assign({}, itemObj);
+            newObj.title = json.qualityInfoTitle;
+            setFormJson(newObj, json.qualityInfo);
+            this.otherData.push(newObj)
+            // 物流配送信息
+            newObj = Object.assign({}, itemObj);
+            newObj.title = json.logisticsInfoTitle;
+            setFormJson(newObj, json.logisticsInfo);
+            this.otherData.push(newObj)
+          }
+          // 新自定义栏目
+          if (json.other) {
+            this.staticTempOther = JSON.parse(json.other);
+          }
+
+          console.log(this.otherData, this.staticTempOther)
         } else if (this.auditData.scene === 8) { // 发展历程
           // 名称
           this.devCourseData.name = json.name;
