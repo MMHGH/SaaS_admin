@@ -670,7 +670,16 @@ export default {
 
   // 印刷厂管理
   printHouseManage:{
-    
+    printHouseList: '@root/printery/list', //印企列表
+    printHouseListArea: '@root/printery/listArea', //印企区域
+    addPrintHouse: '@root/printery/add', //添加印企
+    infoPrintHouse: '@root/printery/get', //印企详情
+    updatePrintHouse: '@root/printery/update', //更新印企
+    downloadPrintHouse: '@root/printery/download', //下载授权文件
+    auditPrintHouse: '@root/printery/audit', //审核
+    disablePrintHouse: '@root/printery/disable', //停用印企
+    delPrintHouse: '@root/printery/delete', //删除印企
+    listAreaByPidAndLevel: '@root/area/listAreaByPidAndLevel', //根据上级id或级别查询区域
   },
 
   // 自建奖品

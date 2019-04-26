@@ -8,26 +8,40 @@
     </div>
     <div class="content">
       <div class="c-left">
-        <el-tree :data="data" :props="defaultProps" default-expand-all
-                 @node-click="handleNodeClick"></el-tree>
+        <el-tree ref="tree" 
+            node-key="provinceId" 
+            :data="treeData"
+            accordion 
+            :highlight-current="true" 
+            default-expand-all
+            @node-click="getUserListByLevel">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span v-if="node.data.label=='全部'"
+                      style="color: #666666;font-weight: bold;">{{ node.label + `(${data.num})` }}
+                </span>
+                <span v-else
+                      style="white-space: nowrap;">{{ node.label +  `(${data.num})`}}
+                </span>
+            </span>
+          </el-tree>
       </div>
       <div class="c-right">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="ruleForm" class="demo-form-inline">
           <el-form-item label="">
-            <el-input v-model="formInline.user" size="small" placeholder="搜索印刷厂名称"></el-input>
+            <el-input v-model="ruleForm.name" size="small" placeholder="搜索印刷厂名称"></el-input>
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="formInline.region" size="small" placeholder="来源">
-              <el-option label="全部来源" value="1"></el-option>
-              <el-option label="自建" value="2"></el-option>
-              <el-option label="用户添加" value="3"></el-option>
+            <el-select v-model="ruleForm.source" size="small" placeholder="来源">
+              <el-option label="全部来源" value=""></el-option>
+              <el-option label="自建" :value="1"></el-option>
+              <el-option label="用户添加" :value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="formInline.region" size="small" placeholder="状态">
-              <el-option label="全部状态" value="1"></el-option>
-              <el-option label="已停用" value="2"></el-option>
-              <el-option label="已启用" value="3"></el-option>
+            <el-select v-model="ruleForm.status" size="small" placeholder="状态">
+              <el-option label="全部状态" value=""></el-option>
+              <el-option label="使用中" :value="1"></el-option>
+              <el-option label="已停用" :value="0"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -35,30 +49,35 @@
           </el-form-item>
         </el-form>
 
-        <el-button class="btn-add" type="primary" size="small" @click="addPrintHouse">添加印刷厂</el-button>
+        <el-button class="btn-add" type="primary" size="small" @click="orderDetail('','get')">添加印刷厂</el-button>
         <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-          <el-table-column align="center" prop="orderNo" label="印刷厂名称"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="印刷厂简称"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="印刷厂ID"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="序列号"></el-table-column>
+          <el-table-column align="center" prop="name" label="印刷厂名称"></el-table-column>
+          <el-table-column align="center" prop="shortName" label="印刷厂简称"></el-table-column>
+          <el-table-column align="center" prop="key" label="印刷厂ID"></el-table-column>
+          <el-table-column align="center" prop="id" label="序列号"></el-table-column>
 
-          <el-table-column align="center" prop="orderNo" label="联系人"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="联系电话"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="所在地"></el-table-column>
+          <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
+          <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
+          <el-table-column align="center" prop="addressDetail" label="所在地"></el-table-column>
 
-          <el-table-column align="center" prop="orderNo" label="详细地址"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="备注"></el-table-column>
-          <el-table-column align="center" prop="orderNo" label="来源"></el-table-column>
-          <el-table-column align="center" property="status" label="状态">
+          <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
+          <el-table-column align="center" prop="remark" label="备注"></el-table-column>
+          <el-table-column align="center" prop="source" label="来源">
+             <template slot-scope="scope">
+               <span>{{ scope.row.source==1?'自建':'用户添加' }}</span>
+             </template>
+          </el-table-column>
+          <el-table-column align="center" prop="status" label="状态">
             <template slot-scope="scope">{{ scope.row.status | filterStatus }}</template>
           </el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button size="small" type="text" @click="orderDetail(scope.row)">编辑</el-button>
-              <el-button size="small" type="text" @click="orderDetail(scope.row)">删除</el-button>
-              <el-button size="small" type="text" @click="orderDetail(scope.row)">启用</el-button>
-              <el-button size="small" type="text" @click="orderDetail(scope.row)">停用</el-button>
-              <el-button size="small" type="text" @click="orderDetail(scope.row)">下载授权文件</el-button>
+              <!-- v-if="scope.row.status === 2" -->
+              <el-button size="small" type="text" v-if="scope.row.status === 2" @click="orderDetail(scope.row,'update')">编辑</el-button>
+              <el-button size="small" type="text" v-if="scope.row.status === 2"  @click="orderDetail(scope.row,'del')">删除</el-button>
+              <el-button size="small" type="text"  @click="orderDetail(scope.row,'start')">{{scope.row.status === 2? "启用" : "停用"}}</el-button>
+              <!-- <el-button size="small" type="text"  v-else @click="orderDetail(scope.row,'end')">停用</el-button> -->
+              <el-button size="small" type="text"  @click="orderDetail(scope.row,'download')">下载授权文件</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -75,39 +94,85 @@
         </el-pagination>
       </div>
     </div>
+    <!-- 删除原因 -->
+    <el-dialog title="" :visible.sync="dialogCause" width="400px" center>
+      <span>请输入{{tips}}原因：</span>
+      <el-form :inline="true" :model="ruleForm1" :rules="rules1" ref="ruleForm1" label-width="120px"
+               style="margin-top:10px;" class="demo-dynamic">
+        <el-form-item label="" prop="cause">
+          <el-input type="textarea" v-model="ruleForm1.cause" :rows="5"
+                    placeholder="请输入不超过300个中文字符" style="width:350px;"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" v-if="tips == '删除'" @click="delUser">确 定</el-button>
+        <el-button type="primary" v-else @click="endUser">确 定</el-button>
+        <el-button @click="dialogCause = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import { MessageBox,Message } from 'element-ui'
+  import formatterURL from '@/util/formatterURL'
+  
   export default {
     name: "printHouseManage",
     data() {
       return {
-        data: [{
-          label: '一级 1',
-          children: [{
-            label: '二级 1-1',
-            children: [{
-              label: '三级 1-1-1'
-            }]
-          }]
+        dialogCause:false,
+        selectTreeNode: '',
+        treeData: [{
+          label: '全部',
+          num:'',
+          children: []
         }],
         defaultProps: {
-          children: 'children',
-          label: 'label'
+            label: 'name',
+            children: 'childNodes',
+            isLeaf: 'leaf'
         },
-        formInline: {
-          user: '',
-          region: '1'
+        ruleForm: {
+         name:'',
+         source:'',
+         status:'',
+         provinceId:'', 
+         cityId:'' 
+        },
+        ruleForm1:{
+          cause:''
+        },
+        rules1: {
+          cause: [
+            {required: true, max: 300, message: '请输入不超过300个中文字符', trigger: 'blur'}
+          ],
         },
         tableData: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        tips:''
+      }
+    },
+    filters: {
+      // 状态过滤器
+      filterStatus(val) {
+        let auditStatus = '';
+        switch (Number(val)) {
+          case 1:
+            auditStatus = '已启用'
+            break;
+          case 2:
+            auditStatus = '已停用'
+            break;
+        }
+        return auditStatus
       }
     },
     mounted(){
       this.getData();
+      this.getOrgTree();
     },
     methods: {
       /**
@@ -115,18 +180,15 @@
        */
       getData() {
         let param = {
+          provinceId:this.ruleForm.provinceId || '',
+          cityId:this.ruleForm.cityId || '',
+          name:this.ruleForm.name,
+          source:this.ruleForm.source,
+          status:this.ruleForm.status,
           pageNum:this.pageNum,
           pageSize:this.pageSize,
-          subOrganId:this.$route.query.id,
-          orderNo:this.ruleForm.orderNo,
-          winAccount:this.ruleForm.winAccount,
-          status:this.ruleForm.status,
-          zbeginDate:this.ruleForm.time1?this.ruleForm.time1[0] : '',
-          zendDate:this.ruleForm.time1?this.ruleForm.time1[1] : '',
-          beginDate:this.ruleForm.time2?this.ruleForm.time2[0] : '',
-          endDate:this.ruleForm.time2?this.ruleForm.time2[1] : '',
         }
-        this.axios.post(this.$api.printHouseManage.listPrintHouse, param).then((res) => {
+        this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
@@ -137,18 +199,51 @@
           }
         })
       },
-      /**
-       * 点击 树
-       * */
-      handleNodeClick(data) {
-        console.log(data);
+      getUserListByLevel(val){
+        console.log(555,val)
+        this.ruleForm.provinceId = val.provinceId;
+        this.ruleForm.cityId = val.cityId;
+        this.getData();         
       },
-      /**
-       * 添加印刷厂
-       */
-      addPrintHouse() {
-        this.$router.push({name: 'printHouseEdit'});
+       // 查询组织树
+      getOrgTree(){
+          let that = this;
+          let params = {
+          }
+          this.axios.post(this.$api.printHouseManage.printHouseListArea, params).then(function (res) {
+              let code = res.data.code;  
+              let data = res.data.data;
+              let numAll = 0;
+              if (code === 0) {
+                  data.forEach(item => {
+                    let citieList = [];
+                    numAll += item.num;
+                    for(let i =0;i<item.cities.length;i++){
+                      citieList.push({label: item.cities[i].cityName,num:item.cities[i].num,cityId:item.cities[i].cityId});
+                    }
+                    console.log(citieList)
+                    that.treeData[0].children.push({ label: item.provinceName,num:item.num,provinceId:item.provinceId,
+                    children:citieList
+                  });
+                });
+                that.treeData[0].num = numAll;
+                console.log('总的数量',numAll)
+              } else {
+                  that.$message.error(res.data.message);
+              }
+          })
       },
+        /**
+         * 树节点 点击
+         */
+        handleNodeClick(data) {
+            if (data.type == 1) {
+               return 
+            } 
+            this.selectTreeNode = data;
+            //  查询数据
+           
+        },
       /**
        * 切换 页大小
        * */
@@ -164,7 +259,147 @@
         this.pageNum = val;
         this.getData();
       },
-      
+      orderDetail(row,type){
+        switch(type){
+          case 'get':
+           this.$router.push({path:'/printHouse/printHouseEdit',query:{id:row.id,type:type}});
+           break;
+          case 'update':
+           this.$router.push({path:'/printHouse/printHouseEdit',query:{id:row.id,type:type}});
+           break;
+          case 'del':
+           this.delConfirm(row);
+           break;
+          case 'start':
+           this.updateLevelStatus(row);
+           break;
+          case 'download':
+           this.download(row);
+           break;
+        }
+      },
+      // 下载
+      download(row){
+        window.location.href = formatterURL.formatterURL(this.$api.printHouseManage.downloadPrintHouse) + '?id=' + row.id
+      },
+      // 更改用户状态
+      updateLevelStatus(row){
+        let that = this;
+        let statusText = row.status == 1 ? "停用" : "启用";
+        this.$confirm('此操作将' + statusText + '该用户, 是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          if(row.status == 1 && row.source == 2){
+            this.dialogCause = true;
+            this.ruleForm1.cause = '';
+            this.id = row.id;
+            this.tips = '停用';
+            return;
+          }
+          that.disablePrintHouse(row,statusText);
+        })
+      },
+      // 普通停用
+      disablePrintHouse(row,text){
+        let vm = this;
+        let sendData = {
+          id: row.id
+        }
+        vm.axios.post(this.$api.printHouseManage.disablePrintHouse,sendData).then(function(respone){
+          let msg = respone.data.message;
+          if(msg=='ok'){
+            Message({
+              type: 'success',
+              message: `已成功${text}该类别`
+            });
+            vm.getData();
+          }
+        })
+      },
+      // 用户来源停用
+      endUser(){
+        let vm = this;
+        let sendData = {
+          id: this.id,
+          note : this.ruleForm1.cause
+        }
+        this.$refs['ruleForm1'].validate((valid, object)=>{
+          if(valid){
+            vm.axios.post(this.$api.printHouseManage.disablePrintHouse,sendData).then(function(respone){
+              let msg = respone.data.message;
+              if(msg=='ok'){
+                Message({
+                  type: 'success',
+                  message: '已成功停用该类别'
+                });
+                vm.getData();
+                vm.dialogCause = false;
+              }
+            })
+          }
+        })
+      },
+      delConfirm(row){
+        this.$confirm(`确定要删除这家印刷厂吗?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 用户添加来源
+          if(row.source == 2){
+            this.id = row.id;
+            this.dialogCause = true;
+            this.ruleForm1.cause = '';
+            this.tips = '删除';
+          }else{
+            this.del(row);
+          }
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      del(row){
+        let vm = this;
+        let sendData = {
+          id : row.id
+        };
+        vm.axios.post(vm.$api.printHouseManage.delPrintHouse,sendData).then(function(respone){
+          let msg = respone.data.message
+          if(msg=='ok'){
+            Message({
+              type: 'success',
+              message: '删除成功'
+            });
+            vm.getData()
+          }
+        })
+      },
+      delUser(){
+        let vm = this;
+        let sendData = {
+          id : this.id,
+          note : this.ruleForm1.cause
+        };
+        this.$refs['ruleForm1'].validate((valid, object)=>{
+          if(valid){
+            vm.axios.post(vm.$api.printHouseManage.delPrintHouse,sendData).then(function(respone){
+              let msg = respone.data.message;
+              if(msg=='ok'){
+                Message({
+                  type: 'success',
+                  message: '删除成功'
+                });
+                vm.getData();
+                vm.dialogCause = false;
+              }
+            })
+          }
+        })
+      }
     },
   }
 </script>
@@ -172,7 +407,7 @@
 <style lang="scss" scoped>
   .printHouseManage {
     .content {
-      padding: 0px 10px 10px 10px;
+      padding: 0px 10px 10px 20px;
       .c-left {
         width: 200px;
         height: 100%;

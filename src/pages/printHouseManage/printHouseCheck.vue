@@ -7,24 +7,24 @@
       </el-breadcrumb>
     </div>
     <div class="content">
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="开始时间" prop="beginTime">
-          <el-date-picker v-model="formInline.beginTime" class="input-txt" size="small" type="date"
-                          value-format="yyyy-MM-dd" placeholder="选择开始时间"></el-date-picker>
+      <el-form :inline="true" :model="ruleForm" class="demo-form-inline">
+        <el-form-item label="开始时间" prop="beginCreatedTime">
+          <el-date-picker v-model="ruleForm.beginCreatedTime" class="input-txt" size="small" 
+                          type="datetime" value-format="timestamp" placeholder="选择开始时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="结束时间" prop="endTime">
-          <el-date-picker v-model="formInline.endTime" class="input-txt" size="small" type="date"
-                          value-format="yyyy-MM-dd" placeholder="选择结束时间"></el-date-picker>
+        <el-form-item label="结束时间" prop="endCreatedTime">
+          <el-date-picker v-model="ruleForm.endCreatedTime" class="input-txt" size="small" 
+                         type="datetime" value-format="timestamp" placeholder="选择结束时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="审核状态">
-          <el-select v-model="formInline.region" size="small" class="input-txt" placeholder="审核状态">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="未审核" value="2"></el-option>
-            <el-option label="已审核" value="3"></el-option>
+          <el-select v-model="ruleForm.auditStatus" size="small" class="input-txt" placeholder="审核状态">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="未审核" :value="0"></el-option>
+            <el-option label="已审核" :value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="申请人" prop="region">
-          <el-input v-model="formInline.region" size="small" placeholder="请输入申请人"></el-input>
+        <el-form-item label="申请人" prop="applicant">
+          <el-input v-model="ruleForm.applicant" size="small" placeholder="请输入申请人"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="getData">搜索</el-button>
@@ -32,40 +32,44 @@
       </el-form>
 
       <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-        <el-table-column align="center" prop="orderNo" label="申请人"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="申请企业"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="印刷厂名称"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="印刷厂简称"></el-table-column>
+        <el-table-column align="center" prop="applicant" label="申请人"></el-table-column>
+        <el-table-column align="center" prop="applicant" label="申请企业"></el-table-column>
+        <el-table-column align="center" prop="name" label="印刷厂名称"></el-table-column>
+        <el-table-column align="center" prop="shortName" label="印刷厂简称"></el-table-column>
 
-        <el-table-column align="center" prop="orderNo" label="联系人"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="联系电话"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="所在地"></el-table-column>
+        <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
+        <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
+        <el-table-column align="center" prop="addressDetail" label="所在地"></el-table-column>
 
-        <el-table-column align="center" prop="orderNo" label="详细地址"></el-table-column>
-        <el-table-column align="center" prop="orderNo" label="备注"></el-table-column>
-        <el-table-column align="center" prop="receivedTime" label="申请时间">
-          <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.receivedTime)}}</template>
+        <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
+        <el-table-column align="center" prop="remark" label="备注"></el-table-column>
+        <el-table-column align="center" prop="auditTime" label="申请时间">
+          <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.auditTime)}}</template>
         </el-table-column>
-        <el-table-column align="center" property="status" label="审核状态">
-          <template slot-scope="scope">{{ scope.row.status | filterStatus }}</template>
+        <el-table-column align="center" prop="auditStatus" label="审核状态">
+          <template slot-scope="scope">{{ scope.row.auditStatus | filterStatus }}</template>
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <div v-if="0">
+            <div v-if="scope.row.auditStatus==2">
               <el-button size="small" type="text" @click="edit(scope.row)">编辑</el-button>
-              <el-button size="small" type="text" @click="pass(scope.row)">审核通过</el-button>
-              <el-button size="small" type="text" @click="dialogCause = true">审核不通过</el-button>
+              <!-- <el-button size="small" type="text" @click="auditHandle(scope.row,'pass')">审核通过</el-button> -->
+              <el-button size="small" type="text" @click="auditHandle(scope.row,'pass',1)">审核通过</el-button>
             </div>
-            <div v-else-if="2">
-              <el-button  v-popover:popover5 type="text">审核</el-button>
+            <!-- v-popover:popover{{$index}} -->
+            <div v-else-if="scope.row.auditStatus==0">
+              <el-button  @click="doShow(scope.row.id)" type="text">审核</el-button>
+                <!-- ref="popover{{$index}}" -->
               <el-popover
-                ref="popover5"
-                placement="bottom"
+                :ref="'popover-' + scope.row.id"
+                placement="top-start"
                 width="160"
-                v-model="visible2">
+                offset=20
+                trigger="manual"
+                v-model="scope.row.visible2">
                 <div style="text-align:center;">
-                  <el-button type="primary" style="margin-bottom:5px;" @click="pass">审核通过</el-button>
-                  <el-button  @click="dialogCause = true">审核不通过</el-button>
+                  <el-button type="primary" style="margin-bottom:5px;" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
+                  <el-button  @click="auditHandle(scope.row,'nopass')">审核不通过</el-button>
                 </div>
               </el-popover>
             </div>
@@ -104,32 +108,30 @@
 </template>
 
 <script>
+  import { MessageBox,Message } from 'element-ui'
+
   export default {
     name: "printHouseCheck",
     data() {
       return {
         dialogCause:false,
-        visible2: false,
-        formInline: {
-          user: '',
-          region: '',
-          status: '',
-          beginTime: '',
-          endTime: ''
+        ruleForm: {
+         applicant:'',
+         auditStatus:'',
+         beginCreatedTime:'',
+         endCreatedTime:''
         },
         ruleForm1: {
           cause: ''
         },
+        flag:false,
         rules1: {
           cause: [
             {required: true, max: 300, message: '请输入不超过300个中文字符', trigger: 'blur'}
           ],
         },
-        tableData: [
-          {
-           orderNo:'11' 
-          }
-        ],
+        id:'',
+        tableData: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
@@ -137,30 +139,33 @@
     },
     filters: {
       filterStatus(val){
-        if(!val){return}
         let sta = '';
-        //状态：1 启用 2 禁用 3 已上架 4 审批中 5 审批不通过
         switch(val){
+          case 0:
+            sta = '未审核';
+            break;
           case 1:
-            sta = '启用';
+            sta = '通过';
             break;
           case 2:
-            sta = '禁用';
-            break;
-          case 3:
-            sta = '已上架';
-            break;
-          case 4:
-            sta = '审批中';
-            break;
-          case 5:
-            sta = '审批不通过';
+            sta = '不通过';
             break;
         }
         return sta
       }
     },
+    mounted(){
+      this.getData()
+    },
     methods: {
+      doShow(id){
+        this.flag = !this.flag;
+        if(this.flag){
+          this.$refs[`popover-` + id].doShow()
+        }else{
+          this.pClose(id);
+        }
+      },
       /**
        * 切换 页大小
        * */
@@ -177,26 +182,28 @@
         this.getData();
       },
        /**
-       * 查询 申请用户
-       * */
+       * 查询
+       */
       getData() {
         let param = {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          context: this.ruleForm.context,
-          status: this.ruleForm.status,
-          createdBeginTime: this.ruleForm.createdBeginTime,
-          createdEndTime: this.ruleForm.createdEndTime,
+          beginCreatedTime:this.ruleForm.beginCreatedTime,
+          endCreatedTime:this.ruleForm.endCreatedTime,
+          applicant:this.ruleForm.applicant,
+          auditStatus:this.ruleForm.auditStatus,
+          pageNum:this.pageNum,
+          pageSize:this.pageSize,
         }
-        this.axios.post(this.$api.auditDetails.getVideoList, param).then((res) => {
+        this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
-            for(let i =0;i<data.list.length;i++){
-              this.tableData[i].content = JSON.parse(data.list[i].content);
-            }
+            for(let i=0;i<this.tableData.length;i++){
+              // this.tableData[i].visible2 = false;
+              // this.tableData[i].auditStatus = 2;
+            } 
             this.total = data.total;
+            console.log(this.tableData)
           } else {
             this.$message.error('查询失败：' + msg);
           }
@@ -206,39 +213,60 @@
         this.$router.push({
           path:'/printHouse/printHouseEdit',
           query:{
-            id:row.id
+            id:row.id,
+            type:'update'
           }
         });
       },
-      pass(row){
+      //审核
+      auditHandle(row,type,flag){
+        switch(type){
+          case 'pass':
+            this.pass(row,flag);
+            break;
+          case 'nopass':
+            this.id = row.id;
+            this.ruleForm1.cause = '';
+            this.dialogCause = true;
+            this.pClose(row.id);
+            break;
+        }
+      },
+      // 审核
+      pass(row,flag){
         let param = {
           id:row.id,
-          status:1,
-          remark:''
+          auditStatus:1,
         }
-        this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
+        this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
-            // Message({
-            //   type: 'success',
-            //   message: '提交成功'
-            // });
+            Message({
+              type: 'success',
+              message: '审核通过成功'
+            });
             this.getData();
+            if(flag){
+              this.pClose(row.id);
+            }
           } else {
             this.$message.error('提交失败：' + msg);
           }
         })
       },
+      pClose(id) {
+        this.$refs[`popover-` + id].doClose()
+      },
       nopass(){
         let param = {
           id:this.id,
-          status:0,
-          remark:this.ruleForm1.cause
+          auditStatus:2,
+          auditNote:this.ruleForm1.cause
         }
         this.$refs['ruleForm1'].validate((valid, object)=>{
           if(valid){
-            this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
+            this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
               let data = res.data.data, 
                   msg = res.data.message;
               if (msg == 'ok') {
