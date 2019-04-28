@@ -678,6 +678,7 @@ export default {
     downloadPrintHouse: '@root/printery/download', //下载授权文件
     auditPrintHouse: '@root/printery/audit', //审核
     disablePrintHouse: '@root/printery/disable', //停用印企
+    enablePrintHouse: '@root/printery/enable', //启用印企
     delPrintHouse: '@root/printery/delete', //删除印企
     listAreaByPidAndLevel: '@root/area/listAreaByPidAndLevel', //根据上级id或级别查询区域
   },

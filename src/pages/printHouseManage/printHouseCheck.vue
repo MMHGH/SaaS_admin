@@ -43,8 +43,8 @@
 
         <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
         <el-table-column align="center" prop="remark" label="备注"></el-table-column>
-        <el-table-column align="center" prop="auditTime" label="申请时间">
-          <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.auditTime)}}</template>
+        <el-table-column align="center" prop="createdTime" label="申请时间">
+          <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
         </el-table-column>
         <el-table-column align="center" prop="auditStatus" label="审核状态">
           <template slot-scope="scope">{{ scope.row.auditStatus | filterStatus }}</template>
@@ -53,25 +53,11 @@
           <template slot-scope="scope">
             <div v-if="scope.row.auditStatus==2">
               <el-button size="small" type="text" @click="edit(scope.row)">编辑</el-button>
-              <!-- <el-button size="small" type="text" @click="auditHandle(scope.row,'pass')">审核通过</el-button> -->
-              <el-button size="small" type="text" @click="auditHandle(scope.row,'pass',1)">审核通过</el-button>
+              <el-button size="small" type="text" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
             </div>
-            <!-- v-popover:popover{{$index}} -->
             <div v-else-if="scope.row.auditStatus==0">
-              <el-button  @click="doShow(scope.row.id)" type="text">审核</el-button>
-                <!-- ref="popover{{$index}}" -->
-              <el-popover
-                :ref="'popover-' + scope.row.id"
-                placement="top-start"
-                width="160"
-                offset=20
-                trigger="manual"
-                v-model="scope.row.visible2">
-                <div style="text-align:center;">
-                  <el-button type="primary" style="margin-bottom:5px;" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
-                  <el-button  @click="auditHandle(scope.row,'nopass')">审核不通过</el-button>
-                </div>
-              </el-popover>
+                <el-button type="text" style="margin-bottom:5px;" @click="auditHandle(scope.row,'pass')">审核通过</el-button>
+                <el-button type="text" @click="auditHandle(scope.row,'nopass')">审核不通过</el-button>
             </div>
             <span v-else>-</span>
           </template>
@@ -115,6 +101,7 @@
     data() {
       return {
         dialogCause:false,
+        placement:'top-start',
         ruleForm: {
          applicant:'',
          auditStatus:'',
@@ -158,14 +145,6 @@
       this.getData()
     },
     methods: {
-      doShow(id){
-        this.flag = !this.flag;
-        if(this.flag){
-          this.$refs[`popover-` + id].doShow()
-        }else{
-          this.pClose(id);
-        }
-      },
       /**
        * 切换 页大小
        * */
@@ -189,19 +168,26 @@
           beginCreatedTime:this.ruleForm.beginCreatedTime,
           endCreatedTime:this.ruleForm.endCreatedTime,
           applicant:this.ruleForm.applicant,
-          auditStatus:this.ruleForm.auditStatus,
           pageNum:this.pageNum,
-          pageSize:this.pageSize,
+          pageSize:this.pageSize
         }
+        let auditStatus = [];
+        // // 未审查0  已审核（包括通过和不通过）
+        if(this.ruleForm.auditStatus === 0){
+          auditStatus = [0]
+        }else if(this.ruleForm.auditStatus === 1){
+          auditStatus = [1,2]
+        }
+        param.auditStatuses = auditStatus;
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
           let data = res.data.data, 
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
-            for(let i=0;i<this.tableData.length;i++){
+            // for(let i=0;i<this.tableData.length;i++){
               // this.tableData[i].visible2 = false;
               // this.tableData[i].auditStatus = 2;
-            } 
+            // } 
             this.total = data.total;
             console.log(this.tableData)
           } else {
@@ -219,21 +205,20 @@
         });
       },
       //审核
-      auditHandle(row,type,flag){
+      auditHandle(row,type){
         switch(type){
           case 'pass':
-            this.pass(row,flag);
+            this.pass(row);
             break;
           case 'nopass':
             this.id = row.id;
             this.ruleForm1.cause = '';
             this.dialogCause = true;
-            this.pClose(row.id);
             break;
         }
       },
-      // 审核
-      pass(row,flag){
+      // 审核通过
+      pass(row){
         let param = {
           id:row.id,
           auditStatus:1,
@@ -247,16 +232,10 @@
               message: '审核通过成功'
             });
             this.getData();
-            if(flag){
-              this.pClose(row.id);
-            }
           } else {
             this.$message.error('提交失败：' + msg);
           }
         })
-      },
-      pClose(id) {
-        this.$refs[`popover-` + id].doClose()
       },
       nopass(){
         let param = {
@@ -286,7 +265,6 @@
     },
   }
 </script>
-
 <style lang="scss" scoped>
   .printHouseCheck {
     .content {

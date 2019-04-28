@@ -40,8 +40,8 @@
           <el-form-item label="">
             <el-select v-model="ruleForm.status" size="small" placeholder="状态">
               <el-option label="全部状态" value=""></el-option>
-              <el-option label="使用中" :value="1"></el-option>
-              <el-option label="已停用" :value="0"></el-option>
+              <el-option label="已启用" :value="1"></el-option>
+              <el-option label="已停用" :value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -186,7 +186,7 @@
           source:this.ruleForm.source,
           status:this.ruleForm.status,
           pageNum:this.pageNum,
-          pageSize:this.pageSize,
+          pageSize:this.pageSize
         }
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
           let data = res.data.data, 
@@ -286,6 +286,7 @@
       updateLevelStatus(row){
         let that = this;
         let statusText = row.status == 1 ? "停用" : "启用";
+        let url = row.status == 1 ?this.$api.printHouseManage.disablePrintHouse:this.$api.printHouseManage.enablePrintHouse; 
         this.$confirm('此操作将' + statusText + '该用户, 是否继续？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -297,16 +298,16 @@
             this.tips = '停用';
             return;
           }
-          that.disablePrintHouse(row,statusText);
+          that.disablePrintHouse(row,statusText,url);
         })
       },
-      // 普通停用
-      disablePrintHouse(row,text){
+      // 普通启用/停用
+      disablePrintHouse(row,text,url){
         let vm = this;
         let sendData = {
           id: row.id
         }
-        vm.axios.post(this.$api.printHouseManage.disablePrintHouse,sendData).then(function(respone){
+        vm.axios.post(url,sendData).then(function(respone){
           let msg = respone.data.message;
           if(msg=='ok'){
             Message({
