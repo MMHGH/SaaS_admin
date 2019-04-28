@@ -58,7 +58,7 @@
 
           <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
           <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
-          <el-table-column align="center" prop="addressDetail" label="所在地"></el-table-column>
+          <el-table-column align="center" prop="address" label="所在地"></el-table-column>
 
           <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
           <el-table-column align="center" prop="remark" label="备注"></el-table-column>
