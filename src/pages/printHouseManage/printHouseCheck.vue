@@ -101,7 +101,6 @@
     data() {
       return {
         dialogCause:false,
-        placement:'top-start',
         ruleForm: {
          applicant:'',
          auditStatus:'',
@@ -111,7 +110,6 @@
         ruleForm1: {
           cause: ''
         },
-        flag:false,
         rules1: {
           cause: [
             {required: true, max: 300, message: '请输入不超过300个中文字符', trigger: 'blur'}
@@ -169,7 +167,8 @@
           endCreatedTime:this.ruleForm.endCreatedTime,
           applicant:this.ruleForm.applicant,
           pageNum:this.pageNum,
-          pageSize:this.pageSize
+          pageSize:this.pageSize,
+          source:2
         }
         let auditStatus = [];
         // // 未审查0  已审核（包括通过和不通过）

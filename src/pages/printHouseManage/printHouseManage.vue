@@ -11,8 +11,8 @@
         <el-tree ref="tree" 
             node-key="provinceId" 
             :data="treeData"
-            accordion 
             :highlight-current="true" 
+            :expand-on-click-node="false"
             default-expand-all
             @node-click="getUserListByLevel">
             <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -51,6 +51,7 @@
 
         <el-button class="btn-add" type="primary" size="small" @click="orderDetail('','get')">添加印刷厂</el-button>
         <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
+          <el-table-column align="center" prop="organName" label="企业名称"></el-table-column>
           <el-table-column align="center" prop="name" label="印刷厂名称"></el-table-column>
           <el-table-column align="center" prop="shortName" label="印刷厂简称"></el-table-column>
           <el-table-column align="center" prop="key" label="印刷厂ID"></el-table-column>
@@ -186,7 +187,8 @@
           source:this.ruleForm.source,
           status:this.ruleForm.status,
           pageNum:this.pageNum,
-          pageSize:this.pageSize
+          pageSize:this.pageSize,
+          auditStatus: 1
         }
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
           let data = res.data.data, 
