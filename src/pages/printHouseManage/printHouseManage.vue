@@ -45,7 +45,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="getData">查询</el-button>
+            <el-button type="primary" size="small" @click="getData(1)">查询</el-button>
           </el-form-item>
         </el-form>
 
@@ -178,7 +178,10 @@
       /**
        * 查询
        */
-      getData() {
+      getData(pageNum) {
+        if(pageNum===1){
+          this.pageNum = pageNum;
+        }
         let param = {
           provinceId:this.ruleForm.provinceId || '',
           cityId:this.ruleForm.cityId || '',

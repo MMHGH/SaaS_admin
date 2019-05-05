@@ -27,21 +27,21 @@
           <el-input v-model="ruleForm.applicant" size="small" placeholder="请输入申请人"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="getData">搜索</el-button>
+          <el-button type="primary" size="small" @click="getData(1)">搜索</el-button>
         </el-form-item>
       </el-form>
 
       <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
         <el-table-column align="center" prop="applicant" label="申请人"></el-table-column>
         <el-table-column align="center" prop="applicant" label="申请企业"></el-table-column>
-        <el-table-column align="center" prop="name" label="印刷厂名称"></el-table-column>
-        <el-table-column align="center" prop="shortName" label="印刷厂简称"></el-table-column>
+        <el-table-column align="center" prop="name" label="印刷厂名称" width="200px"></el-table-column>
+        <el-table-column align="center" prop="shortName" label="印刷厂简称" width="200px"></el-table-column>
 
         <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
         <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
         <el-table-column align="center" prop="address" label="所在地"></el-table-column>
 
-        <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
+        <el-table-column align="center" prop="addressDetail" label="详细地址" width="200px"></el-table-column>
         <el-table-column align="center" prop="remark" label="备注"></el-table-column>
         <el-table-column align="center" prop="createdTime" label="申请时间">
           <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
@@ -163,8 +163,10 @@
        /**
        * 查询
        */
-      getData() {
-        this.pageNum = 1;
+      getData(pageNum) {
+        if(pageNum===1){
+          this.pageNum = pageNum;
+        }
         let param = {
           beginCreatedTime:this.ruleForm.beginCreatedTime,
           endCreatedTime:this.ruleForm.endCreatedTime,
