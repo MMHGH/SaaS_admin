@@ -187,6 +187,7 @@
           cityId:this.ruleForm.cityId || '',
           name:this.ruleForm.name,
           source:this.ruleForm.source,
+          auditStatus:1,  // 0 未审核 1： 通过 2 不通过
           status:this.ruleForm.status,
           pageNum:this.pageNum,
           pageSize:this.pageSize
