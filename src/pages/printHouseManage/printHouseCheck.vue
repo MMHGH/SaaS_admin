@@ -9,11 +9,11 @@
     <div class="content">
       <el-form :inline="true" :model="ruleForm" class="demo-form-inline">
         <el-form-item label="开始时间" prop="beginCreatedTime">
-          <el-date-picker v-model="ruleForm.beginCreatedTime" class="input-txt" size="small" 
+          <el-date-picker v-model="ruleForm.beginCreatedTime" class="input-txt" size="small"
                           type="datetime" value-format="timestamp" placeholder="选择开始时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endCreatedTime">
-          <el-date-picker v-model="ruleForm.endCreatedTime" class="input-txt" size="small" 
+          <el-date-picker v-model="ruleForm.endCreatedTime" class="input-txt" size="small"
                          type="datetime" value-format="timestamp" placeholder="选择结束时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="审核状态">
@@ -164,6 +164,7 @@
        * 查询
        */
       getData() {
+        this.pageNum = 1;
         let param = {
           beginCreatedTime:this.ruleForm.beginCreatedTime,
           endCreatedTime:this.ruleForm.endCreatedTime,
@@ -180,14 +181,14 @@
         }
         param.auditStatuses = auditStatus;
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
             // for(let i=0;i<this.tableData.length;i++){
               // this.tableData[i].visible2 = false;
               // this.tableData[i].auditStatus = 2;
-            // } 
+            // }
             this.total = data.total;
             console.log(this.tableData)
           } else {
@@ -224,7 +225,7 @@
           auditStatus:1,
         }
         this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             Message({
@@ -246,7 +247,7 @@
         this.$refs['ruleForm1'].validate((valid, object)=>{
           if(valid){
             this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
-              let data = res.data.data, 
+              let data = res.data.data,
                   msg = res.data.message;
               if (msg == 'ok') {
                 Message({
