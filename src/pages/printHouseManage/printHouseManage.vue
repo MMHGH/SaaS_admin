@@ -8,8 +8,8 @@
     </div>
     <div class="content">
       <div class="c-left">
-        <el-tree ref="tree" 
-            node-key="provinceId" 
+        <el-tree ref="tree"
+            node-key="provinceId"
             :data="treeData"
             :highlight-current="true" 
             :expand-on-click-node="false"
@@ -45,7 +45,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="getData">查询</el-button>
+            <el-button type="primary" size="small" @click="getData(1)">查询</el-button>
           </el-form-item>
         </el-form>
 
@@ -61,7 +61,7 @@
           <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
           <el-table-column align="center" prop="address" label="所在地"></el-table-column>
 
-          <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
+          <el-table-column align="center" prop="addressDetail" label="详细地址" width="200px" ></el-table-column>
           <el-table-column align="center" prop="remark" label="备注"></el-table-column>
           <el-table-column align="center" prop="source" label="来源">
              <template slot-scope="scope">
@@ -117,7 +117,7 @@
 <script>
   import { MessageBox,Message } from 'element-ui'
   import formatterURL from '@/util/formatterURL'
-  
+
   export default {
     name: "printHouseManage",
     data() {
@@ -138,8 +138,8 @@
          name:'',
          source:'',
          status:'',
-         provinceId:'', 
-         cityId:'' 
+         provinceId:'',
+         cityId:''
         },
         ruleForm1:{
           cause:''
@@ -179,19 +179,23 @@
       /**
        * 查询
        */
-      getData() {
+      getData(pageNum) {
+        if(pageNum===1){
+          this.pageNum = pageNum;
+        }
         let param = {
           provinceId:this.ruleForm.provinceId || '',
           cityId:this.ruleForm.cityId || '',
           name:this.ruleForm.name,
           source:this.ruleForm.source,
+          auditStatus:1,  // 0 未审核 1： 通过 2 不通过
           status:this.ruleForm.status,
           pageNum:this.pageNum,
           pageSize:this.pageSize,
           auditStatus: 1
         }
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
@@ -205,7 +209,7 @@
         console.log(555,val)
         this.ruleForm.provinceId = val.provinceId;
         this.ruleForm.cityId = val.cityId;
-        this.getData();         
+        this.getData();
       },
        // 查询组织树
       getOrgTree(){
@@ -213,7 +217,7 @@
           let params = {
           }
           this.axios.post(this.$api.printHouseManage.printHouseListArea, params).then(function (res) {
-              let code = res.data.code;  
+              let code = res.data.code;
               let data = res.data.data;
               let numAll = 0;
               if (code === 0) {
@@ -240,11 +244,11 @@
          */
         handleNodeClick(data) {
             if (data.type == 1) {
-               return 
-            } 
+               return
+            }
             this.selectTreeNode = data;
             //  查询数据
-           
+
         },
       /**
        * 切换 页大小
@@ -288,7 +292,7 @@
       updateLevelStatus(row){
         let that = this;
         let statusText = row.status == 1 ? "停用" : "启用";
-        let url = row.status == 1 ?this.$api.printHouseManage.disablePrintHouse:this.$api.printHouseManage.enablePrintHouse; 
+        let url = row.status == 1 ?this.$api.printHouseManage.disablePrintHouse:this.$api.printHouseManage.enablePrintHouse;
         this.$confirm('此操作将' + statusText + '该用户, 是否继续？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

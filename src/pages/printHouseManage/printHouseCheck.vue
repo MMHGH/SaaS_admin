@@ -9,11 +9,11 @@
     <div class="content">
       <el-form :inline="true" :model="ruleForm" class="demo-form-inline">
         <el-form-item label="开始时间" prop="beginCreatedTime">
-          <el-date-picker v-model="ruleForm.beginCreatedTime" class="input-txt" size="small" 
+          <el-date-picker v-model="ruleForm.beginCreatedTime" class="input-txt" size="small"
                           type="datetime" value-format="timestamp" placeholder="选择开始时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endCreatedTime">
-          <el-date-picker v-model="ruleForm.endCreatedTime" class="input-txt" size="small" 
+          <el-date-picker v-model="ruleForm.endCreatedTime" class="input-txt" size="small"
                          type="datetime" value-format="timestamp" placeholder="选择结束时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="审核状态">
@@ -27,21 +27,21 @@
           <el-input v-model="ruleForm.applicant" size="small" placeholder="请输入申请人"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="getData">搜索</el-button>
+          <el-button type="primary" size="small" @click="getData(1)">搜索</el-button>
         </el-form-item>
       </el-form>
 
       <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
         <el-table-column align="center" prop="applicant" label="申请人"></el-table-column>
         <el-table-column align="center" prop="applicant" label="申请企业"></el-table-column>
-        <el-table-column align="center" prop="name" label="印刷厂名称"></el-table-column>
-        <el-table-column align="center" prop="shortName" label="印刷厂简称"></el-table-column>
+        <el-table-column align="center" prop="name" label="印刷厂名称" width="200px"></el-table-column>
+        <el-table-column align="center" prop="shortName" label="印刷厂简称" width="200px"></el-table-column>
 
         <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
         <el-table-column align="center" prop="tel" label="联系电话"></el-table-column>
         <el-table-column align="center" prop="address" label="所在地"></el-table-column>
 
-        <el-table-column align="center" prop="addressDetail" label="详细地址"></el-table-column>
+        <el-table-column align="center" prop="addressDetail" label="详细地址" width="200px"></el-table-column>
         <el-table-column align="center" prop="remark" label="备注"></el-table-column>
         <el-table-column align="center" prop="createdTime" label="申请时间">
           <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
@@ -161,7 +161,10 @@
        /**
        * 查询
        */
-      getData() {
+      getData(pageNum) {
+        if(pageNum===1){
+          this.pageNum = pageNum;
+        }
         let param = {
           beginCreatedTime:this.ruleForm.beginCreatedTime,
           endCreatedTime:this.ruleForm.endCreatedTime,
@@ -179,14 +182,14 @@
         }
         param.auditStatuses = auditStatus;
         this.axios.post(this.$api.printHouseManage.printHouseList, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
             // for(let i=0;i<this.tableData.length;i++){
               // this.tableData[i].visible2 = false;
               // this.tableData[i].auditStatus = 2;
-            // } 
+            // }
             this.total = data.total;
             console.log(this.tableData)
           } else {
@@ -223,7 +226,7 @@
           auditStatus:1,
         }
         this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             Message({
@@ -245,7 +248,7 @@
         this.$refs['ruleForm1'].validate((valid, object)=>{
           if(valid){
             this.axios.post(this.$api.printHouseManage.auditPrintHouse, param).then((res) => {
-              let data = res.data.data, 
+              let data = res.data.data,
                   msg = res.data.message;
               if (msg == 'ok') {
                 Message({
