@@ -73,7 +73,7 @@
             <el-table-column align="center" property="source" label="审核来源">
               <template slot-scope="scope">{{ scope.row.source==1?'自动审核':'人工审核' }}</template>
             </el-table-column>
-            <el-table-column align="center" prop="censoredNote" label="不通过原因"></el-table-column>
+            <el-table-column align="center" prop="censoredNote" label="审核意见"></el-table-column>
           </el-table>
         </div>
         <div class="page">

@@ -49,6 +49,7 @@
         <el-table-column align="center" prop="auditStatus" label="审核状态">
           <template slot-scope="scope">{{ scope.row.auditStatus | filterStatus }}</template>
         </el-table-column>
+        <el-table-column align="center" prop="auditNote" label="审核意见"></el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <div v-if="scope.row.auditStatus==2">

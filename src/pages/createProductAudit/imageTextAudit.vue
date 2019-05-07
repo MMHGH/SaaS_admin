@@ -66,6 +66,7 @@
             <el-table-column align="center" property="status" label="状态">
               <template slot-scope="scope">{{ scope.row.status | fmtStatus()}}</template>
             </el-table-column>
+            <el-table-column align="center" prop="censoredNote" label="审核意见"></el-table-column>
             <el-table-column
                 align="center"
                 prop="operation"
