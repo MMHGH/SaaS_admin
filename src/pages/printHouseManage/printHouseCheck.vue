@@ -33,8 +33,8 @@
 
       <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
         <el-table-column align="center" prop="applicant" label="申请人"></el-table-column>
-        <el-table-column align="center" prop="applicant" label="申请企业"></el-table-column>
-        <el-table-column align="center" prop="organName" label="印刷厂名称" width="200px"></el-table-column>
+        <el-table-column align="center" prop="organName" label="申请企业"></el-table-column>
+        <el-table-column align="center" prop="name" label="印刷厂名称" width="200px"></el-table-column>
         <el-table-column align="center" prop="shortName" label="印刷厂简称" width="200px"></el-table-column>
 
         <el-table-column align="center" prop="contacts" label="联系人"></el-table-column>
