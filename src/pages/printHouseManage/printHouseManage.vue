@@ -51,7 +51,7 @@
 
         <el-button class="btn-add" type="primary" size="small" @click="orderDetail('','get')">添加印刷厂</el-button>
         <el-table :data="tableData" size="medium" :header-cell-style="{backgroundColor: '#f2f2f2'}">
-          <el-table-column align="center" prop="name" label="印刷厂名称" width="200px" ></el-table-column>
+          <el-table-column align="center" prop="organName" label="印刷厂名称" width="200px" ></el-table-column>
           <el-table-column align="center" prop="shortName" label="印刷厂简称" width="200px" ></el-table-column>
           <el-table-column align="center" prop="key" label="印刷厂ID"></el-table-column>
           <el-table-column align="center" prop="id" label="序列号"></el-table-column>
