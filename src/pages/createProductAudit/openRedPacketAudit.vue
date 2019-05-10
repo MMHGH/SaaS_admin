@@ -54,6 +54,7 @@
             <el-table-column align="center" property="auditStatus" label="状态">
               <template slot-scope="scope">{{ scope.row.auditStatus | fmtStatus()}}</template>
             </el-table-column>
+            
             <el-table-column
                 align="center"
                 prop="operation"

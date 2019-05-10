@@ -25,7 +25,7 @@
           <el-input v-model="ruleForm.tel" class="input-txt" maxlength="200" size="small"
                     placeholder="请输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item label="所在地：" prop="provinceId">
+         <el-form-item label="所在地：" prop="provinceId" class="province">
           <el-select v-model="ruleForm.provinceId" size="small" placeholder="请选择省份"
                      @change="listAreaByPidAndLevel('cidOptions', ruleForm.provinceId, 4)">
             <el-option
@@ -35,6 +35,8 @@
               :value="item.id">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="" prop="cityId" class="city">
           <el-select v-model="ruleForm.cityId" size="small" placeholder="请选择城市" no-data-text="选择城市前请选择省份">
             <el-option
               v-for="item in cidOptions"
@@ -97,7 +99,10 @@
             {required: true, message: '请输入联系电话', trigger: 'blur'}
           ],
           provinceId: [
-            {required: true, message: '选择所在地', trigger: 'blur'},
+            {required: true, message: '请选择省份', trigger: 'blur'},
+          ],
+          cityId: [
+            {required: true, message: '请选择城市', trigger: 'blur'},
           ],
           addressDetail: [
             {required: true, message: '请输入详细地址', trigger: 'blur'}
@@ -192,7 +197,11 @@
     }
   }
 </script>
-
+<style lang="">
+  .myPrintingCompanyEdit .city .el-form-item__content{
+    margin-left:0!important;
+  }
+</style>
 <style lang="scss" scoped>
   .myPrintingCompanyEdit {
     .header {
@@ -237,6 +246,9 @@
         }
         .input-des {
           width: 400px;
+        }
+        .province,.city{
+          display: inline-block;
         }
       }
     }
