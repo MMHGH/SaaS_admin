@@ -47,6 +47,7 @@ export default {
     {
       value: 6, label: '自定义模板-添加模板',
       verifyField: [
+        {key: 'name', label: '模块名称', type: 'text', value: ''},
         {key: 'moduleContent', label: '页面内容', type: 'html', value: ''},
       ]
     },
