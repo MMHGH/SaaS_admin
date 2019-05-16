@@ -422,7 +422,12 @@
   }
 </script>
 
-<style scoped>
+<style>
+  .list-item img{
+    max-width: 100%;
+  }
+</style>
+<style lang="scss" scoped>
   .list-item {
     margin-bottom: 5px;
   }
