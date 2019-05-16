@@ -52,20 +52,20 @@
         <el-pagination
             background
             popper-class="pagination-popper"
-            :current-page="currentPageNumber" 
+            :current-page="currentPageNumber"
             :page-size="currentPageSize"
-            :page-sizes="[5, 10, 20, 50, 100]" 
+            :page-sizes="[5, 10, 20, 50, 100]"
             :total="currentTotal"
             layout="prev, pager, next, total, sizes, jumper"
-            @current-change="pageNumberChange" 
+            @current-change="pageNumberChange"
             @prev-click="pageNumberChange"
-            @next-click="pageNumberChange" 
+            @next-click="pageNumberChange"
             @size-change="pageSizeChange">
         </el-pagination>
         <el-dialog
             title=""
             :visible.sync="dialogVisible"
-            width="35%"
+            width="500px"
             top=25vh
             :show-close=false
             :close-on-click-modal="false"
@@ -76,8 +76,8 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addMaterial">确 定</el-button>
+                <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -100,7 +100,7 @@ export default {
       }
     },
     computed: {
-    
+
     },
     mounted(){
      this.getPdaData();
@@ -188,7 +188,7 @@ export default {
   }
 </script>
 <style type="text/css">
-  
+
 </style>
 <style type="text/css" scoped>
   .el-pagination{text-align: center;padding-top: 20px;padding-bottom: 10px;}

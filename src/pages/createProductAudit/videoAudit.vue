@@ -14,7 +14,7 @@
               v-model="ruleForm.createdBeginTime"
               type="datetime"
               value-format="timestamp"
-              style="width: 215px;" 
+              style="width: 215px;"
               placeholder="请选择建立开始时间">
             </el-date-picker>
           </el-form-item>
@@ -90,7 +90,7 @@
     <el-dialog
       title=""
       :visible.sync="dialogCause"
-      width="25%"
+      width="450px"
       center>
       <span>请输入不通过原因：</span>
       <el-form :inline="true" :model="ruleForm1" :rules="rules1" ref="ruleForm1" label-width="120px" style="margin-top:10px;" class="demo-dynamic">
@@ -111,7 +111,7 @@
 <script>
   import Util from '../../util/timestamp'
   import {Message} from 'element-ui';
- 
+
   export default {
     data() {
       return {
@@ -186,7 +186,7 @@
           createdEndTime: this.ruleForm.createdEndTime,
         }
         this.axios.post(this.$api.auditDetails.getVideoList, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
@@ -236,7 +236,7 @@
           remark:''
         }
         this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             // Message({
@@ -258,7 +258,7 @@
         this.$refs['ruleForm1'].validate((valid, object)=>{
           if(valid){
             this.axios.post(this.$api.auditDetails.censor, param).then((res) => {
-              let data = res.data.data, 
+              let data = res.data.data,
                   msg = res.data.message;
               if (msg == 'ok') {
                 Message({
@@ -274,7 +274,7 @@
           }
         })
       },
-      // 设置白名单  
+      // 设置白名单
       whiteList(){
         this.$router.push({path:'/setWhiteList'});
       },
@@ -285,7 +285,7 @@
           cause: this.ruleForm1.cause,
         }
         this.axios.post(this.$api.createProduct.listWxRedPacketConf, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             Message({

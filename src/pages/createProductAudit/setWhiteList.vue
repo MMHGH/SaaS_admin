@@ -36,9 +36,9 @@
       </div>
     </div>
     <!-- 添加白名单弹窗 -->
-    <el-dialog title="添加白名单" top="25vh" :visible.sync="dialogMark" width="30%"  :close-on-click-modal=false center>
+    <el-dialog title="添加白名单" top="25vh" :visible.sync="dialogMark" width="500px"  :close-on-click-modal=false center>
         <div class="tips-text">
-           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-dynamic">
+           <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-dynamic">
                 <el-form-item label="地址：" prop="domain">
                     <el-input v-model="ruleForm.domain" style="width:300px;" placeholder="请输入地址" maxlength="300"></el-input>
                 </el-form-item>
@@ -49,7 +49,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button type="primary"  @click="addWhiteList('ruleForm')">提交</el-button>
-            <el-button type="primary"  @click="dialogMark=false">取消</el-button>
+            <el-button @click="dialogMark=false">取消</el-button>
         </span>
     </el-dialog>
   </div>
@@ -58,7 +58,7 @@
 <script>
   import Util from '../../util/timestamp'
   import { MessageBox,Message } from 'element-ui'
- 
+
   export default {
     data() {
       return {
@@ -94,7 +94,7 @@
           pageSize: this.pageSize
         }
         this.axios.post(this.$api.auditDetails.listWhiteListByPage, param).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.tableData = data.list;
@@ -155,7 +155,7 @@
       // 删除
       del(row){
         let vm = this
-        let sendData = {   
+        let sendData = {
           domain: row.domain
         };
         this.$confirm(`确定要删除?`, '提示', {
