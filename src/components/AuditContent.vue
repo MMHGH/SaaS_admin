@@ -4,13 +4,12 @@
     <el-dialog title="审核内容" :visible.sync="dialogAudit" width="700px" center>
       <el-form ref="form" label-width="120px">
         <el-form-item class="list-item" :label="item.label+'：'" v-for="(item,index) in formData" :key="index">
-          <!-- text类型:placeholder="item.label" -->
+          <!-- text类型 -->
           <el-input class="item-txt" v-if="item.type==='text' || item.type==='json'" size="small" v-model="item.value"
                     disabled></el-input>
           <!-- img类型 -->
           <img class="item-img" v-else-if="item.type === 'img'" v-for="(img,idx) in item.value"
                :key="idx" :src="img" :onerror="ImgError">
-          <!-- <img class="item-img" v-else-if="item.type === 'imgs'" v-for="(img,idx) in item.value" :key="idx" :src="img"> -->
           <!-- html类型 -->
           <div v-else-if="item.type === 'html'" v-html="item.value"></div>
         </el-form-item>
@@ -210,7 +209,6 @@
       }
     },
     mounted() {
-      // this.initData();
     },
     filters: {
       // 状态过滤器

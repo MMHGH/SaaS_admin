@@ -11,7 +11,7 @@
                     v-model="ruleForm.createdBeginTime"
                     type="datetime"
                     value-format="timestamp"
-                    style="width: 215px;" 
+                    style="width: 200px;height:32px" 
                     placeholder="请选择建立开始时间">
                 </el-date-picker>
           </el-form-item>

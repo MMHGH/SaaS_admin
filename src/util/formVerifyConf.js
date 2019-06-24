@@ -113,18 +113,22 @@ export default {
       value: 13, label: '静态溯源模板设置',
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
-        // {key: 'name', label: '', type: 'trace', value: ''},
       ]
     },
-    // {
-    //   value: 14, label: '自建奖品-新建奖品',
-    //   verifyField: [
-    //     {key: 'name', label: '奖品名称', type: 'text', value: ''},
-    //     {key: 'thumbImgUrl', label: '奖品图片', type: 'img', value: ''},
-    //     {key: 'unit', label: '奖品规格', type: 'text', value: ''},
-    //     {key: 'description', label: '奖品说明', type: 'text', value: ''},
-    //   ]
-    // },
+    //  分享推广
+    {
+      value: 15, label: '分享推广',
+      verifyField: [
+        {key: 'no', label: '推广编号', type: 'text', value: ''},
+        {key: 'name', label: '推广名称', type: 'text', value: ''},
+        {key: 'title', label: '公告标题', type: 'json', value: ''},
+        {key: 'backgroundImgUrl', label: '推广信息背景图片', type: 'img', value: ''},
+        {key: 'content', label: '推广信息', type: 'html', value: ''},
+        {key: 'buttonOneName', label: '推广按钮1名称', type: 'text', value: ''},
+        {key: 'buttonTwoName', label: '推广按钮2名称', type: 'text', value: ''},
+        {key: 'shareImgUrl', label: '分享背景图片', type: 'img', value: ''}
+      ]
+    },
   ],
   /**
    * 获取 单据配置信息
