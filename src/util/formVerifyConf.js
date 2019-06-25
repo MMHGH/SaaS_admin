@@ -117,7 +117,7 @@ export default {
     },
     //  分享推广
     {
-      value: 15, label: '分享推广',
+      value: 15, label: '活动推广',
       verifyField: [
         {key: 'no', label: '推广编号', type: 'text', value: ''},
         {key: 'name', label: '推广名称', type: 'text', value: ''},

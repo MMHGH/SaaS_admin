@@ -144,7 +144,7 @@
           {label: '活动管理', value: 11},
           {label: '活动管理-奖品基本设置', value: 12},
           {label: '静态溯源模板设置', value: 13},
-          {label: '分享推广', value: 15},
+          {label: '活动推广', value: 15},
         ],
         tableData: [],
         pageNum: 1,
@@ -215,7 +215,7 @@
            pageName = '静态溯源模板设置'
            break;
           case 15:
-           pageName = '分享推广'
+           pageName = '活动推广'
            break;
         }
         return pageName
