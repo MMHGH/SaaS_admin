@@ -2,8 +2,8 @@
   <div class="audit-content">
 
     <el-dialog title="审核内容" :visible.sync="dialogAudit" width="700px" center>
-      <el-form ref="form" label-width="120px">
-        <el-form-item class="list-item" :label="item.label+'：'" v-for="(item,index) in formData" :key="index">
+      <el-form ref="form" label-width="130px">
+        <el-form-item class="list-item" :label="item.label+'：'" v-show="item.value" v-for="(item,index) in formData" :key="index">
           <!-- text类型 -->
           <el-input class="item-txt" v-if="item.type==='text' || item.type==='json'" size="small" v-model="item.value"
                     disabled></el-input>
@@ -255,7 +255,6 @@
 
         // 解析json
         let json = JSON.parse(this.auditData.content);
-
         // 静态溯源模板
         if (this.auditData.scene === 13) {
           // 设置值

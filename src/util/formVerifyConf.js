@@ -121,7 +121,7 @@ export default {
       verifyField: [
         {key: 'no', label: '推广编号', type: 'text', value: ''},
         {key: 'name', label: '推广名称', type: 'text', value: ''},
-        {key: 'title', label: '公告标题', type: 'json', value: ''},
+        {key: 'title', label: '公告标题', type: 'text', value: ''},
         {key: 'backgroundImgUrl', label: '推广信息背景图片', type: 'img', value: ''},
         {key: 'content', label: '推广信息', type: 'html', value: ''},
         {key: 'buttonOneName', label: '推广按钮1名称', type: 'text', value: ''},
