@@ -6,105 +6,103 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from '@/pages/Login.vue'
-import Admin from '@/pages/Admin.vue'
+const Login = () => import('@/pages/Login.vue')
+const Admin = () => import('@/pages/Admin.vue')
 
 // 平台用户等级定义
-import UserLevelDefinition from '@/pages/PlatformUserLevelDefinition/UserLevelDefinition.vue'
-import AddLevel from '@/pages/PlatformUserLevelDefinition/AddLevel.vue'
-import UpdateLevel from '@/pages/PlatformUserLevelDefinition/UpdateLevel.vue'
-import FunctionConfig from '@/pages/PlatformUserLevelDefinition/FunctionConfig.vue'
-import FunctionPowerConfig from '@/pages/PlatformUserLevelDefinition/FunctionPowerConfig.vue'
-import OrganizationPowerConfig from '@/pages/PlatformUserLevelDefinition/OrganizationPowerConfig.vue'
+const UserLevelDefinition = () => import('@/pages/PlatformUserLevelDefinition/UserLevelDefinition.vue')
+const AddLevel = () => import('@/pages/PlatformUserLevelDefinition/AddLevel.vue')
+const UpdateLevel = () => import('@/pages/PlatformUserLevelDefinition/UpdateLevel.vue')
+const FunctionConfig = () => import('@/pages/PlatformUserLevelDefinition/FunctionConfig.vue')
+const FunctionPowerConfig = () => import('@/pages/PlatformUserLevelDefinition/FunctionPowerConfig.vue')
+const OrganizationPowerConfig = () => import('@/pages/PlatformUserLevelDefinition/OrganizationPowerConfig.vue')
 
 // 用户管理
-import UserManagement from '@/pages/userManagement/UserManagement.vue'
-import UserManagementAddUserAccount from '@/pages/userManagement/AddUserAccount.vue'
-import UserManagementUpdateUserAccount from '@/pages/userManagement/UpdateUserAccount.vue'
-import UserManagementFunctionConfig from '@/pages/userManagement/FunctionConfig.vue'
-import UserManagementOrganizationPowerConfig from '@/pages/userManagement/OrganizationPowerConfig.vue'
-import UserManagementFunctionPowerConfig from '@/pages/userManagement/FunctionPowerConfig.vue'
-import FacilityManage from '@/pages/userManagement/FacilityManage.vue'
+const UserManagement = () => import('@/pages/userManagement/UserManagement.vue')
+const UserManagementAddUserAccount = () => import('@/pages/userManagement/AddUserAccount.vue')
+const UserManagementUpdateUserAccount = () => import('@/pages/userManagement/UpdateUserAccount.vue')
+const UserManagementFunctionConfig = () => import('@/pages/userManagement/FunctionConfig.vue')
+const UserManagementOrganizationPowerConfig = () => import('@/pages/userManagement/OrganizationPowerConfig.vue')
+const UserManagementFunctionPowerConfig = () => import('@/pages/userManagement/FunctionPowerConfig.vue')
+const FacilityManage = () => import('@/pages/userManagement/FacilityManage.vue')
 
 // 价格配置
-import PriceConfig from '@/pages/priceConfig/PriceConfig.vue'
-import PriceConfigPlatformUsageFee from '@/pages/priceConfig/PlatformUsageFee.vue'
-import PriceConfigAddPlatformUsageFee from '@/pages/priceConfig/AddPlatformUsageFee.vue'
-import PriceConfigUpdatePlatformUsageFee from '@/pages/priceConfig/UpdatePlatformUsageFee.vue'
-import PriceConfigFunctionUsageFee from '@/pages/priceConfig/FunctionUsageFee.vue'
-import PriceConfigAddFunctionUsageFee from '@/pages/priceConfig/AddFunctionUsageFee.vue'
-import PriceConfigUpdateFunctionUsageFee from '@/pages/priceConfig/UpdateFunctionUsageFee.vue'
-import PriceConfigTemplateUsageFee from '@/pages/priceConfig/TemplateUsageFee.vue'
-import PriceConfigAddTemplateUsageFee from '@/pages/priceConfig/AddTemplateUsageFee.vue'
-import PriceConfigUpdateTemplateUsageFee from '@/pages/priceConfig/UpdateTemplateUsageFee.vue'
-import PriceConfigCodeUsageFee from '@/pages/priceConfig/CodeUsageFee.vue'
-import PriceConfigAddCodeUsageFee from '@/pages/priceConfig/AddCodeUsageFee.vue'
-import PriceConfigUpdateCodeUsageFee from '@/pages/priceConfig/UpdateCodeUsageFee.vue'
-import PriceConfigOrganizationUsageFee from '@/pages/priceConfig/OrganizationUsageFee.vue'
-import PriceConfigAddOrganizationUsageFee from '@/pages/priceConfig/AddOrganizationUsageFee.vue'
-import PriceConfigUpdateOrganizationUsageFee from '@/pages/priceConfig/UpdateOrganizationUsageFee.vue'
+const PriceConfig = () => import('@/pages/priceConfig/PriceConfig.vue')
+const PriceConfigPlatformUsageFee = () => import('@/pages/priceConfig/PlatformUsageFee.vue')
+const PriceConfigAddPlatformUsageFee = () => import('@/pages/priceConfig/AddPlatformUsageFee.vue')
+const PriceConfigUpdatePlatformUsageFee = () => import('@/pages/priceConfig/UpdatePlatformUsageFee.vue')
+const PriceConfigFunctionUsageFee = () => import('@/pages/priceConfig/FunctionUsageFee.vue')
+const PriceConfigAddFunctionUsageFee = () => import('@/pages/priceConfig/AddFunctionUsageFee.vue')
+const PriceConfigUpdateFunctionUsageFee = () => import('@/pages/priceConfig/UpdateFunctionUsageFee.vue')
+const PriceConfigTemplateUsageFee = () => import('@/pages/priceConfig/TemplateUsageFee.vue')
+const PriceConfigAddTemplateUsageFee = () => import('@/pages/priceConfig/AddTemplateUsageFee.vue')
+const PriceConfigUpdateTemplateUsageFee = () => import('@/pages/priceConfig/UpdateTemplateUsageFee.vue')
+const PriceConfigCodeUsageFee = () => import('@/pages/priceConfig/CodeUsageFee.vue')
+const PriceConfigAddCodeUsageFee = () => import('@/pages/priceConfig/AddCodeUsageFee.vue')
+const PriceConfigUpdateCodeUsageFee = () => import('@/pages/priceConfig/UpdateCodeUsageFee.vue')
+const PriceConfigOrganizationUsageFee = () => import('@/pages/priceConfig/OrganizationUsageFee.vue')
+const PriceConfigAddOrganizationUsageFee = () => import('@/pages/priceConfig/AddOrganizationUsageFee.vue')
+const PriceConfigUpdateOrganizationUsageFee = () => import('@/pages/priceConfig/UpdateOrganizationUsageFee.vue')
 
 // 订单管理
-import OrderManagement from '@/pages/orderManagement/OrderManagement.vue'
-import OrderManagementOrderDetail from '@/pages/orderManagement/OrderDetail.vue'
+const OrderManagement = () => import('@/pages/orderManagement/OrderManagement.vue')
+const OrderManagementOrderDetail = () => import('@/pages/orderManagement/OrderDetail.vue')
 
 // 物资管理
-import MaterialManagement from '@/pages/materialManagement/MaterialManagement.vue'
-import AddMaterial from '@/pages/materialManagement/AddMaterial.vue'
-import UpdateMaterial from '@/pages/materialManagement/UpdateMaterial.vue'
+const MaterialManagement = () => import('@/pages/materialManagement/MaterialManagement.vue')
+const AddMaterial = () => import('@/pages/materialManagement/AddMaterial.vue')
+const UpdateMaterial = () => import('@/pages/materialManagement/UpdateMaterial.vue')
 // 自建奖品
-import myAwardList from '@/pages/myAwardList/myAwardList.vue'
+const myAwardList = () => import('@/pages/myAwardList/myAwardList.vue')
 // 自建奖品-查看详情
-import awardDetail from '@/pages/myAwardList/awardDetail.vue'
+const awardDetail = () => import('@/pages/myAwardList/awardDetail.vue')
 // 自建商品审核
-import OpenRedPacketAudit from '@/pages/createProductAudit/openRedPacketAudit.vue'
-import AuditawardDetail from '@/pages/createProductAudit/auditawardDetail.vue'
-import VideoAudit from '@/pages/createProductAudit/videoAudit.vue'
-import SetWhiteList from '@/pages/createProductAudit/setWhiteList.vue'
-import ImageTextAudit from '@/pages/createProductAudit/imageTextAudit.vue'
-import AuditLogging from '@/pages/createProductAudit/auditLogging.vue'
-import AuditRuleSetting from '@/pages/createProductAudit/auditRuleSetting.vue'
-
+const OpenRedPacketAudit = () => import('@/pages/createProductAudit/openRedPacketAudit.vue')
+const AuditawardDetail = () => import('@/pages/createProductAudit/auditawardDetail.vue')
+const VideoAudit = () => import('@/pages/createProductAudit/videoAudit.vue')
+const SetWhiteList = () => import('@/pages/createProductAudit/setWhiteList.vue')
+const ImageTextAudit = () => import('@/pages/createProductAudit/imageTextAudit.vue')
+const AuditLogging = () => import('@/pages/createProductAudit/auditLogging.vue')
+const AuditRuleSetting = () => import('@/pages/createProductAudit/auditRuleSetting.vue')
 
 // 实物中奖列表
-import PrizeList from '@/pages/prizeList/PrizeList.vue'
-import BatchExportInvoice from '@/pages/prizeList/BatchExportInvoice.vue'
-import BatchImportInvoice from '@/pages/prizeList/BatchImportInvoice.vue'
+const PrizeList = () => import('@/pages/prizeList/PrizeList.vue')
+const BatchExportInvoice = () => import('@/pages/prizeList/BatchExportInvoice.vue')
+const BatchImportInvoice = () => import('@/pages/prizeList/BatchImportInvoice.vue')
 
 // 虚拟中奖信息
-import VirtualWinningList from '@/pages/virtualWinning/virtualWinningList.vue'
-import RedPacketWinningList from '@/pages/virtualWinning/redPacketWinningList.vue'
-import RedPacketWinningInfo from '@/pages/virtualWinning/redPacketWinningInfo.vue'
+const VirtualWinningList = () => import('@/pages/virtualWinning/virtualWinningList.vue')
+const RedPacketWinningList = () => import('@/pages/virtualWinning/redPacketWinningList.vue')
+const RedPacketWinningInfo = () => import('@/pages/virtualWinning/redPacketWinningInfo.vue')
 
 // 代理商用户列表
-import AgentUserList from '@/pages/agentUserList/AgentUserList.vue'
+const AgentUserList = () => import('@/pages/agentUserList/AgentUserList.vue')
 
 // 标签制作留言
-import LabelMakingMessage from '@/pages/labelMakingMessage/labelMakingMessage.vue'
-import LabelMakingMessageDetail from '@/pages/labelMakingMessage/labelMakingMessageDetail.vue'
+const LabelMakingMessage = () => import('@/pages/labelMakingMessage/labelMakingMessage.vue')
+const LabelMakingMessageDetail = () => import('@/pages/labelMakingMessage/labelMakingMessageDetail.vue')
 
 // 资源分配记录
-import ResourceAllocationRecord from '@/pages/resourceAllocationRecord/ResourceAllocationRecord.vue'
-import ResourceAllocationRecordDetail from '@/pages/resourceAllocationRecord/ResourceAllocationRecordDetail.vue'
+const ResourceAllocationRecord = () => import('@/pages/resourceAllocationRecord/ResourceAllocationRecord.vue')
+const ResourceAllocationRecordDetail = () => import('@/pages/resourceAllocationRecord/ResourceAllocationRecordDetail.vue')
 
 // 严选商品管理
-import YxCommodityManage from '@/pages/yxCommodityManage/yxCommodityManage.vue'
-import YxOrderManage from '@/pages/yxCommodityManage/yxOrderManage.vue'
+const YxCommodityManage = () => import('@/pages/yxCommodityManage/yxCommodityManage.vue')
+const YxOrderManage = () => import('@/pages/yxCommodityManage/yxOrderManage.vue')
 // SaaS试用申请管理
-import SaasTrialManage from '@/pages/saasTrialManage/saasTrialManage.vue'
+const SaasTrialManage = () => import('@/pages/saasTrialManage/saasTrialManage.vue')
 // 账号设置
-import AccountConf from '@/pages/accountManage/accountConf.vue'
+const AccountConf = () => import('@/pages/accountManage/accountConf.vue')
 // 印刷厂管理
-import PrintHouseManage from '@/pages/printHouseManage/printHouseManage.vue'
-import PrintHouseCheck from '@/pages/printHouseManage/printHouseCheck.vue'
-import PrintHouseEdit from '@/pages/printHouseManage/printHouseEdit.vue'
-
+const PrintHouseManage = () => import('@/pages/printHouseManage/printHouseManage.vue')
+const PrintHouseCheck = () => import('@/pages/printHouseManage/printHouseCheck.vue')
+const PrintHouseEdit = () => import('@/pages/printHouseManage/printHouseEdit.vue')
 
 Vue.use(Router)
 
 const routes = [
   {
-    path: '/login', name: 'Login', component: Login, meta: { secure: true, title: '登录页面' }
+    path: '/login', name: 'Login', component: Login, meta: {secure: true, title: '登录页面'}
   },
   {
     path: '/admin', name: 'Admin', component: Admin,
@@ -114,7 +112,7 @@ const routes = [
         path: '/userLevelDefinition',
         name: 'UserLevelDefinition',
         component: UserLevelDefinition,
-        meta: { title: '平台用户等级定义' }
+        meta: {title: '平台用户等级定义'}
       },
       {
         path: '/addLevel',
@@ -504,7 +502,7 @@ router.beforeEach((to, from, next) => {
   // 路由发生变化修改页面title
   if (to.meta.title) {
     document.title = to.meta.title
-  }else{
+  } else {
     document.title = '云溯无限-超管平台'
   }
   next()
