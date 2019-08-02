@@ -54,7 +54,23 @@
         </el-submenu>
 
         <el-menu-item index="/agentUserList"><span>代理商用户列表</span></el-menu-item>
-        <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
+
+        <el-submenu class="m-submenu-popper" index="4">
+          <template slot="title" >
+            <span>客户留言</span>
+          </template>
+          <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
+          <el-menu-item index="/rawCodeMessage"><span>生码域名定制留言</span></el-menu-item>
+          <el-menu-item index="/shareGeneraMessage"><span>分享推广定制域名留</span></el-menu-item>
+        </el-submenu>
+        <el-submenu class="m-submenu-popper" index="5">
+          <template slot="title" >
+            <span>用户域名管理</span>
+          </template>
+          <el-menu-item index="/platformUser"><span>平台用户</span></el-menu-item>
+          <el-menu-item index="/agentUse"><span>代理商企业用户</span></el-menu-item>
+        </el-submenu>
+       
         <el-menu-item index="/resourceAllocationRecord"><span>资源分配记录</span></el-menu-item>
         <!-- <el-menu-item index="/myAwardList">
             <span>自建商品审核</span>

@@ -3,29 +3,21 @@
     <div class="header">
       <el-breadcrumb>
         <el-breadcrumb-item>客户留言</el-breadcrumb-item>
-        <el-breadcrumb-item>标签制作留言</el-breadcrumb-item>
+        <el-breadcrumb-item>分享推广定制域名留言</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="main">
-
-
+   <div class="main">
       <el-row :gutter="10">
         <el-col :span="24">
           <el-form ref="filterForm" :model="filterForm" inline size="small" label-position="right" label-width="100px" label-suffix="：">
             <el-row>
               <el-col :span="24">
-
-
                 <el-form-item label="开始时间" prop="beginDate">
                   <el-date-picker v-model="filterForm.beginDate" placeholder="选择开始时间"></el-date-picker>
                 </el-form-item>
-
-
                 <el-form-item label="结束时间" prop="endDate">
                   <el-date-picker v-model="filterForm.endDate" placeholder="选择结束时间"></el-date-picker>
                 </el-form-item>
-
-
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="filterForm.status">
                     <el-option label="全部" value="A"></el-option>
@@ -33,22 +25,18 @@
                     <el-option label="未联系" value="N"></el-option>
                   </el-select>
                 </el-form-item>
-
-
                 <el-form-item class="filter">
                   <el-button native-type="submit" type="primary" size="medium" @click.stop.prevent="filter">筛选</el-button>
                   <el-button type="text" size="medium" @click="resetForm">清空筛选条件</el-button>
                 </el-form-item>
-
-
               </el-col>
             </el-row>
           </el-form>
-
-
           <el-table empty-text="暂无数据" :data="tableData" size="medium"
                     :header-cell-style="{backgroundColor: '#f2f2f2'}" :cell-style="tableCellStyle">
-            <el-table-column align="center" prop="contacts" label="姓名"></el-table-column>
+            <el-table-column align="center" prop="account" label="用户账号"></el-table-column>
+            <el-table-column align="center" property="organName" label="企业名称"></el-table-column>
+            <el-table-column align="center" property="contacts" label="联系人姓名"></el-table-column>
             <el-table-column align="center" property="phone" label="联系方式"></el-table-column>
             <el-table-column align="center" property="createdTime" label="留言时间">
               <template slot-scope="scope">
@@ -68,15 +56,13 @@
             </el-table-column>
           </el-table>
           <el-pagination class="pagination" background popper-class="pagination-popper"
-                         :current-page="currentPageNumber" :page-size="currentPageSize"
-                         :page-sizes="[5, 10, 20, 50, 100]" :total="currentTotal"
-                         layout="prev, pager, next, total, sizes, jumper"
-                         @current-change="pageNumberChange" @prev-clicke="pageNumberChange"
-                         @next-click="pageNumberChange" @size-change="pageSizeChange"></el-pagination>
+              :current-page="currentPageNumber" :page-size="currentPageSize"
+              :page-sizes="[5, 10, 20, 50, 100]" :total="currentTotal"
+              layout="prev, pager, next, total, sizes, jumper"
+              @current-change="pageNumberChange" @prev-clicke="pageNumberChange"
+              @next-click="pageNumberChange" @size-change="pageSizeChange"></el-pagination>
         </el-col>
       </el-row>
-
-
     </div>
   </div>
 </template>
@@ -84,31 +70,24 @@
   export default {
     data(){
       return {
-        currentPageNumber: 1,
-        currentPageSize: 10,
-        currentTotal: null,
-        treeData: [{
-          label: '平台用户等级',
-          children: []
-        }],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        },
         filterForm: {
           status: 'A',
           beginDate: null,
           endDate: null,
         },
         tableData: [],
+        currentPageNumber: 1,
+        currentPageSize: 10,
+        currentTotal: null,
       }
     },
     methods:{
-      // 获取标签制作留言列表
-      getLabelMakingMessageList(){
+      // 获取留言列表
+      getDomainFeedbackList(){
         this.$service.post({
-          url: this.$api.labelMakingMessage.getLabelMakingMessageList,
+          url: this.$api.labelMakingMessage.getDomainFeedbackList,
           params: {
+            type:2,
             status: this.filterForm.status,
             beginDate: this.$timestamp.getTimeByTimestamp(this.filterForm.beginDate && this.filterForm.beginDate.getTime()),
             endDate: this.$timestamp.getTimeByTimestamp(this.filterForm.endDate && (this.filterForm.endDate.getTime() + 24*60*60*1000 - 1)),
@@ -128,7 +107,7 @@
         this.$refs['filterForm'].validate((valid, object)=>{
           if(valid){
             this.currentPageNumber = 1
-            this.getLabelMakingMessageList()
+            this.getDomainFeedbackList()
           }
         })
       },
@@ -145,25 +124,24 @@
       // 当前页码改变刷新列表
       pageNumberChange(pageNumber){
         this.currentPageNumber = pageNumber
-        this.getLabelMakingMessageList()
+        this.getDomainFeedbackList()
       },
       // 当前每页数量改变刷新列表
       pageSizeChange(pageSize){
         this.currentPageNumber = 1
         this.currentPageSize = pageSize
-        this.getLabelMakingMessageList()
+        this.getDomainFeedbackList()
       },
       // 跳转到标签详情
       labelMakingMessageDetail(id){
-        console.log(id)
         this.$router.push({path: 'labelMakingMessageDetail', query: {
           currentId: id,
-          page:'label'
+          page:'domain'
         }})
       }
     },
     created(){
-      this.getLabelMakingMessageList()
+      this.getDomainFeedbackList();
     }
   }
 </script>

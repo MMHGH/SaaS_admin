@@ -652,6 +652,10 @@ export default {
      * @return
      */
     setLabelMakingMessageStatus: '@root/codeTagFeedback/alreadyConnected',
+
+    getDomainFeedbackList: '@root/domainFeedback/listByPage', //查询生码域名定制留言
+    getDomainFeedbackDetail: '@root/domainFeedback/detail', //获取单个留言详情
+    setAlreadyConnected: '@root/domainFeedback/alreadyConnected', //设置为已联系
   },
   //物资管理
   goodsMana: {

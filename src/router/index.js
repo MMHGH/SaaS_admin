@@ -81,6 +81,13 @@ const AgentUserList = () => import('@/pages/agentUserList/AgentUserList.vue')
 // 标签制作留言
 const LabelMakingMessage = () => import('@/pages/labelMakingMessage/labelMakingMessage.vue')
 const LabelMakingMessageDetail = () => import('@/pages/labelMakingMessage/labelMakingMessageDetail.vue')
+const RawCodeMessage = () => import('@/pages/labelMakingMessage/rawCodeMessage.vue')
+const ShareGeneraMessage = () => import('@/pages/labelMakingMessage/shareGeneraMessage.vue')
+
+// 用户域名管理
+const PlatformUser = () => import('@/pages/userDomainManage/platformUser.vue')
+const AgentUse = () => import('@/pages/userDomainManage/agentUse.vue')
+const UserDomainConfig = () => import('@/pages/userDomainManage/userDomainConfig.vue')
 
 // 资源分配记录
 const ResourceAllocationRecord = () => import('@/pages/resourceAllocationRecord/ResourceAllocationRecord.vue')
@@ -433,6 +440,37 @@ const routes = [
         name: 'LabelMakingMessageDetail',
         component: LabelMakingMessageDetail,
         meta: {title: '标签制作留言详情'}
+      },
+      {
+        path: '/rawCodeMessage',
+        name: 'RawCodeMessage',
+        component: RawCodeMessage,
+        meta: {title: '生码域名定制留言'}
+      },
+      {
+        path: '/shareGeneraMessage',
+        name: 'ShareGeneraMessage',
+        component: ShareGeneraMessage,
+        meta: {title: '分享推广定制域名留言'}
+      },
+      // 用户域名管理
+      {
+        path: '/platformUser',
+        name: 'PlatformUser',
+        component: PlatformUser,
+        meta: {title: '平台用户'}
+      }, 
+      {
+        path: '/agentUse',
+        name: 'AgentUse',
+        component: AgentUse,
+        meta: {title: '代理商企业用户'}
+      },
+      {
+        path: '/userDomainConfig',
+        name: 'UserDomainConfig',
+        component: UserDomainConfig,
+        meta: {title: '用户域名配置'}
       },
       // 资源分配记录
       {
