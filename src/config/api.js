@@ -656,6 +656,8 @@ export default {
     getDomainFeedbackList: '@root/domainFeedback/listByPage', //查询生码域名定制留言
     getDomainFeedbackDetail: '@root/domainFeedback/detail', //获取单个留言详情
     setAlreadyConnected: '@root/domainFeedback/alreadyConnected', //设置为已联系
+    getPlatformDomainDetail: '@root/domainSetting/detail', //获取平台用户域名设置详情
+    setPlatformDomainInfo: '@root/domainSetting/setting', //设置平台用户域名
   },
   //物资管理
   goodsMana: {

@@ -29,7 +29,7 @@
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="filterForm.status">
-                    <el-option label="全部" :value="null"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="启用" value="Y"></el-option>
                     <el-option label="禁用" value="N"></el-option>
                   </el-select>
@@ -106,49 +106,6 @@
         tableData: [],
         currentFilterType: 1, // 0：筛选， 1：全局筛选
       }
-    },
-    computed: {
-      status(){
-        return this.filterForm.status
-      },
-      phone(){
-        return this.filterForm.phone
-      },
-      beginDate(){
-        return this.filterForm.beginDate
-      },
-      endDate(){
-        return this.filterForm.endDate
-      },
-      organName(){
-        return this.filterForm.organName
-      }
-    },
-    watch: {
-      currentLevelId(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({currentLevelId: this.currentLevelId})
-      },
-      status(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({status: newVal})
-      },
-      phone(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({phone: newVal})
-      },
-      beginDate(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({beginDate: newVal})
-      },
-      endDate(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({endDate: newVal})
-      },
-      organName(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({organName: newVal})
-      },
     },
     methods:{
       // 获取当前勾选类别和对应类别的用户列表
