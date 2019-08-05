@@ -20,7 +20,7 @@
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="filterForm.status">
-                    <el-option label="全部" value="A"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="已联系" value="Y"></el-option>
                     <el-option label="未联系" value="N"></el-option>
                   </el-select>
@@ -71,7 +71,7 @@
     data(){
       return {
         filterForm: {
-          status: 'A',
+          status: '',
           beginDate: null,
           endDate: null,
         },
