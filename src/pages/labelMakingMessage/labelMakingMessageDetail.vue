@@ -11,7 +11,7 @@
         <el-form-item label="联系人" prop="contacts">{{ form.contacts }}</el-form-item>
         <el-form-item label="联系方式" prop="phone">{{ form.phone }}</el-form-item>
         <el-form-item label="设计需求" prop="remark">{{ form.remark }}</el-form-item>
-        <el-form-item label="设计需求" prop="domain" v-if="this.$route.query.page == 'domain'">{{ form.domain }}</el-form-item>
+        <el-form-item label="定制域名" prop="domain" v-if="this.$route.query.page == 'domain'">{{ form.domain }}</el-form-item>
         <el-form-item>
           <el-button type="primary" size="medium" @click.stop.prevent="setLabelMakingMessageStatus">{{ form.status === 'Y' ? '已联系' : '未联系' }}</el-button>
           <el-button type="primary" size="medium" @click="back">取消</el-button>

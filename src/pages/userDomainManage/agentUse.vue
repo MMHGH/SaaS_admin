@@ -47,7 +47,7 @@
             <el-table-column align="center" property="organName" label="企业名称" min-width="170"></el-table-column>
             <el-table-column align="center" label="操作" min-width="270">
               <template slot-scope="scope">
-                <el-button size="medium" type="text" @click="funConfig(currentLevelId, scope.row)">功能配置</el-button>
+                <el-button size="medium" type="text" @click="funConfig(currentLevelId, scope.row)">配置</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -134,9 +134,6 @@
               }
               vm.getCurrentUserList()
               return yield Promise.resolve()
-            }).then(function(val){
-            }).catch(function(err){
-              console.log(err)
             })
           }
         })
@@ -208,8 +205,7 @@
       // 跳转到功能配置页面
       funConfig(currentLevelId, row){
         let levelId = row.userLevelId
-        this.$router.push({name: 'UserDomainConfig', params: {
-          levelId: levelId,
+        this.$router.push({path: 'userDomainConfig', query: {
           userId: row.id
         }})
       },
@@ -238,12 +234,6 @@
       },
     },
     mounted(){
-      this.currentLevelId = this.$route.query.currentLevelId || null
-      this.$route.query.status && (this.filterForm.status = this.$route.query.status)
-      this.$route.query.phone && (this.filterForm.phone = this.$route.query.phone)
-      this.$route.query.beginDate && (this.filterForm.beginDate = new Date(this.$route.query.beginDate))
-      this.$route.query.endDate && (this.filterForm.endDate = new Date(this.$route.query.endDate))
-      this.$route.query.organName && (this.filterForm.organName = this.$route.query.organName)
       this.getCategoryList()
     }
   }

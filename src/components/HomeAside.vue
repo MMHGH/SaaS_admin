@@ -59,8 +59,9 @@
           <template slot="title" >
             <span>客户留言</span>
           </template>
+          <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
           <el-menu-item index="/rawCodeMessage"><span>生码域名定制留言</span></el-menu-item>
-          <el-menu-item index="/shareGeneraMessage"><span>推广定制域名留</span></el-menu-item>
+          <el-menu-item index="/shareGeneraMessage"><span>推广域名定制留言</span></el-menu-item>
         </el-submenu>
         <el-submenu class="m-submenu-popper" index="5">
           <template slot="title" >

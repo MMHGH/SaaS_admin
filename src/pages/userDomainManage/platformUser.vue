@@ -29,7 +29,7 @@
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="filterForm.status">
-                    <el-option label="全部" :value="null"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="启用" value="Y"></el-option>
                     <el-option label="禁用" value="N"></el-option>
                   </el-select>
@@ -42,11 +42,6 @@
                   <el-button native-type="submit" type="primary" size="medium" @click.stop.prevent="filterAll">全局筛选</el-button>
                   <el-button native-type="submit" type="primary" size="medium" @click.stop.prevent="filter">筛选</el-button>
                   <el-button type="text" size="medium" @click="resetForm">清空筛选条件</el-button>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item>
-                  <el-button  type="primary" size="medium" @click="addUserAccount">新建账户</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -107,51 +102,47 @@
         currentFilterType: 1, // 0：筛选， 1：全局筛选
       }
     },
-    computed: {
-      status(){
-        return this.filterForm.status
-      },
-      phone(){
-        return this.filterForm.phone
-      },
-      beginDate(){
-        return this.filterForm.beginDate
-      },
-      endDate(){
-        return this.filterForm.endDate
-      },
-      organName(){
-        return this.filterForm.organName
-      }
-    },
-    watch: {
-      currentLevelId(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({currentLevelId: this.currentLevelId})
-      },
-      status(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({status: newVal})
-      },
-      phone(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({phone: newVal})
-      },
-      beginDate(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({beginDate: newVal})
-      },
-      endDate(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({endDate: newVal})
-      },
-      organName(newVal, oldVal){
-        if(!newVal) return
-        this.$urlTool.setQueryStringArgs({organName: newVal})
-      },
+    mounted(){
+      this.getCategoryList();
     },
     methods:{
-      // 获取当前勾选类别和对应类别的用户列表
+      // 获取树结构列表
+      getCategoryList(){
+        this.$service.post({
+          url: this.$api.getCategoryList,
+          successHook: (data) => {
+            data.forEach(item => {
+              this.treeData[0].children.push({categoryId: item.dictValue, label: item.dictName, children: []})
+            })
+            let
+              vm = this,
+              thunk = thunkify(this.getLevelList) // 获取等级列表
+            co(function*(){
+              for(let i=0; i<vm.treeData[0].children.length; i++){
+                yield thunk(vm.treeData[0].children[i])
+              }
+              vm.getCurrentUserList()
+              return yield Promise.resolve()
+            })
+          }
+        })
+      },
+      // 获取等级列表
+      getLevelList(category, callback){
+        this.$service.post({
+          url: this.$api.platformUserLevelDefinition.getLevelList,
+          params: {userTypeId: category.categoryId},
+          successHook: (data) => {
+            data.forEach(item => {
+              category.children.push({levelId: item.id, label: item.sysUserLevelName})
+            })
+            this.$nextTick(()=>{
+              callback(null)
+            })
+          }
+        })
+      },
+      // 获取当前勾选类别
       getCurrentUserList(){
         if(this.currentLevelId){
           this.currentLevelId && this.$refs['tree'].setCurrentKey(this.currentLevelId)
@@ -173,46 +164,7 @@
           }
         }
       },
-      // 获取类别列表
-      getCategoryList(){
-        this.$service.post({
-          url: this.$api.getCategoryList,
-          successHook: (data) => {
-            data.forEach(item => {
-              this.treeData[0].children.push({categoryId: item.dictValue, label: item.dictName, children: []})
-            })
-            let
-              vm = this,
-              thunk = thunkify(this.getLevelList)
-            co(function*(){
-              for(let i=0; i<vm.treeData[0].children.length; i++){
-                yield thunk(vm.treeData[0].children[i])
-              }
-              vm.getCurrentUserList()
-              return yield Promise.resolve()
-            }).then(function(val){
-            }).catch(function(err){
-              console.log(err)
-            })
-          }
-        })
-      },
-      // 获取等级列表
-      getLevelList(category, callback){
-        this.$service.post({
-          url: this.$api.platformUserLevelDefinition.getLevelList,
-          params: {userTypeId: category.categoryId},
-          successHook: (data) => {
-            data.forEach(item => {
-              category.children.push({levelId: item.id, label: item.sysUserLevelName})
-            })
-            this.$nextTick(()=>{
-              callback(null)
-            })
-          }
-        })
-      },
-      // 获取平台用户列表（通过选择平台用户等级）
+      // 获取平台用户列表
       getUserListByLevel(data, node, assembly){
         if(!data.children){
           this.currentCategoryId = parseInt(node.parent.data.categoryId);
@@ -221,11 +173,8 @@
           this.currentLevel = data.label;
           this.currentPageNumber = 1;
           this.currentPageSize = 10;
-
           this.currentFilterType = 0
-
           this.getUserList(this.currentLevelId);
-
         }
       },
       // 获取平台用户列表
@@ -274,28 +223,6 @@
       resetForm(){
         this.$refs['filterForm'].resetFields()
       },
-      // 跳转到新建账户页面
-      addUserAccount(){
-        this.$router.push({
-          name: 'UserManagementAddUserAccount',
-          params: {
-            currentCategoryId: this.currentCategoryId,
-            currentLevelId: this.currentLevelId
-          },
-          query: {
-            currentCategoryId: this.currentCategoryId,
-            currentLevelId: this.currentLevelId
-          }
-        })
-      },
-      // 跳转到配置页面
-      funConfig(currentLevelId, row){
-        let levelI = row.userLevelId
-        this.$router.push({name: 'UserDomainConfig', params: {
-          levelId: levelId,
-          userId: row.id
-        }})
-      },
       // 平台用户列表的列样式设置
       tableCellStyle({row, column, rowIndex, columnIndex}) {
         if(column.property === 'userLevelName') {
@@ -319,15 +246,12 @@
           case 1: this.getUserList(); break;
         }
       },
-    },
-    mounted(){
-      this.currentLevelId = this.$route.query.currentLevelId || null
-      this.$route.query.status && (this.filterForm.status = this.$route.query.status)
-      this.$route.query.phone && (this.filterForm.phone = this.$route.query.phone)
-      this.$route.query.beginDate && (this.filterForm.beginDate = new Date(this.$route.query.beginDate))
-      this.$route.query.endDate && (this.filterForm.endDate = new Date(this.$route.query.endDate))
-      this.$route.query.organName && (this.filterForm.organName = this.$route.query.organName)
-      this.getCategoryList()
+      // 跳转到配置页面
+      funConfig(currentLevelId, row){
+        this.$router.push({path: 'userDomainConfig', query: {
+          userId: row.id
+        }})
+      },
     }
   }
 </script>

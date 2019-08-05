@@ -3,7 +3,7 @@
     <div class="header">
       <el-breadcrumb>
         <el-breadcrumb-item>客户留言</el-breadcrumb-item>
-        <el-breadcrumb-item>分享推广定制域名留言</el-breadcrumb-item>
+        <el-breadcrumb-item>推广域名定制留言</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
    <div class="main">
