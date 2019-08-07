@@ -56,12 +56,12 @@
     <el-dialog
         title="域名编辑"
         :visible.sync="dialogVisible"
-        width="30%"
+        width="500px"
         center>
         <div>
             <el-form :model="domainForm" :rules="domainRules" ref="domainForm" label-width="100px" class="demo-dynamic">
                 <el-form-item label="域名：" prop="domain">
-                    <el-input v-model="domainForm.domain" style="width:400px;" placeholder="请输入域名" maxlength="300"></el-input>
+                    <el-input v-model="domainForm.domain" placeholder="请输入域名" maxlength="300"></el-input>
                 </el-form-item>
             </el-form>
         </div>
@@ -79,6 +79,7 @@
     data(){
       return {
         type:'',
+        userId:'',
         dialogVisible:false,
         ruleForm:{
             codeDomainType:1,
@@ -100,6 +101,7 @@
     },
     mounted(){
      this.getData();
+     this.userId = this.$route.query.userId;
     },
     methods:{
       getData() {
@@ -107,7 +109,7 @@
           userId:this.$route.query.userId
         }
         this.axios.post(this.$api.labelMakingMessage.getPlatformDomainDetail, params).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             this.ruleForm = data;
@@ -147,8 +149,9 @@
       // 提交保存
       save(){
         let params = this.ruleForm;
+        params.userId = this.userId;
         this.axios.post(this.$api.labelMakingMessage.setPlatformDomainInfo, params).then((res) => {
-          let data = res.data.data, 
+          let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
             Message({
