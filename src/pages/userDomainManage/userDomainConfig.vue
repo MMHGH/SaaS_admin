@@ -124,7 +124,15 @@
       // 编辑域名
       editDomain(type){
           this.type = type;
-          this.domainForm.domain = '';
+          // this.domainForm.domain = '';
+          switch(this.type){
+            case 'code':
+              this.domainForm.domain = this.ruleForm.codeDomain || '';
+              break;
+            case 'active':
+              this.domainForm.domain = this.ruleForm.spreadDomain || '';
+              break;
+          }
           this.dialogVisible = true;
       },
       // 保存
