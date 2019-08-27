@@ -129,6 +129,17 @@ export default {
         {key: 'shareImgUrl', label: '分享背景图片', type: 'img', value: ''}
       ]
     },
+    //  商品分享
+    {
+      value: 16, label: '商品分享',
+      verifyField: [
+        {key: 'no', label: '分享规则编号', type: 'text', value: ''},
+        {key: 'name', label: '分享规则名称', type: 'text', value: ''},
+        {key: 'content', label: '商品分享说明', type: 'text', value: ''},
+        {key: 'buttonTwoName', label: '按钮名称', type: 'text', value: ''},
+        {key: 'buttonUrl', label: '链接地址', type: 'text', value: ''},
+      ]
+    },
   ],
   /**
    * 获取 单据配置信息

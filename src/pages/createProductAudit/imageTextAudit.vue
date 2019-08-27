@@ -145,6 +145,7 @@
           {label: '活动管理-奖品基本设置', value: 12},
           {label: '静态溯源模板设置', value: 13},
           {label: '活动推广', value: 15},
+          {label: '商品分享', value: 16},
         ],
         tableData: [],
         pageNum: 1,
@@ -216,6 +217,9 @@
            break;
           case 15:
            pageName = '活动推广'
+           break;
+          case 16:
+           pageName = '商品分享'
            break;
         }
         return pageName
