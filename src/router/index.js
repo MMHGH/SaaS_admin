@@ -104,6 +104,8 @@ const AccountConf = () => import('@/pages/accountManage/accountConf.vue')
 const PrintHouseManage = () => import('@/pages/printHouseManage/printHouseManage.vue')
 const PrintHouseCheck = () => import('@/pages/printHouseManage/printHouseCheck.vue')
 const PrintHouseEdit = () => import('@/pages/printHouseManage/printHouseEdit.vue')
+// 返利条件定制
+const RebateConditionCustom = () => import('@/pages/rebateConditionCustom/rebateConditionCustom.vue')
 
 Vue.use(Router)
 
@@ -459,7 +461,7 @@ const routes = [
         name: 'PlatformUser',
         component: PlatformUser,
         meta: {title: '平台用户'}
-      }, 
+      },
       {
         path: '/agentUse',
         name: 'AgentUse',
@@ -526,6 +528,12 @@ const routes = [
         name: 'printHouseEdit',
         component: PrintHouseEdit,
         meta: {title: '印刷厂编辑'}
+      },
+      {
+        path: '/rebateConditionCustom',
+        name: 'rebateConditionCustom',
+        component: RebateConditionCustom,
+        meta: {title: '返利条件定制'}
       },
     ]
   },

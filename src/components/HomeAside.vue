@@ -62,6 +62,7 @@
           <el-menu-item index="/labelMakingMessage"><span>标签制作留言</span></el-menu-item>
           <el-menu-item index="/rawCodeMessage"><span>生码域名定制留言</span></el-menu-item>
           <el-menu-item index="/shareGeneraMessage"><span>推广域名定制留言</span></el-menu-item>
+          <!--<el-menu-item index="/rebateConditionCustom"><span>返利条件定制</span></el-menu-item>-->
         </el-submenu>
         <el-submenu class="m-submenu-popper" index="5">
           <template slot="title" >
@@ -70,7 +71,7 @@
           <el-menu-item index="/platformUser"><span>平台用户</span></el-menu-item>
           <el-menu-item index="/agentUse"><span>代理商企业用户</span></el-menu-item>
         </el-submenu>
-       
+
         <el-menu-item index="/resourceAllocationRecord"><span>资源分配记录</span></el-menu-item>
         <!-- <el-menu-item index="/myAwardList">
             <span>自建商品审核</span>
@@ -211,7 +212,7 @@ export default {
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item:first-child{margin-top: 129px;}
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item:hover,
 .home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item.is-active{background-color: #f2f2f2!important;}
-.home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item span{margin: 0 15px;padding: 0;border-bottom: 1px solid #f2f2f2;}
+.home-aside .el-menu .el-submenu.m-submenu-popper .el-submenu__title+.el-menu .el-menu-item span{margin: 0 15px;padding: 0;/*border-bottom: 1px solid #f2f2f2;*/}
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
