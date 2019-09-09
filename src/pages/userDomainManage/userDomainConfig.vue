@@ -35,7 +35,7 @@
                    <el-button type="text" @click="editDomain('active')"  v-if="ruleForm.spreadDomainType == 2">编辑</el-button>
                 </el-form-item>
            </div>
-           <!-- <div class="item">
+           <div class="item">
                <h2>商品分享域名</h2>
                 <el-form-item class="mar-left">
                     <el-radio-group v-model="ruleForm.goodsDomainType">
@@ -47,7 +47,7 @@
                     <span style="margin-right:30px;">{{ruleForm.goodsDomain?ruleForm.goodsDomain:'未设置'}}</span>
                    <el-button type="text" @click="editDomain('product')"  v-if="ruleForm.goodsDomainType == 2">编辑</el-button>
                 </el-form-item>
-           </div> -->
+           </div>
            <div class="save-btn">
                 <el-button type="primary" size="medium" @click.stop.prevent="save">提交保存</el-button>
            </div>
@@ -86,8 +86,8 @@
             codeDomain:'',
             spreadDomainType:2,
             spreadDomain:'',
-            // goodsDomainType:2,
-            // goodsDomain:'',
+            goodsDomainType:2,
+            goodsDomain:'',
         },
         domainForm: {
           domain: '',
@@ -115,7 +115,7 @@
             this.ruleForm = data;
             this.ruleForm.codeDomainType = data.codeDomainType || 1;
             this.ruleForm.spreadDomainType = data.spreadDomainType || 2;
-            // this.ruleForm.goodsDomainType = data.goodsDomainType || 2;
+            this.ruleForm.goodsDomainType = data.goodsDomainType || 2;
           } else {
             this.$message.error('查询失败：' + msg);
           }
@@ -146,9 +146,9 @@
                 case 'active':
                   this.ruleForm.spreadDomain = this.domainForm.domain;
                   break;
-                // case 'product':
-                //   this.ruleForm.goodsDomain = this.domainForm.domain;
-                //   break;
+                case 'product':
+                  this.ruleForm.goodsDomain = this.domainForm.domain;
+                  break;
               }
               this.dialogVisible = false;
             }
