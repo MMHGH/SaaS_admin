@@ -26,15 +26,15 @@
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="550px">
       <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
         <el-form-item label="旧密码" prop="oldPWD">
-          <el-input v-model="ruleForm2.oldPWD" type="password" oninput="this.value=this.value.replace(/\s+/g,'')"
+          <el-input v-model="ruleForm2.oldPWD" type="password"
                     style="width:240px" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm2.pass" oninput="this.value=this.value.replace(/\s+/g,'')"
+          <el-input type="password" v-model="ruleForm2.pass"
                     auto-complete="off" style="width:240px"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm2.checkPass" oninput="this.value=this.value.replace(/\s+/g,'')"
+          <el-input type="password" v-model="ruleForm2.checkPass"
                     auto-complete="off" style="width:240px"></el-input>
         </el-form-item>
         <el-form-item>
@@ -44,7 +44,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    
+
     <el-dialog title="修改邮箱" :visible.sync="dialogEmail" width="550px">
       <el-form :model="ruleForm3" status-icon :rules="rules3" ref="ruleForm3" label-width="100px" class="demo-ruleForm">
         <el-form-item label="新的邮箱" prop="newEmail">
