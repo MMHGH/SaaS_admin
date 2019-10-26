@@ -140,6 +140,15 @@ export default {
         {key: 'buttonUrl', label: '链接地址', type: 'text', value: ''},
       ]
     },
+    //  商品动态
+    {
+      value: 17, label: '商品动态',
+      verifyField: [
+        {key: 'no', label: '商品动态编号', type: 'text', value: ''},
+        {key: 'name', label: '商品动态名称', type: 'text', value: ''},
+        {key: 'imgUrl', label: 'banner图片', type: 'img', value: ''},
+      ]
+    },
   ],
   /**
    * 获取 单据配置信息
@@ -173,12 +182,6 @@ export default {
               fields[i].value = jsonData[fields[i].key];
               break;
           }
-        }
-      }else{
-        switch(type){
-          case 8:
-            // fields[i].value = jsonPares[fields[i].key];
-            break;
         }
       }
     }

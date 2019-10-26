@@ -1,7 +1,7 @@
 <template>
   <div class="audit-content">
 
-    <el-dialog title="审核内容" :visible.sync="dialogAudit" width="700px" center>
+    <el-dialog title="审核内容" :visible.sync="dialogAudit" width="800px" center>
       <el-form ref="form" label-width="130px">
         <el-form-item class="list-item" :label="item.label+'：'" v-show="item.value" v-for="(item,index) in formData" :key="index">
           <!-- text类型 -->
@@ -140,6 +140,40 @@
         </div>
       </el-form>
 
+      <!-- 商品动态 -->
+      <el-form v-if="auditData.scene===17" ref="ruleForm" label-width="100px" disabled class="auto-content demo-ruleForm">
+        <el-form-item label="页面标题:" prop="name">
+          <el-input size="mini" v-model="productDynameic.name" 
+                     style="width:390px;"
+                    placeholder="请输入页面标题"></el-input>
+        </el-form-item>
+        <el-form-item label="主标题:" prop="mainName" class="mainName">
+          <el-input size="mini" v-model="productDynameic.mainName" 
+                     style="width:390px;"
+                    placeholder="请输入主标题"></el-input>
+        </el-form-item>
+        <el-form-item label="图片轮播广告:" prop="" class="list-item">
+           <img class="item-img"  v-for="(img,idx) in productDynameic.carouselList"
+               :key="idx" :src="img.url" :onerror="ImgError">
+        </el-form-item>
+        <!-- 模板栏目信息 编辑 -->
+        <div v-for="(item, index) in productDynameic.contentList" :key="index" class="prod-info">
+            <el-form label-width="100px" disabled>
+              <el-form-item label="栏目标题：" prop="name">
+                <el-input :maxlength="8"  v-model="item.name" style="width: 300px;"
+                            placeholder="最多输入8个字符"></el-input>
+              </el-form-item> 
+              <el-form-item style="white-space: nowrap;" label="展示图片：" prop="imgUrl">
+                  <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" alt="">
+              </el-form-item>
+              <div>
+                <p style="padding-left:14px;">文本内容：</p>
+                <div class="content-html"  v-html="item.content"></div>
+              </div>
+            </el-form>
+        </div>
+      </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" v-if="auditData.status==0 || auditData.status==2 || auditData.status==3"
                    @click="pass">审核通过</el-button>
@@ -205,7 +239,9 @@
           devAttrs: {
             attrs: ''
           }
-        }
+        },
+        // 商品动态
+        productDynameic:{}
       }
     },
     mounted() {
@@ -249,12 +285,14 @@
             attrs: ''
           }
         }
+        this.productDynameic={}
 
         // 获取配置
         let conf = formVerifyConf.getConfByType(this.auditData.scene);
 
         // 解析json
         let json = JSON.parse(this.auditData.content);
+
         // 静态溯源模板
         if (this.auditData.scene === 13) {
           // 设置值
@@ -353,6 +391,13 @@
             }
           })
           this.devCourseData.projectList = others;
+        }else if(this.auditData.scene === 17){
+          this.productDynameic.name = json.name;
+          // 处理json数据
+          let jsonData = JSON.parse(json.json);
+          this.productDynameic.mainName = jsonData.mainName;
+          this.productDynameic.carouselList = jsonData.carouselList;
+          this.productDynameic.contentList =  jsonData.contentList;
         } else {  // 其他单据
           // 设置值
           this.formData = formVerifyConf.setVerifyField(conf.value, conf.verifyField, json);
@@ -423,12 +468,18 @@
   .list-item img{
     max-width: 100%;
   }
+  .audit-content .mainName{
+    margin-bottom:6px!important;
+  }
 </style>
 <style lang="scss" scoped>
   .list-item {
     margin-bottom: 5px;
   }
-
+  .auto-content{
+    max-height:600px;
+    overflow-y: scroll;
+  }
   .list-item .item-txt {
     width: 400px;
   }
@@ -445,6 +496,14 @@
     border: 1px solid #dcdfe6;
     background: #f2f2f2;
     margin-bottom: 10px;
+  }
+  .content-html{
+     word-wrap: break-word;
+     word-break: normal;
+     border:1px solid #e8e8e8;
+     border-radius: 5px;
+     padding:10px;
+     margin:10px 40px;
   }
 
   .prod-info img {
