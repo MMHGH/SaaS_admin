@@ -96,7 +96,7 @@
       <el-form v-if="auditData.scene===8" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="页面标题" prop="name">
           <el-input size="mini" v-model="devCourseData.name" maxlength="9" disabled
-                    oninput="this.value=this.value.replace(/\s+/g,'')" style="width:390px;"
+                    style="width:390px;"
                     placeholder="请输入页面标题"></el-input>
         </el-form-item>
         <el-form-item>
@@ -106,7 +106,7 @@
               <el-checkbox class="checkItem" label="imgUrl" disabled style="margin-left: 90px;">图片</el-checkbox>
 
               <el-input size="mini" v-model="devCourseData.devAttrs.brandName" maxlength="20"
-                        oninput="this.value=this.value.replace(/\s+/g,'')" style="width:330px;"
+                        style="width:330px;"
                         placeholder="请输入品牌名称" disabled></el-input>
               <el-checkbox class="checkItem" label="brandName" disabled>名称</el-checkbox>
 
