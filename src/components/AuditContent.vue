@@ -221,6 +221,7 @@
         <!-- 自定义栏目 -->
         <div v-for="(item, index) in certificate.certificateList" :key="index" class="prod-info">
             <el-form label-width="100px" disabled>
+                <h3>证书栏</h3>
                 <el-form-item label="栏目标题：" prop="name">
                   <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
                 </el-form-item> 
@@ -240,10 +241,10 @@
                     <el-input size="small" placeholder="请输入" v-model="item.vertical" style="width:140px;"></el-input>
                   </div>
                 </el-form-item>
-                <el-form-item label="备注：" prop="remark">
-                  <el-input type="textarea" size="small"  maxlength="500" style="width:500px;"
-                          rows="5" v-model="item.remark" placeholder="备注"></el-input>
-                </el-form-item>
+                <div>
+                  <p style="padding-left:14px;">备注说明：</p>
+                  <div class="content-html"  v-html="item.remark"></div>
+                </div>
             </el-form>
         </div>
       </el-form>
