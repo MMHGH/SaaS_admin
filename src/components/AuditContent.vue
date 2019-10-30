@@ -168,10 +168,9 @@
                 <el-form-item style="white-space: nowrap;" label="展示图片：" prop="imgUrl">
                     <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" alt="">
                 </el-form-item>
-                <div>
-                  <p style="padding-left:14px;">文本内容：</p>
-                  <div class="content-html"  v-html="item.content"></div>
-                </div>
+                <el-form-item style="white-space: nowrap;" label="文本内容：" prop="imgUrl">
+                    <div class="content-html"  v-html="item.content"></div>
+                </el-form-item>
               </div>
               <!-- 证书栏 -->
               <div v-else>
@@ -241,10 +240,9 @@
                     <el-input size="small" placeholder="请输入" v-model="item.vertical" style="width:140px;"></el-input>
                   </div>
                 </el-form-item>
-                <div>
-                  <p style="padding-left:14px;">备注说明：</p>
-                  <div class="content-html"  v-html="item.remark"></div>
-                </div>
+                <el-form-item label="备注说明：" prop="remark">
+                   <div class="content-html"  v-html="item.remark"></div>
+                </el-form-item> 
             </el-form>
         </div>
       </el-form>
@@ -598,7 +596,8 @@
      border:1px solid #e8e8e8;
      border-radius: 5px;
      padding:10px;
-     margin:10px 40px;
+     width: 80%;
+     margin:10px 0;
   }
 
   .prod-info img {
