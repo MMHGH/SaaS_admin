@@ -2,6 +2,7 @@
   <div class="audit-content">
 
     <el-dialog title="审核内容" :visible.sync="dialogAudit" width="800px" center>
+      <!-- 固定模板 -->
       <el-form ref="form" label-width="130px">
         <el-form-item class="list-item" :label="item.label+'：'" v-show="item.value" v-for="(item,index) in formData" :key="index">
           <!-- text类型 -->
@@ -15,8 +16,9 @@
         </el-form-item>
       </el-form>
 
+      <!-- 动态模板 -->
       <!-- 静态溯源模板 -->
-      <div class="prod-info" v-if="auditData.scene===13" v-for="(item,index) in otherData" :keys="index">
+      <div class="prod-info" v-if="auditData.scene===13" v-for="(item,index) in otherData" :key="index">
         <el-form>
           <el-form-item style="height: 45px;">
             <div class="title">
@@ -69,7 +71,6 @@
           </el-row>
         </el-form>
       </div>
-
       <!-- 静态溯源模板 --自定义栏目 -->
       <div class="prod-info" v-if="auditData.scene===13" v-for="(item,idx) in staticTempOther" :key="idx">
         <div style="padding: 10px 0px;">
@@ -91,7 +92,6 @@
           <el-checkbox :disabled="true" title="图片项目展开" v-model="item.isShowImg">图片项目展开</el-checkbox>
         </div>
       </div>
-
       <!-- 发展历程 -->
       <el-form v-if="auditData.scene===8" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="页面标题" prop="name">
@@ -139,7 +139,6 @@
           </el-form-item>
         </div>
       </el-form>
-
       <!-- 商品动态 -->
       <el-form v-if="auditData.scene===17" ref="ruleForm" label-width="100px" disabled class="auto-content demo-ruleForm">
         <el-form-item label="页面标题:" prop="name">
@@ -156,20 +155,95 @@
            <img class="item-img"  v-for="(img,idx) in productDynameic.carouselList"
                :key="idx" :src="img.url" :onerror="ImgError">
         </el-form-item>
-        <!-- 模板栏目信息 编辑 -->
+        <!-- 自定义栏目 -->
         <div v-for="(item, index) in productDynameic.contentList" :key="index" class="prod-info">
             <el-form label-width="100px" disabled>
-              <el-form-item label="栏目标题：" prop="name">
-                <el-input :maxlength="8"  v-model="item.name" style="width: 300px;"
-                            placeholder="最多输入8个字符"></el-input>
-              </el-form-item> 
-              <el-form-item style="white-space: nowrap;" label="展示图片：" prop="imgUrl">
-                  <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" alt="">
-              </el-form-item>
-              <div>
-                <p style="padding-left:14px;">文本内容：</p>
-                <div class="content-html"  v-html="item.content"></div>
+              <h3>{{item.type == 'content'?'内容栏':'证书栏'}}</h3>
+              <!-- 内容栏 -->
+              <div v-if="item.type == 'content'">
+                <el-form-item label="栏目标题：" prop="name">
+                  <el-input :maxlength="8"  v-model="item.name" style="width: 300px;"
+                              placeholder="最多输入8个字符"></el-input>
+                </el-form-item> 
+                <el-form-item style="white-space: nowrap;" label="展示图片：" prop="imgUrl">
+                    <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" alt="">
+                </el-form-item>
+                <div>
+                  <p style="padding-left:14px;">文本内容：</p>
+                  <div class="content-html"  v-html="item.content"></div>
+                </div>
               </div>
+              <!-- 证书栏 -->
+              <div v-else>
+                <el-form-item label="栏目标题：" prop="name">
+                  <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
+                </el-form-item> 
+                <el-form-item style="white-space: nowrap;" label="证书图片：" prop="imgUrl">
+                  <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" :onerror="ImgError">
+                </el-form-item>
+                <el-form-item label="字段名称：" prop="designation" v-if="item.embedType == 2">
+                  <el-input :maxlength="20"  v-model="item.designation" style="width: 180px;"></el-input>
+                </el-form-item> 
+                <el-form-item label="位置：" prop="location" v-if="item.embedType == 1">
+                  <div class="ac-line">
+                    <span style="color: #C0C4CC;">{{item.labelOne}}</span>
+                    <el-input size="small" placeholder="请输入" v-model="item.level" style="width:140px;"></el-input>
+                  </div>
+                  <div class="ac-line">
+                    <span style="color: #C0C4CC;">{{item.labelTwo}}</span>
+                    <el-input size="small" placeholder="请输入" v-model="item.vertical" style="width:140px;"></el-input>
+                  </div>
+                </el-form-item>
+                <el-form-item label="备注：" prop="remark">
+                  <el-input type="textarea" size="small"  maxlength="500" style="width:500px;"
+                          rows="5" v-model="item.remark" placeholder="备注"></el-input>
+                </el-form-item>
+              </div>
+            </el-form>
+        </div>
+      </el-form>
+      <!-- 商品证书 -->
+      <el-form v-if="auditData.scene===18" ref="ruleForm" label-width="100px" disabled class="auto-content demo-ruleForm">
+        <el-form-item label="页面标题:" prop="name">
+          <el-input size="mini" v-model="certificate.name" 
+                     style="width:390px;"
+                    placeholder="请输入页面标题"></el-input>
+        </el-form-item>
+        <el-form-item label="主标题:" prop="mainName" class="mainName">
+          <el-input size="mini" v-model="certificate.mainName" 
+                     style="width:390px;"
+                    placeholder="请输入主标题"></el-input>
+        </el-form-item>
+        <el-form-item label="图片轮播广告:" prop="" class="list-item">
+           <img class="item-img"  v-for="(img,idx) in certificate.carouselList"
+               :key="idx" :src="img.url" :onerror="ImgError">
+        </el-form-item>
+        <!-- 自定义栏目 -->
+        <div v-for="(item, index) in certificate.certificateList" :key="index" class="prod-info">
+            <el-form label-width="100px" disabled>
+                <el-form-item label="栏目标题：" prop="name">
+                  <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
+                </el-form-item> 
+                <el-form-item style="white-space: nowrap;" label="证书图片：" prop="imgUrl">
+                  <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" :onerror="ImgError">
+                </el-form-item>
+                <el-form-item label="字段名称：" prop="designation" v-if="item.embedType == 2">
+                  <el-input :maxlength="20"  v-model="item.designation" style="width: 180px;"></el-input>
+                </el-form-item> 
+                <el-form-item label="位置：" prop="location" v-if="item.embedType == 1">
+                  <div class="ac-line">
+                    <span style="color: #C0C4CC;">{{item.labelOne}}</span>
+                    <el-input size="small" placeholder="请输入" v-model="item.level" style="width:140px;"></el-input>
+                  </div>
+                  <div class="ac-line">
+                    <span style="color: #C0C4CC;">{{item.labelTwo}}</span>
+                    <el-input size="small" placeholder="请输入" v-model="item.vertical" style="width:140px;"></el-input>
+                  </div>
+                </el-form-item>
+                <el-form-item label="备注：" prop="remark">
+                  <el-input type="textarea" size="small"  maxlength="500" style="width:500px;"
+                          rows="5" v-model="item.remark" placeholder="备注"></el-input>
+                </el-form-item>
             </el-form>
         </div>
       </el-form>
@@ -241,7 +315,9 @@
           }
         },
         // 商品动态
-        productDynameic:{}
+        productDynameic:{},
+        // 商品证书
+        certificate:{},
       }
     },
     mounted() {
@@ -398,7 +474,14 @@
           this.productDynameic.mainName = jsonData.mainName;
           this.productDynameic.carouselList = jsonData.carouselList;
           this.productDynameic.contentList =  jsonData.contentList;
-        } else {  // 其他单据
+        }else if(this.auditData.scene === 18){
+          this.certificate.name = json.name;
+          // 处理json数据
+          let jsonData = JSON.parse(json.json);
+          this.certificate.mainName = jsonData.mainName;
+          this.certificate.carouselList = jsonData.carouselList;
+          this.certificate.certificateList =  jsonData.certificateList;
+        }else {  // 其他单据
           // 设置值
           this.formData = formVerifyConf.setVerifyField(conf.value, conf.verifyField, json);
         }
@@ -489,13 +572,24 @@
     height: 160px;
     margin-right: 5px;
   }
-
+  .ac-line{
+    display: inline-block;
+  }
   .prod-info {
+    width: 90%;
     padding: 0px 20px 5px 20px;
     border-radius: 10px;
     border: 1px solid #dcdfe6;
     background: #f2f2f2;
     margin-bottom: 10px;
+  }
+  .prod-info h3{
+      border-bottom: 1px solid #DCDFE6;
+      padding-bottom: 3px;
+      font-weight: 400;
+      line-height: 24px;
+      margin-top: 10px;
+      margin-bottom: 18px;
   }
   .content-html{
      word-wrap: break-word;

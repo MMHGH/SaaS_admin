@@ -140,6 +140,7 @@
           {label: '视频展示', value: 7},
           {label: '发展历程', value: 8},
           {label: '商品动态', value: 17},
+          {label: '商品证书', value: 18},
           {label: '商品列表', value: 9},
           {label: '商品分类', value: 10},
           {label: '活动管理', value: 11},
@@ -224,6 +225,9 @@
            break;
           case 17:
            pageName = '商品动态'
+           break;
+          case 18:
+           pageName = '商品证书'
            break;
         }
         return pageName

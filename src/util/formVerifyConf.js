@@ -143,11 +143,12 @@ export default {
     //  商品动态
     {
       value: 17, label: '商品动态',
-      verifyField: [
-        {key: 'no', label: '商品动态编号', type: 'text', value: ''},
-        {key: 'name', label: '商品动态名称', type: 'text', value: ''},
-        {key: 'imgUrl', label: 'banner图片', type: 'img', value: ''},
-      ]
+      verifyField: []
+    },
+    //  商品证书
+    {
+      value: 18, label: '商品证书',
+      verifyField: []
     },
   ],
   /**
@@ -164,11 +165,12 @@ export default {
   },
   /**
    * 设置 单据验证字段
+   * type:页面类型 fields:属性值 jsonObj：数据
+   * 自定义(动态)模块另写html
    */
   setVerifyField(type,fields, jsonObj) {
-    // let arrImgs = [];
     for (let i = 0; i < fields.length; i++) {
-      let auditType = fields[i].type;
+      let auditType = fields[i].type;//渲染类型
       if (auditType != 'other') {
         fields[i].value = jsonObj[fields[i].key];
         if(auditType == 'json' || type == 8){
