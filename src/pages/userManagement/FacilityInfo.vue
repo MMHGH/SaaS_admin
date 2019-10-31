@@ -114,7 +114,7 @@ export default {
                 params: {
                     pageNum: this.currentPageNumber,
                     pageSize: this.currentPageSize,
-                    organId:parseInt(this.$route.query.id)||''
+                    organId:parseInt(this.$route.query.organId)||''
                 },
                 successHook: (data,response) => {
                     let msg = response.data.message;
@@ -172,7 +172,7 @@ export default {
             this.$service.postWithConfirm({
                 confirmText: '此操作将' + statusText + '该用户, 是否继续？',
                 url: this.$api.userManagement.updatePdaState,
-                params: {id: row.id},
+                params: {id: row.id,machineId: row.machineId},
                 successHook: () => {this.getPdaData()},
                 successMessage: '已成功' + statusText + '该类别',
                 errorCloseHook: this.back
