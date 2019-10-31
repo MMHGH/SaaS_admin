@@ -214,8 +214,8 @@
       'format-tree-node': formatTreeNode['format-tree-node']
     },
     created(){
-      this.currentUserId = this.$route.params.userId
-      this.currentLevelId = this.$route.params.levelId
+      this.currentUserId = this.$route.query.userId
+      this.currentLevelId = this.$route.query.levelId
       this.getFunctionConfigList()
     }
   }

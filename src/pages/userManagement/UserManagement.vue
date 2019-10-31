@@ -329,14 +329,8 @@
       },
       // 跳转到功能配置页面
       funConfig(currentLevelId, row){
-        let levelId
-        // switch(this.currentFilterType){
-        //   case 0: levelId = currentLevelId; break;
-        //   case 1: levelId = row.userLevelId; break;
-        // }
-        levelId = row.userLevelId
-        this.$router.push({name: 'UserManagementFunctionConfig', params: {
-          levelId: levelId,
+        this.$router.push({path: '/userManagement/functionConfig', query: {
+          levelId: row.userLevelId,
           userId: row.id
         }})
       },
