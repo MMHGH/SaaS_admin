@@ -106,6 +106,8 @@ const PrintHouseCheck = () => import('@/pages/printHouseManage/printHouseCheck.v
 const PrintHouseEdit = () => import('@/pages/printHouseManage/printHouseEdit.vue')
 // 返利条件定制
 const RebateConditionCustom = () => import('@/pages/rebateConditionCustom/rebateConditionCustom.vue')
+// 系统管理
+const UpgradeMaintenance = () => import('@/pages/adminManagement/upgradeMaintenance.vue')
 
 Vue.use(Router)
 
@@ -534,6 +536,12 @@ const routes = [
         name: 'rebateConditionCustom',
         component: RebateConditionCustom,
         meta: {title: '返利条件定制'}
+      },
+      {
+        path: '/upgradeMaintenance',
+        name: 'upgradeMaintenance',
+        component: UpgradeMaintenance,
+        meta: {title: '升级维护'}
       },
     ]
   },

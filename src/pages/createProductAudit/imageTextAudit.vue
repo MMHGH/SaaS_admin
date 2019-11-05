@@ -135,7 +135,7 @@
           {label: '防伪验真配置', value: 2},
           {label: '资讯公告', value: 3},
           {label: '商品详情配置', value: 4},
-          {label: '我的主页', value: 5},
+          {label: '会员中心', value: 5},
           {label: '自定义模板', value: 6},
           {label: '视频展示', value: 7},
           {label: '发展历程', value: 8},
@@ -191,7 +191,7 @@
            pageName = '商品详情配置'
            break;
           case 5:
-           pageName = '我的主页'
+           pageName = '会员中心'
            break;
           case 6:
            pageName = '自定义模板'

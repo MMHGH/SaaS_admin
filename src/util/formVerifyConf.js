@@ -37,7 +37,7 @@ export default {
       ]
     },
     {
-      value: 5, label: '我的主页',
+      value: 5, label: '会员中心',
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
         {key: 'description', label: '页面描述', type: 'text', value: ''},
