@@ -758,6 +758,12 @@ export default {
     updateApproveScoreRule: '@root/approve/updateApproveScoreRule',  //查询自动审核规则
   },
 
+  // 系统管理
+  adminManagement:{
+    getSetting: '@root/sysSetting/getSetting',  //获取系统配置
+    setting: '@root/sysSetting/setting',  //设置系统配置
+  },
+
   //上传图片地址
   uploadUrl: '/api/adminFile/imgUpload',
 

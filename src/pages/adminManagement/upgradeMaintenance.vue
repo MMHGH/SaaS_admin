@@ -2,11 +2,11 @@
   <div class="upgrade">
     <div class="mat-header">系统管理 / <span>升级维护</span></div>
     <div class="upgrade-content">
-        <div class="upgrade-content__status">当前状态：<span :style="{'color':isStart?'#13CE66':'#FF4949'}">{{isStart?'正常运行':'维护中'}}</span></div>
+        <div class="upgrade-content__status">当前状态：<span :style="{'color':sysStatus?'#13CE66':'#FF4949'}">{{sysStatus?'正常运行':'维护中'}}</span></div>
         <div class="upgrade-content__setting">
             <span>设置服务器状态:</span>
             <el-switch
-                v-model="isStart"
+                v-model="sysStatus"
                 active-color="#13ce66"
                 @change="changeSetting"
                 inactive-color="#ff4949">
@@ -23,21 +23,18 @@
   export default {
     data() {
       return {
-        isStart:true
+        sysStatus:true
       }
     },
     filters: {
     },
     methods: {
       getData() {
-        let param = {
-          isStart:this.isStart
-        }
-        this.axios.post(this.$api.auditDetails.getImageList, param).then((res) => {
+        this.axios.post(this.$api.adminManagement.getSetting, {}).then((res) => {
           let data = res.data.data,
               msg = res.data.message;
           if (msg == 'ok') {
-            this.isStart = data.isStart;
+            this.sysStatus = data.sysStatus == 1?true:false;
           } else {
             this.$message.error('查询失败：' + msg);
           }
@@ -45,9 +42,9 @@
       },
       changeSetting(){
         let param = {
-          isStart:this.isStart
+          sysStatus:this.sysStatus?1:2
         }
-        this.axios.post(this.$api.auditDetails.getImageList, param).then((res) => {
+        this.axios.post(this.$api.adminManagement.setting, param).then((res) => {
           let msg = res.data.message;
           if (msg == 'ok') {
             Message({
@@ -63,7 +60,7 @@
     },
     mounted() {
       // 查询
-    //   this.getData();
+      this.getData();
     }
   }
 </script>
