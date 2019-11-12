@@ -23,7 +23,7 @@
   export default {
     data() {
       return {
-        sysStatus:true
+        sysStatus:false
       }
     },
     filters: {
@@ -41,6 +41,7 @@
         })
       },
       changeSetting(){
+        let that = this;
         let param = {
           sysStatus:this.sysStatus?1:2
         }
@@ -51,9 +52,9 @@
                 type: 'success',
                 message: '设置成功'
             });
-            this.getData();
+            that.getData();
           } else {
-            this.$message.error('查询失败：' + msg);
+            that.$message.error('设置失败：' + msg);
           }
         })
       }

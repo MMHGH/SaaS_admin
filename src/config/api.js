@@ -760,8 +760,8 @@ export default {
 
   // 系统管理
   adminManagement:{
-    getSetting: '@root/sysSetting/getSetting',  //获取系统配置
-    setting: '@root/sysSetting/setting',  //设置系统配置
+    getSetting: '@root/sysSettingAdmin/getSetting',  //获取系统配置
+    setting: '@root/sysSettingAdmin/setting',  //设置系统配置
   },
 
   //上传图片地址
