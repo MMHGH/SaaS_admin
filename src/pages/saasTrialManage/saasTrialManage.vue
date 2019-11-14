@@ -63,7 +63,7 @@
             <el-table-column align="center" prop="phone" label="联系电话" width="150"></el-table-column>
             <el-table-column align="center" prop="enterpriseName" label="企业名称" width="150"></el-table-column>
             <el-table-column align="center" prop="sector" label="所属行业" width="120"></el-table-column>
-            <el-table-column align="center" prop="createdTime" label="团队规模" width="160">
+            <el-table-column align="center" prop="createdTime" label="团队规模" width="140">
               <template slot-scope="scope">{{ scope.row.teamSize | fmtStatus(teamSize)}}</template>
             </el-table-column>
             <el-table-column align="center" prop="ip" label="IP地址" width="120"></el-table-column>
@@ -79,6 +79,7 @@
             <el-table-column align="center" prop="createdTime" label="申请时间" min-width="150">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
+            <el-table-column align="center" prop="remark" label="描述" show-overflow-tooltip min-width="150"></el-table-column>
             <el-table-column align="center" label="操作" min-width="150">
               <template slot-scope="scope">
                 <el-button type="text" @click="review(scope.row)">审核</el-button>
@@ -142,7 +143,8 @@
           {label: '全部', value: ''},
           {label: '试用申请', value: 1},
           {label: '代理商申请', value: 2},
-          {label: '注册试用', value: 3}
+          {label: '注册试用', value: 3},
+          {label: '需求申请', value: 4}
         ],
         statusList: [
           // 状态 ：Y已联系 N未联系 W待审批
@@ -349,7 +351,15 @@
     }
   }
 </script>
-
+<style lang="">
+  .el-tooltip__popper{
+    max-width:20%;
+  }
+  .el-tooltip__popper,.el-tooltip__popper.is-dark{
+    background:#f5f5f5 !important;
+    color: #303133 !important;
+  }
+</style>
 <style scoped>
   .yxOrderManage {
     background: rgb(242, 242, 242);
