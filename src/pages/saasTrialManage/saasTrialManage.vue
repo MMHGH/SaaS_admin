@@ -79,7 +79,7 @@
             <el-table-column align="center" prop="createdTime" label="申请时间" min-width="150">
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
-            <el-table-column align="center" prop="remark" label="描述" show-overflow-tooltip min-width="150"></el-table-column>
+            <el-table-column align="center" prop="needDescription" label="需求描述" show-overflow-tooltip min-width="150"></el-table-column>
             <el-table-column align="center" label="操作" min-width="150">
               <template slot-scope="scope">
                 <el-button type="text" @click="review(scope.row)">审核</el-button>
