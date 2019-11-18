@@ -82,7 +82,7 @@
             <el-table-column align="center" prop="needDescription" label="需求描述" show-overflow-tooltip min-width="150"></el-table-column>
             <el-table-column align="center" label="操作" min-width="150">
               <template slot-scope="scope">
-                <el-button type="text" @click="review(scope.row)">审核</el-button>
+                <el-button type="text" v-if="scope.row.type!==4" @click="review(scope.row)">审核</el-button>
               </template>
             </el-table-column>
           </el-table>
