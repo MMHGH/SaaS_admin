@@ -148,6 +148,8 @@
           {label: '静态溯源模板设置', value: 13},
           {label: '活动推广', value: 15},
           {label: '商品分享', value: 16},
+          {label: '精准放奖', value: 19},
+          {label: '广告投放', value: 20},
         ],
         tableData: [],
         pageNum: 1,
@@ -228,6 +230,12 @@
            break;
           case 18:
            pageName = '商品证书'
+           break;
+          case 19:
+           pageName = '精准放奖'
+           break;
+          case 20:
+           pageName = '广告投放'
            break;
         }
         return pageName

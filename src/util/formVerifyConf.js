@@ -1,7 +1,6 @@
 export default {
   // 审核内容模板
   orderTypes: [
-    //扫码入口配置：1-8
     {
       value: 1, label: '品牌主页-新建主页模板',
       verifyField: [
@@ -69,7 +68,6 @@ export default {
         {key: 'imgUrl', label: '项目图片', type: 'other', value: ''},
       ]
     },
-    //  商品管理:9-10
     {
       value: 9, label: '商品列表-添加商品',
       verifyField: [
@@ -92,7 +90,6 @@ export default {
         {key: 'name', label: '分类名称', type: 'text', value: ''},
       ]
     },
-    //  营销活动:11-12
     {
       value: 11, label: '活动管理-添加活动',
       verifyField: [
@@ -108,14 +105,12 @@ export default {
         {key: 'name', label: '缩写名称', type: 'text', value: ''},
       ]
     },
-    //  溯源应用:13
     {
       value: 13, label: '静态溯源模板设置',
       verifyField: [
         {key: 'name', label: '页面标题', type: 'text', value: ''},
       ]
     },
-    //  分享推广
     {
       value: 15, label: '活动推广',
       verifyField: [
@@ -129,7 +124,6 @@ export default {
         {key: 'shareImgUrl', label: '分享背景图片', type: 'img', value: ''}
       ]
     },
-    //  商品分享
     {
       value: 16, label: '商品分享',
       verifyField: [
@@ -140,15 +134,30 @@ export default {
         {key: 'buttonUrl', label: '链接地址', type: 'text', value: ''},
       ]
     },
-    //  商品动态
     {
       value: 17, label: '商品动态',
       verifyField: []
     },
-    //  商品证书
     {
       value: 18, label: '商品证书',
       verifyField: []
+    },
+    {
+      value: 19, label: '精准放奖',
+      verifyField: [
+        {key: 'name', label: '广告名称', type: 'text', value: ''},
+        {key: 'imgAdvertUrl', label: '广告图片', type: 'img', value: ''},
+        {key: 'linkUrl', label: '图片链接', type: 'text', value: ''},
+      ]
+    },
+    {
+      value: 20, label: '广告投放',
+      verifyField: [
+        {key: 'name', label: '广告名称', type: 'text', value: ''},
+        {key: 'threePartyEnterprise', label: '三方广告', type: 'text', value: ''},
+        {key: 'imgAdvertUrl', label: '广告图片', type: 'img', value: ''},
+        {key: 'linkUrl', label: '图片链接', type: 'text', value: ''},
+      ]
     },
   ],
   /**
@@ -173,9 +182,10 @@ export default {
       let auditType = fields[i].type;//渲染类型
       if (auditType != 'other') {
         fields[i].value = jsonObj[fields[i].key];
-        if(auditType == 'json' || type == 8){
+        if(auditType == 'json' || type == 8 || type == 20){
           switch(type){
             case 8:
+            case 20:
               let jsonPares = JSON.parse(jsonObj.json);
               fields[i].value = [jsonPares[fields[i].key]];
               break;
