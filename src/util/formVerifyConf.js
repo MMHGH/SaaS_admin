@@ -153,7 +153,7 @@ export default {
     {
       value: 20, label: '广告投放',
       verifyField: [
-        {key: 'name', label: '广告名称', type: 'text', value: ''},
+        {key: 'tname', label: '广告名称', type: 'text', value: ''},
         {key: 'threePartyEnterprise', label: '三方广告', type: 'text', value: ''},
         {key: 'imgAdvertUrl', label: '广告图片', type: 'img', value: ''},
         {key: 'linkUrl', label: '图片链接', type: 'text', value: ''},
