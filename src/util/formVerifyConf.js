@@ -187,7 +187,7 @@ export default {
             case 8:
             case 20:
               let jsonPares = JSON.parse(jsonObj.json);
-              fields[i].value = [jsonPares[fields[i].key]];
+              fields[i].value = fields[i].type==='img'?[jsonPares[fields[i].key]]:jsonPares[fields[i].key];
               break;
             case 11:
               let jsonData = JSON.parse(jsonObj.templateData);
