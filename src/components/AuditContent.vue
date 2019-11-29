@@ -142,12 +142,12 @@
       <!-- 商品动态 -->
       <el-form v-if="auditData.scene===17" ref="ruleForm" label-width="100px" disabled class="auto-content demo-ruleForm">
         <el-form-item label="页面标题:" prop="name">
-          <el-input size="mini" v-model="productDynameic.name" 
+          <el-input size="mini" v-model="productDynameic.name"
                      style="width:390px;"
                     placeholder="请输入页面标题"></el-input>
         </el-form-item>
         <el-form-item label="主标题:" prop="mainName" class="mainName">
-          <el-input size="mini" v-model="productDynameic.mainName" 
+          <el-input size="mini" v-model="productDynameic.mainName"
                      style="width:390px;"
                     placeholder="请输入主标题"></el-input>
         </el-form-item>
@@ -164,7 +164,7 @@
                 <el-form-item label="栏目标题：" prop="name">
                   <el-input :maxlength="8"  v-model="item.name" style="width: 300px;"
                               placeholder="最多输入8个字符"></el-input>
-                </el-form-item> 
+                </el-form-item>
                 <el-form-item style="white-space: nowrap;" label="展示图片：" prop="imgUrl">
                     <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" alt="">
                 </el-form-item>
@@ -176,13 +176,13 @@
               <div v-else>
                 <el-form-item label="栏目标题：" prop="name">
                   <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
-                </el-form-item> 
+                </el-form-item>
                 <el-form-item style="white-space: nowrap;" label="证书图片：" prop="imgUrl">
                   <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" :onerror="ImgError">
                 </el-form-item>
                 <el-form-item label="字段名称：" prop="designation" v-if="item.embedType == 2">
                   <el-input :maxlength="20"  v-model="item.designation" style="width: 180px;"></el-input>
-                </el-form-item> 
+                </el-form-item>
                 <el-form-item label="位置：" prop="location" v-if="item.embedType == 1">
                   <div class="ac-line">
                     <span style="color: #C0C4CC;">{{item.labelOne}}</span>
@@ -204,12 +204,12 @@
       <!-- 商品证书 -->
       <el-form v-if="auditData.scene===18" ref="ruleForm" label-width="100px" disabled class="auto-content demo-ruleForm">
         <el-form-item label="页面标题:" prop="name">
-          <el-input size="mini" v-model="certificate.name" 
+          <el-input size="mini" v-model="certificate.name"
                      style="width:390px;"
                     placeholder="请输入页面标题"></el-input>
         </el-form-item>
         <el-form-item label="主标题:" prop="mainName" class="mainName">
-          <el-input size="mini" v-model="certificate.mainName" 
+          <el-input size="mini" v-model="certificate.mainName"
                      style="width:390px;"
                     placeholder="请输入主标题"></el-input>
         </el-form-item>
@@ -223,13 +223,13 @@
                 <h3>证书栏</h3>
                 <el-form-item label="栏目标题：" prop="name">
                   <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
-                </el-form-item> 
+                </el-form-item>
                 <el-form-item style="white-space: nowrap;" label="证书图片：" prop="imgUrl">
                   <img v-if="item.imgUrl" class="report-img" :src="item.imgUrl" :onerror="ImgError">
                 </el-form-item>
                 <el-form-item label="字段名称：" prop="designation" v-if="item.embedType == 2">
                   <el-input :maxlength="20"  v-model="item.designation" style="width: 180px;"></el-input>
-                </el-form-item> 
+                </el-form-item>
                 <el-form-item label="位置：" prop="location" v-if="item.embedType == 1">
                   <div class="ac-line">
                     <span style="color: #C0C4CC;">{{item.labelOne}}</span>
@@ -242,10 +242,83 @@
                 </el-form-item>
                 <el-form-item label="备注说明：" prop="remark">
                    <div class="content-html"  v-html="item.remark"></div>
-                </el-form-item> 
+                </el-form-item>
             </el-form>
         </div>
       </el-form>
+
+      <!-- 防伪验真-新数据 -->
+      <div v-if="auditData.scene===2">
+        <el-form ref="form" label-width="130px" label-suffix="：">
+          <div v-if="verifyData.pageLayout===1">
+            <el-form-item class="list-item" label="页面标题">
+              <el-input class="item-txt" size="small" v-model="verifyData.name" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="设置产品图片">
+              <img class="item-img" :src="verifyData.productImageUrl" :onerror="ImgError">
+            </el-form-item>
+            <el-form-item class="list-item" label="使用须知">
+              <el-input class="item-txt" type="textarea" rows="4" size="small" v-model="verifyData.notice" disabled></el-input>
+            </el-form-item>
+          </div>
+          <div v-if="verifyData.pageLayout===2">
+            <h3>验真页</h3>
+            <el-form-item class="list-item" label="页面标题">
+              <el-input class="item-txt" size="small" v-model="verifyData.checkData.name" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="设置背景图片">
+              <img class="item-img" :src="verifyData.checkData.backgroundUrl" :onerror="ImgError">
+            </el-form-item>
+            <el-form-item class="list-item" label="设置产品图片">
+              <img class="item-img" :src="verifyData.checkData.productImageUrl" :onerror="ImgError">
+            </el-form-item>
+            <!--自定义-->
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label">
+              <el-input class="item-txt" size="small" v-model="verifyData.checkData.value[idx].value" disabled></el-input>
+            </el-form-item>
+            <h3>验真结果页</h3>
+            <el-form-item class="list-item" label="页面标题">
+              <el-input class="item-txt" size="small" v-model="verifyData.resultData.title" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="设置产品图片">
+              <img class="item-img" :src="verifyData.resultData.productImageUrl" :onerror="ImgError">
+            </el-form-item>
+            <el-form-item class="list-item" label="备注说明">
+              <div v-html="verifyData.resultData.desc"></div>
+            </el-form-item>
+          </div>
+          <div v-if="verifyData.pageLayout===3">
+            <h3>验真页</h3>
+            <el-form-item class="list-item" label="页面标题">
+              <el-input class="item-txt" size="small" v-model="verifyData.checkData.name" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="设置背景图片">
+              <img class="item-img" :src="verifyData.checkData.backgroundUrl" :onerror="ImgError">
+            </el-form-item>
+            <el-form-item class="list-item" label="设置产品图片">
+              <img class="item-img" :src="verifyData.checkData.productImageUrl" :onerror="ImgError">
+            </el-form-item>
+            <!--自定义-->
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label">
+              <el-input class="item-txt" size="small" v-model="verifyData.checkData.value[idx].value" disabled></el-input>
+            </el-form-item>
+            <h3>验真结果页</h3>
+            <el-form-item class="list-item" label="页面标题">
+              <el-input class="item-txt" size="small" v-model="verifyData.resultData.title" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="设置产品图片">
+              <img class="item-img" :src="verifyData.resultData.productImageUrl" :onerror="ImgError">
+            </el-form-item>
+            <!--自定义-->
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.resultData.label">
+              <el-input class="item-txt" size="small" v-model="verifyData.resultData.value[idx].value" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="list-item" label="备注说明">
+              <div v-html="verifyData.resultData.desc"></div>
+            </el-form-item>
+          </div>
+        </el-form>
+      </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" v-if="auditData.status==0 || auditData.status==2 || auditData.status==3"
@@ -317,6 +390,8 @@
         productDynameic:{},
         // 商品证书
         certificate:{},
+        // 防伪验真
+        verifyData:{},
       }
     },
     mounted() {
@@ -368,8 +443,19 @@
         // 解析json
         let json = JSON.parse(this.auditData.content);
 
-        // 静态溯源模板
-        if (this.auditData.scene === 13) {
+        // 防伪验真
+        if (this.auditData.scene === 2) {
+          this.verifyData = {}
+          // 新数据解析
+          if(json.pageLayout){
+            this.verifyData = JSON.parse(json.json);
+            this.verifyData.pageLayout = json.pageLayout;
+            this.verifyData.name = json.name;
+          }else{
+            // 旧数据 设置值
+            this.formData = formVerifyConf.setVerifyField(conf.value, conf.verifyField, json);
+          }
+        } else if (this.auditData.scene === 13) {// 静态溯源模板
           // 设置值
           this.formData = formVerifyConf.setVerifyField(conf.value, conf.verifyField, json);
           // 设置Form JSon数据
