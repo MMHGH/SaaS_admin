@@ -273,7 +273,7 @@
               <img class="item-img" :src="verifyData.checkData.productImageUrl" :onerror="ImgError">
             </el-form-item>
             <!--自定义-->
-            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label">
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label" :key="idx">
               <el-input class="item-txt" size="small" v-model="verifyData.checkData.value[idx].value" disabled></el-input>
             </el-form-item>
             <h3>验真结果页</h3>
@@ -299,7 +299,7 @@
               <img class="item-img" :src="verifyData.checkData.productImageUrl" :onerror="ImgError">
             </el-form-item>
             <!--自定义-->
-            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label">
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.checkData.label" :key="idx">
               <el-input class="item-txt" size="small" v-model="verifyData.checkData.value[idx].value" disabled></el-input>
             </el-form-item>
             <h3>验真结果页</h3>
@@ -310,7 +310,7 @@
               <img class="item-img" :src="verifyData.resultData.productImageUrl" :onerror="ImgError">
             </el-form-item>
             <!--自定义-->
-            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.resultData.label">
+            <el-form-item class="list-item" :label="item.value" v-for="(item,idx) in verifyData.resultData.label" :key="idx">
               <el-input class="item-txt" size="small" v-model="verifyData.resultData.value[idx].value" disabled></el-input>
             </el-form-item>
             <el-form-item class="list-item" label="备注说明">

@@ -143,11 +143,12 @@ export default {
       verifyField: []
     },
     {
-      value: 19, label: '精准放奖',
+      value: 19, label: '精准放奖活动',
       verifyField: [
-        {key: 'name', label: '广告名称', type: 'text', value: ''},
-        {key: 'imgAdvertUrl', label: '广告图片', type: 'img', value: ''},
-        {key: 'linkUrl', label: '图片链接', type: 'text', value: ''},
+        {key: 'name', label: '活动名称', type: 'text', value: ''},
+        {key: 'title', label: '页面标题', type: 'text', value: ''},
+        {key: 'desc', label: '页面描述', type: 'text', value: ''},
+        {key: 'activityRule', label: '活动规则文字', type: 'text', value: ''},
       ]
     },
     {
@@ -182,7 +183,7 @@ export default {
       let auditType = fields[i].type;//渲染类型
       if (auditType != 'other') {
         fields[i].value = jsonObj[fields[i].key];
-        if(auditType == 'json' || type == 8 || type == 20){
+        if(auditType == 'json' || type == 8 || type == 11 || type == 19 || type == 20){
           switch(type){
             case 8:
             case 20:
@@ -192,6 +193,14 @@ export default {
             case 11:
               let jsonData = JSON.parse(jsonObj.templateData);
               fields[i].value = jsonData[fields[i].key];
+              break;
+            case 19:
+              if(i===0){
+                fields[i].value = jsonObj.name;
+              }else{
+                let json = JSON.parse(jsonObj.templateData);
+                fields[i].value = json[fields[i].key];
+              }
               break;
           }
         }

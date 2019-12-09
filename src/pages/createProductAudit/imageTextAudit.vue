@@ -20,7 +20,7 @@
               v-model="ruleForm.createdEndTime"
               type="datetime"
               size="small"
-              value-format="timestamp" 
+              value-format="timestamp"
               placeholder="请选择建立结束时间">
             </el-date-picker>
           </el-form-item>
@@ -148,7 +148,7 @@
           {label: '静态溯源模板设置', value: 13},
           {label: '活动推广', value: 15},
           {label: '商品分享', value: 16},
-          {label: '精准放奖', value: 19},
+          {label: '精准放奖活动', value: 19},
           {label: '广告投放', value: 20},
         ],
         tableData: [],
@@ -232,7 +232,7 @@
            pageName = '商品证书'
            break;
           case 19:
-           pageName = '精准放奖'
+           pageName = '精准放奖活动'
            break;
           case 20:
            pageName = '广告投放'
