@@ -62,7 +62,7 @@
               <template slot-scope="scope">{{ $timestamp.getTimeByTimestamp(scope.row.createdTime)}}</template>
             </el-table-column>
             <el-table-column align="center" property="scene" label="所在页面">
-              <template slot-scope="scope">{{ scope.row.scene | fmtPage()}}</template>
+              <template slot-scope="scope">{{ scope.row.scene | fmtPage(pageList)}}</template>
             </el-table-column>
             <el-table-column align="center" property="status" label="状态">
               <template slot-scope="scope">{{ scope.row.status | fmtStatus()}}</template>
@@ -150,6 +150,7 @@
           {label: '商品分享', value: 16},
           {label: '精准放奖活动', value: 19},
           {label: '广告投放', value: 20},
+          {label: '扫码过渡页', value: 21},
         ],
         tableData: [],
         pageNum: 1,
@@ -177,73 +178,17 @@
         }
         return auditStatus
       },
-      fmtPage(val) {
-        let pageName = '';
-        switch(Number(val)){
-          case 1:
-           pageName = '品牌主页'
-           break;
-          case 2:
-           pageName = '防伪验真配置'
-           break;
-          case 3:
-           pageName = '资讯公告'
-           break;
-          case 4:
-           pageName = '商品详情配置'
-           break;
-          case 5:
-           pageName = '会员中心'
-           break;
-          case 6:
-           pageName = '自定义模板'
-           break;
-          case 7:
-           pageName = '视频展示'
-           break;
-          case 8:
-           pageName = '发展历程'
-           break;
-          case 9:
-           pageName = '商品列表'
-           break;
-          case 10:
-           pageName = '商品分类'
-           break;
-          case 11:
-           pageName = '活动管理'
-           break;
-          case 12:
-           pageName = '活动管理-奖品基本设置'
-           break;
-          case 13:
-           pageName = '静态溯源模板设置'
-           break;
-          case 15:
-           pageName = '活动推广'
-           break;
-          case 16:
-           pageName = '商品分享'
-           break;
-          case 17:
-           pageName = '商品动态'
-           break;
-          case 18:
-           pageName = '商品证书'
-           break;
-          case 19:
-           pageName = '精准放奖活动'
-           break;
-          case 20:
-           pageName = '广告投放'
-           break;
+      fmtPage(val, list) {
+        let str = '';
+        for(let item of list){
+          if(item.value===val){
+            str =  item.label;
+          }
         }
-        return pageName
+        return str;
       }
     },
-    components: {
-      auditContent
-    },
+    components: { auditContent },
     methods: {
       /**
        * 查询
@@ -266,9 +211,9 @@
           pageSize: this.pageSize,
         }
         this.axios.post(this.$api.auditDetails.getImageList, param).then((res) => {
-          let data = res.data.data,
-              msg = res.data.message;
+          let msg = res.data.message;
           if (msg == 'ok') {
+            let data = res.data.data;
             this.tableData = data.list;
             this.total = data.total;
           } else {

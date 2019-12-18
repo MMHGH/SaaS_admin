@@ -160,6 +160,13 @@ export default {
         {key: 'linkUrl', label: '图片链接', type: 'text', value: ''},
       ]
     },
+    {
+      value: 21, label: '扫码过渡页',
+      verifyField: [
+        {key: 'name', label: '名称', type: 'text', value: ''},
+        {key: 'loadImg', label: '过渡图片', type: 'img', value: ''},
+      ]
+    },
   ],
   /**
    * 获取 单据配置信息
@@ -183,7 +190,7 @@ export default {
       let auditType = fields[i].type;//渲染类型
       if (auditType != 'other') {
         fields[i].value = jsonObj[fields[i].key];
-        if(auditType == 'json' || type == 8 || type == 11 || type == 19 || type == 20){
+        if(auditType == 'json' || type == 8 || type == 11 || type == 19 || type == 20 || type == 21){
           switch(type){
             case 8:
             case 20:
@@ -200,6 +207,16 @@ export default {
               }else{
                 let json = JSON.parse(jsonObj.templateData);
                 fields[i].value = json[fields[i].key];
+              }
+              break;
+            case 21:
+              if(i===0){
+                fields[i].value = jsonObj.name;
+              }else{
+                let json = JSON.parse(jsonObj.json);
+                if(json){
+                  fields[i].value = [json[fields[i].key]];
+                }
               }
               break;
           }
