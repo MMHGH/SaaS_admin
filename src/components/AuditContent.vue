@@ -158,7 +158,7 @@
         <!-- 自定义栏目 -->
         <div v-for="(item, index) in productDynameic.contentList" :key="index" class="prod-info">
             <el-form label-width="100px" disabled>
-              <h3>{{item.type == 'content'?'内容栏':'证书栏'}}</h3>
+              <h3>{{item.type == 'content'?'内容栏':item.type == 'certificate'?'证书栏':'防伪信息栏'}}</h3>
               <!-- 内容栏 -->
               <div v-if="item.type == 'content'">
                 <el-form-item label="栏目标题：" prop="name">
@@ -173,7 +173,7 @@
                 </el-form-item>
               </div>
               <!-- 证书栏 -->
-              <div v-else>
+              <div v-else-if="item.type == 'certificate'">
                 <el-form-item label="栏目标题：" prop="name">
                   <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
                 </el-form-item>
@@ -196,6 +196,12 @@
                 <el-form-item label="备注：" prop="remark">
                   <el-input type="textarea" size="small"  maxlength="500" style="width:500px;"
                           rows="5" v-model="item.remark" placeholder="备注"></el-input>
+                </el-form-item>
+              </div>
+              <!-- 防伪信息栏 -->
+              <div v-else>
+                <el-form-item label="栏目标题：" prop="name">
+                  <el-input :maxlength="12"  v-model="item.name" style="width: 300px;" placeholder="最多输入12个字符"></el-input>
                 </el-form-item>
               </div>
             </el-form>
