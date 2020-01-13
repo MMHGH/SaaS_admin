@@ -125,7 +125,7 @@
         <!-- <el-form-item label="设置标签" prop="label">
           <el-input v-model="form.label"></el-input>
         </el-form-item> -->
-        <el-form-item label="使用须知" prop="description" required>
+        <el-form-item label="使用须知" prop="description">
           <el-input v-model="form.description" :rows="3" type="textarea" :disabled="!isEditInfo"></el-input>
         </el-form-item>
         <!-- <h1 style="font-weight: 400;line-height: 40px;background: #f2f2f2;margin-bottom: 10px;padding-left: 20px;">关联URL：</h1>
